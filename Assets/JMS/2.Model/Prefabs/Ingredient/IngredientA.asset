@@ -1,0 +1,47 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 252f816ffa96fcb4f90ee1b3a74a9953, type: 3}
+  m_Name: IngredientA
+  m_EditorClassIdentifier: 
+  image: {fileID: 0}
+  description: Test ingredient A.
+  raw: {fileID: 0}
+  undercook: {fileID: 0}
+  welldone: {fileID: 0}
+  overcook: {fileID: 0}
+  burnt: {fileID: 0}
+  baseCookWeight: 1
+  minVolume: 10
+  weightOverVolume:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 10
+      value: 2
+      inSlope: Infinity
+      outSlope: -0.00001559323
+      tangentMode: 1
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0.4583334
+    - serializedVersion: 3
+      time: 1000
+      value: 0.5
+      inSlope: -0.0038117077
+      outSlope: -0.0038117077
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.03749994
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
