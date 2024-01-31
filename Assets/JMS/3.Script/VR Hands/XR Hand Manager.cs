@@ -8,7 +8,7 @@ public class XRHandManager : MonoBehaviour
     public GameObject virtualHand;
     [Space(12)]
     public bool isVirtualHandVisible = true;
-    [Range(1f, 10f)] public float distanceThreshold = 3f;
+    [Range(.01f, 10f)] public float distanceThreshold = .1f;
 
     private Transform m_virtualHandTransform;
     private Renderer m_virtualHandRenderer;
