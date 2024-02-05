@@ -92,11 +92,11 @@ public class XRCookingToolManager : MonoBehaviour
     private void ToggleVirtualHandRenderer()
     {
         float distance = Vector3.Distance(m_virtualToolTransform.position, m_physicalToolTransform.position);
-        bool isFar = distance < distanceThreshold;
+        bool isFar = distance >= distanceThreshold;
 
         foreach (var renderer in virtualToolRenderers)
         {
-            renderer.enabled = isFar;
+            renderer.enabled = isVirtualToolVisible && isFar;
         }
     }
 }

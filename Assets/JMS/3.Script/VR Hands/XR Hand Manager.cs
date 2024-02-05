@@ -73,6 +73,8 @@ public class XRHandManager : MonoBehaviour
     private void ToggleVirtualToolRenderer()
     {
         float distance = Vector3.Distance(m_virtualHandTransform.position, m_physicalHandTransform.position);
-        m_virtualHandRenderer.enabled = distance < distanceThreshold ? false : true;
+        bool isFar = distance >= distanceThreshold;
+
+        m_virtualHandRenderer.enabled = isVirtualHandVisible && isFar;
     }
 }

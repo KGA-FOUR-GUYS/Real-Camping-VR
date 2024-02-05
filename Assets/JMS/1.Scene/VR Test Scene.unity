@@ -607,7 +607,10 @@ MonoBehaviour:
   isTrackingPosition: 1
   isTrackingRotation: 1
   virtualTool: {fileID: 610835617}
-  virtualToolRenderers: []
+  virtualToolRenderers:
+  - {fileID: 456720376}
+  - {fileID: 674116888}
+  - {fileID: 1472392773}
   isVirtualToolVisible: 1
   distanceThreshold: 0.1
   physicalTool: {fileID: 1691010147}
