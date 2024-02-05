@@ -7,6 +7,8 @@ using Cooking;
 
 public class SliceCube : MonoBehaviour
 {
+    public float SliceObjectVolume;
+
     public Transform startSlicePoint;
     public Transform endSlicePoint;
 
@@ -26,15 +28,12 @@ public class SliceCube : MonoBehaviour
     {
 
         bool hasHit = Physics.Linecast(startSlicePoint.position, endSlicePoint.position, out RaycastHit hit, sliceableLayer);
-        Debug.DrawRay(startSlicePoint.position, endSlicePoint.position, Color.blue);
         if (CheckAngle())
         {
-            Debug.Log(hasHit);
             if (hasHit && CanCut)
             {
-                Debug.Log("¿€µø");
                 meshcal = hit.collider.gameObject.GetComponent<MeshCalculator>();
-                if (meshcal.Volume > 0.1f)
+                if (meshcal.Volume > SliceObjectVolume)
                 {
                     GameObject target = hit.transform.gameObject;
                     Slice(target);
@@ -79,7 +78,6 @@ public class SliceCube : MonoBehaviour
             if (Physics.Raycast(EdgeSide, transform.TransformDirection(Vector3.down), out hitinfo, Mathf.Infinity) 
                 && hitinfo.collider.gameObject.layer == LayerMask.NameToLayer("Sliceable"))
             {
-                Debug.DrawRay(EdgeSide, transform.TransformDirection(Vector3.down), Color.green);
                 return true;
             }
         }
