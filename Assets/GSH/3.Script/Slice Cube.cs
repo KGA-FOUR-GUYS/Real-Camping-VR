@@ -9,6 +9,10 @@ public class SliceCube : MonoBehaviour
 {
     public Transform startSlicePoint;
     public Transform endSlicePoint;
+
+    public Transform StartCheckObj;
+    public Transform EndCheckObj;
+
     public VelocityEstimator velocityEstimator;
     public LayerMask sliceableLayer;
     private Material CrossMaterial;
@@ -71,7 +75,7 @@ public class SliceCube : MonoBehaviour
         for (int i = 0; i <= RaycastCount;i++)
         {
             float ratio = i / (float)RaycastCount;
-            EdgeSide = Vector3.Lerp(startSlicePoint.position, endSlicePoint.position, ratio);
+            EdgeSide = Vector3.Lerp(StartCheckObj.position, EndCheckObj.position, ratio);
             if (Physics.Raycast(EdgeSide, transform.TransformDirection(Vector3.down), out hitinfo, Mathf.Infinity) 
                 && hitinfo.collider.gameObject.layer == LayerMask.NameToLayer("Sliceable"))
             {
