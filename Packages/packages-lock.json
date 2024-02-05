@@ -1,5 +1,12 @@
 {
   "dependencies": {
+    "com.rorygames.vhacd": {
+      "version": "https://github.com/rorygames/VHACD.git?path=/com.rorygames.vhacd",
+      "depth": 0,
+      "source": "git",
+      "dependencies": {},
+      "hash": "f4f20c91e7257ae98ea58b7c2fe59fcb98bac85d"
+    },
     "com.unity.burst": {
       "version": "1.8.12",
       "depth": 1,
@@ -93,6 +100,17 @@
       "dependencies": {},
       "url": "https://packages.unity.com"
     },
+    "com.unity.probuilder": {
+      "version": "5.2.2",
+      "depth": 0,
+      "source": "registry",
+      "dependencies": {
+        "com.unity.settings-manager": "1.0.3",
+        "com.unity.modules.physics": "1.0.0",
+        "com.unity.modules.imgui": "1.0.0"
+      },
+      "url": "https://packages.unity.com"
+    },
     "com.unity.render-pipelines.core": {
       "version": "14.0.10",
       "depth": 1,
@@ -133,7 +151,7 @@
     },
     "com.unity.settings-manager": {
       "version": "2.0.1",
-      "depth": 2,
+      "depth": 1,
       "source": "registry",
       "dependencies": {},
       "url": "https://packages.unity.com"
