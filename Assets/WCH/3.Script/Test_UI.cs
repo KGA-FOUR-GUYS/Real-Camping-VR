@@ -103,4 +103,9 @@ public class Test_UI : MonoBehaviour
             btnText.color = Color.black;
         }
     }
+
+    public void asd()
+    {
+        
+    }
 }
