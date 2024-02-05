@@ -28,8 +28,8 @@ public class SliceCube : MonoBehaviour
     {
 
         bool hasHit = Physics.Linecast(startSlicePoint.position, endSlicePoint.position, out RaycastHit hit, sliceableLayer);
-        if (CheckAngle())
-        {
+        //if (CheckAngle())
+        //{
             if (hasHit && CanCut)
             {
                 meshcal = hit.collider.gameObject.GetComponent<MeshCalculator>();
@@ -38,7 +38,7 @@ public class SliceCube : MonoBehaviour
                     GameObject target = hit.transform.gameObject;
                     Slice(target);
                 }
-            }
+           // }
         }
     }
     public void Slice(GameObject target)
