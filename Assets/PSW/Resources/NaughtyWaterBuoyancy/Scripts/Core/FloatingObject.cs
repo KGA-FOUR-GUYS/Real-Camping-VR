@@ -11,8 +11,7 @@ namespace NaughtyWaterBuoyancy
         [SerializeField]
         private bool calculateDensity = false;
 
-        [SerializeField]
-        private float density = 0.75f;
+        public float density = 0.75f;
 
         [SerializeField]
         [Range(0f, 1f)]
