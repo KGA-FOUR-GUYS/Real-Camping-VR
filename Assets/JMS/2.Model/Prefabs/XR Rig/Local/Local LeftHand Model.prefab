@@ -69,7 +69,7 @@ GameObject:
   - component: {fileID: 4704255259844281405}
   - component: {fileID: 1500680058674738637}
   m_Layer: 30
-  m_Name: LeftHand Physical (Input Action)
+  m_Name: LeftHand Physical
   m_TagString: LeftHandPhysical
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -766,7 +766,7 @@ GameObject:
   - component: {fileID: 9171098239777314156}
   - component: {fileID: 7648807790824269872}
   m_Layer: 0
-  m_Name: LeftHand Virtual (Input Tracking)
+  m_Name: LeftHand Virtual
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1507,7 +1507,7 @@ Transform:
   m_GameObject: {fileID: 2378535887777881507}
   serializedVersion: 2
   m_LocalRotation: {x: -0.42261827, y: 0, z: 0, w: 0.9063079}
-  m_LocalPosition: {x: -0.03, y: 0.028, z: 0.025}
+  m_LocalPosition: {x: -0.02, y: -0.02, z: -0.02}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -2201,8 +2201,8 @@ GameObject:
   - component: {fileID: 8770646178320870307}
   - component: {fileID: 1939211023666808649}
   m_Layer: 0
-  m_Name: Ray Interactor
-  m_TagString: Untagged
+  m_Name: Ray Interactor (Grab Guidance)
+  m_TagString: LeftHandInteractor
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -2239,7 +2239,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 4294967295
   m_InteractionLayers:
-    m_Bits: 1
+    m_Bits: 1073741824
   m_AttachTransform: {fileID: 0}
   m_KeepSelectedTargetValid: 1
   m_DisableVisualsWhenBlockedInGroup: 1
@@ -2289,19 +2289,19 @@ MonoBehaviour:
   m_AudioClipForOnHoverCanceled: {fileID: 0}
   m_AllowHoverAudioWhileSelecting: 0
   m_PlayHapticsOnSelectEntered: 1
-  m_HapticSelectEnterIntensity: 0.5
+  m_HapticSelectEnterIntensity: 0.4
   m_HapticSelectEnterDuration: 0.1
   m_PlayHapticsOnSelectExited: 1
-  m_HapticSelectExitIntensity: 0.5
+  m_HapticSelectExitIntensity: 0.4
   m_HapticSelectExitDuration: 0.1
   m_PlayHapticsOnSelectCanceled: 0
   m_HapticSelectCancelIntensity: 0
   m_HapticSelectCancelDuration: 0
   m_PlayHapticsOnHoverEntered: 1
-  m_HapticHoverEnterIntensity: 0.25
+  m_HapticHoverEnterIntensity: 0.15
   m_HapticHoverEnterDuration: 0.1
   m_PlayHapticsOnHoverExited: 1
-  m_HapticHoverExitIntensity: 0.25
+  m_HapticHoverExitIntensity: 0.15
   m_HapticHoverExitDuration: 0.1
   m_PlayHapticsOnHoverCanceled: 0
   m_HapticHoverCancelIntensity: 0
@@ -3425,7 +3425,7 @@ GameObject:
   - component: {fileID: 512361044809610418}
   - component: {fileID: 6069563918599681928}
   m_Layer: 0
-  m_Name: Direct Interactor
+  m_Name: Direct Interactor (Direct Grab)
   m_TagString: LeftHandInteractor
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3464,7 +3464,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 4294967295
   m_InteractionLayers:
-    m_Bits: 1
+    m_Bits: 536870912
   m_AttachTransform: {fileID: 4813644732655201287}
   m_KeepSelectedTargetValid: 1
   m_DisableVisualsWhenBlockedInGroup: 1
