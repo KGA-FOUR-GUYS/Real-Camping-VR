@@ -61,8 +61,6 @@ public class XRCookingToolManager : MonoBehaviour
         ToggleVirtualHandRenderer();
     }
 
-    
-
     private void UpdateVirtualToolPosition()
     {
         if (isGrabbed) return;
@@ -115,9 +113,9 @@ public class XRCookingToolManager : MonoBehaviour
         TogglePhysicalToolLayer();
 
         // Physical Tool의 Position, Rotation 변경
-        Transform attachPoint = interactor.transform.GetChild(0);
-        m_physicalToolTransform.position = attachPoint.position;
-        m_physicalToolTransform.rotation = attachPoint.rotation;
+        Transform handAttachPoint = interactor.transform.GetChild(0);
+        m_physicalToolTransform.position = handAttachPoint.position - handAttachPoint.localPosition;
+        m_physicalToolTransform.rotation = handAttachPoint.rotation;
 
         // FixedJoint 생성, 물리손과 연결
         var jointToHand = m_physicalToolRigidbody.gameObject.AddComponent<FixedJoint>();

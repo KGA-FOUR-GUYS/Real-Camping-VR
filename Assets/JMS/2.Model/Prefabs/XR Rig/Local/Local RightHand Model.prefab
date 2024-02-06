@@ -44,7 +44,7 @@ GameObject:
   - component: {fileID: 7708380937770873080}
   - component: {fileID: 7236956567180082185}
   m_Layer: 0
-  m_Name: Direct Interactor
+  m_Name: Direct Interactor (Direct Grab)
   m_TagString: RightHandInteractor
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -83,7 +83,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 4294967295
   m_InteractionLayers:
-    m_Bits: 1
+    m_Bits: 536870912
   m_AttachTransform: {fileID: 5046323831754643428}
   m_KeepSelectedTargetValid: 1
   m_DisableVisualsWhenBlockedInGroup: 1
@@ -224,8 +224,8 @@ GameObject:
   - component: {fileID: 4298740772204662409}
   - component: {fileID: 8626182521961060725}
   m_Layer: 0
-  m_Name: Ray Interactor
-  m_TagString: Untagged
+  m_Name: Ray Interactor (Grab Guidance)
+  m_TagString: RightHandInteractor
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -262,7 +262,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 4294967295
   m_InteractionLayers:
-    m_Bits: 1
+    m_Bits: 1073741824
   m_AttachTransform: {fileID: 0}
   m_KeepSelectedTargetValid: 1
   m_DisableVisualsWhenBlockedInGroup: 1
@@ -312,19 +312,19 @@ MonoBehaviour:
   m_AudioClipForOnHoverCanceled: {fileID: 0}
   m_AllowHoverAudioWhileSelecting: 0
   m_PlayHapticsOnSelectEntered: 1
-  m_HapticSelectEnterIntensity: 0.5
+  m_HapticSelectEnterIntensity: 0.4
   m_HapticSelectEnterDuration: 0.1
   m_PlayHapticsOnSelectExited: 1
-  m_HapticSelectExitIntensity: 0.5
+  m_HapticSelectExitIntensity: 0.4
   m_HapticSelectExitDuration: 0.1
   m_PlayHapticsOnSelectCanceled: 0
   m_HapticSelectCancelIntensity: 0
   m_HapticSelectCancelDuration: 0
   m_PlayHapticsOnHoverEntered: 1
-  m_HapticHoverEnterIntensity: 0.25
+  m_HapticHoverEnterIntensity: 0.15
   m_HapticHoverEnterDuration: 0.1
   m_PlayHapticsOnHoverExited: 1
-  m_HapticHoverExitIntensity: 0.25
+  m_HapticHoverExitIntensity: 0.15
   m_HapticHoverExitDuration: 0.1
   m_PlayHapticsOnHoverCanceled: 0
   m_HapticHoverCancelIntensity: 0
@@ -791,7 +791,7 @@ Transform:
   m_GameObject: {fileID: 757233966975501773}
   serializedVersion: 2
   m_LocalRotation: {x: -0.42261827, y: 0, z: 0, w: 0.9063079}
-  m_LocalPosition: {x: 0.03, y: 0.028, z: 0.025}
+  m_LocalPosition: {x: 0.02, y: -0.02, z: -0.02}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -3386,7 +3386,7 @@ GameObject:
   - component: {fileID: 9061887203843143922}
   - component: {fileID: 4708928740943849579}
   m_Layer: 0
-  m_Name: RightHand Virtual (Input Tracking)
+  m_Name: RightHand Virtual
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3796,7 +3796,9 @@ MonoBehaviour:
   - {fileID: 1264947635289967187}
   - {fileID: 7708380937770873080}
   - {fileID: 3202708266304495656}
-  m_StartingInteractionOverridesMap: []
+  m_StartingInteractionOverridesMap:
+  - groupMember: {fileID: 3202708266304495656}
+    overrideGroupMembers: []
 --- !u!1 &8308414743222644298
 GameObject:
   m_ObjectHideFlags: 0
@@ -3873,7 +3875,7 @@ GameObject:
   - component: {fileID: 533266952248194324}
   - component: {fileID: 8229417868696152339}
   m_Layer: 30
-  m_Name: RightHand Physical (Input Action)
+  m_Name: RightHand Physical
   m_TagString: RightHandPhysical
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

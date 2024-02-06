@@ -19,7 +19,6 @@ public class XRHandManager : MonoBehaviour
     public float maxSpeed = 5f;
 
     private Transform m_physicalHandTransform;
-    private Renderer m_physicalHandRenderer;
     private Rigidbody m_physicalHandRigidbody;
 
     private void Awake()
@@ -28,7 +27,6 @@ public class XRHandManager : MonoBehaviour
         m_virtualHandRenderer = virtualHand.GetComponent<SkinnedMeshRenderer>();
 
         m_physicalHandTransform = physicalHand.transform;
-        m_physicalHandRenderer = physicalHand.GetComponent<SkinnedMeshRenderer>();
         m_physicalHandRigidbody = physicalHand.GetComponent<Rigidbody>();
     }
 
