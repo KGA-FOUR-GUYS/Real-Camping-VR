@@ -3,33 +3,41 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.XR.Interaction.Toolkit;
 
-public class Create_Obj : MonoBehaviour
+public class Create_Obj : XRSocketInteractor
 {
-    public GameObject CreatePrefab;
-
-    private void OnEnable()
+    [SerializeField] GameObject prefab = default;
+    private Vector3 attachOffset = Vector3.zero;
+    public SpawnObject currentPrefab;
+    protected override void Awake()
     {
-        GetComponent<XRGrabInteractable>().selectEntered.AddListener(OnSelectEntered);
-    }
-    private void OnDisable()
-    {
-        GetComponent<XRGrabInteractable>().selectEntered.RemoveListener(OnSelectEntered);
+        base.Awake();
+        CreateAndSelectPrefab();
     }
 
-    private void OnSelectEntered(SelectEnterEventArgs args)
+    protected override void OnSelectExited(SelectExitEventArgs interactable)
     {
-        SpawnObject();
+        base.OnSelectExited(interactable);
+        CreateAndSelectPrefab();
     }
 
-    private void SpawnObject()
+    void CreateAndSelectPrefab()
     {
-        if (CreatePrefab != null)
+        SpawnObject interactable = CreatePrefab();
+        SelectPrefab(interactable);
+    }
+
+    SpawnObject CreatePrefab()
+    {
+        currentPrefab = Instantiate(prefab, transform.position - attachOffset, transform.rotation).GetComponent<SpawnObject>();
+        return currentPrefab;
+    }
+
+    void SelectPrefab(SpawnObject interactable)
+    {
+        if (interactable != null)
         {
-            Instantiate(CreatePrefab, transform.position, transform.rotation);
-        }
-        else
-        {
-            Debug.LogError("Object to spawn is not assigned!");
+            var args = new SelectEnterEventArgs(); // 수정된 부분
+            interactable.SelectPrefab(args); // 수정된 부분
         }
     }
 }
