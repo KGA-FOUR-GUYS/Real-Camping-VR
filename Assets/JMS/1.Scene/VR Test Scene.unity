@@ -2572,6 +2572,7 @@ GameObject:
   - component: {fileID: 1691010148}
   - component: {fileID: 1691010152}
   - component: {fileID: 1691010151}
+  - component: {fileID: 1691010153}
   - component: {fileID: 1691010150}
   - component: {fileID: 1691010149}
   m_Layer: 0
@@ -2875,6 +2876,50 @@ LineRenderer:
   m_UseWorldSpace: 1
   m_Loop: 0
   m_ApplyActiveColorSpace: 1
+--- !u!114 &1691010153
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1691010147}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5fea29bb7c508c244a1f805a5fd3fc4d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  outlineMode: 1
+  outlineColor: {r: 1, g: 0.9800461, b: 0, a: 1}
+  outlineWidth: 6
+  precomputeOutline: 1
+  bakeKeys:
+  - {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+  bakeValues:
+  - data:
+    - {x: 0.57735026, y: -0.57735026, z: 0.57735026}
+    - {x: -0.57735026, y: -0.57735026, z: 0.57735026}
+    - {x: 0.57735026, y: 0.57735026, z: 0.57735026}
+    - {x: -0.57735026, y: 0.57735026, z: 0.57735026}
+    - {x: 0.57735026, y: 0.57735026, z: -0.57735026}
+    - {x: -0.57735026, y: 0.57735026, z: -0.57735026}
+    - {x: 0.57735026, y: -0.57735026, z: -0.57735026}
+    - {x: -0.57735026, y: -0.57735026, z: -0.57735026}
+    - {x: 0.57735026, y: 0.57735026, z: 0.57735026}
+    - {x: -0.57735026, y: 0.57735026, z: 0.57735026}
+    - {x: 0.57735026, y: 0.57735026, z: -0.57735026}
+    - {x: -0.57735026, y: 0.57735026, z: -0.57735026}
+    - {x: 0.57735026, y: -0.57735026, z: -0.57735026}
+    - {x: 0.57735026, y: -0.57735026, z: 0.57735026}
+    - {x: -0.57735026, y: -0.57735026, z: 0.57735026}
+    - {x: -0.57735026, y: -0.57735026, z: -0.57735026}
+    - {x: -0.57735026, y: -0.57735026, z: 0.57735026}
+    - {x: -0.57735026, y: 0.57735026, z: 0.57735026}
+    - {x: -0.57735026, y: 0.57735026, z: -0.57735026}
+    - {x: -0.57735026, y: -0.57735026, z: -0.57735026}
+    - {x: 0.57735026, y: -0.57735026, z: -0.57735026}
+    - {x: 0.57735026, y: 0.57735026, z: -0.57735026}
+    - {x: 0.57735026, y: 0.57735026, z: 0.57735026}
+    - {x: 0.57735026, y: -0.57735026, z: 0.57735026}
 --- !u!1 &1739281790
 GameObject:
   m_ObjectHideFlags: 0
@@ -3501,10 +3546,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: RightHand Model
       objectReference: {fileID: 0}
-    - target: {fileID: 3202708266304495656, guid: f51ba9b32b86dcd4c863f8ea0e6035e5, type: 3}
-      propertyPath: m_RaycastMask.m_Bits
-      value: 268435489
-      objectReference: {fileID: 0}
     - target: {fileID: 8115195687405601441, guid: f51ba9b32b86dcd4c863f8ea0e6035e5, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0.10000001
@@ -3601,10 +3642,6 @@ PrefabInstance:
     - target: {fileID: 1771468661436367396, guid: c50b66a90602fb54fa6f7c749276e919, type: 3}
       propertyPath: m_Name
       value: LeftHand Model
-      objectReference: {fileID: 0}
-    - target: {fileID: 6277268972663012363, guid: c50b66a90602fb54fa6f7c749276e919, type: 3}
-      propertyPath: m_RaycastMask.m_Bits
-      value: 268435489
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

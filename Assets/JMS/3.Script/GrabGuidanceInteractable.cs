@@ -4,11 +4,14 @@ using UnityEngine;
 using UnityEngine.XR.Interaction.Toolkit;
 
 [RequireComponent(typeof(LineRenderer))]
+[RequireComponent(typeof(Outline))]
 public class GrabGuidanceInteractable : XRSimpleInteractable
 {
-    [Header("Render Trajectory")]
+    
+
+    [Header("Highlight Trajectory")]
     public float maxOffsetY = 1f;
-    [Range(3, 200)] public int vertexCount = 100; // BezierCurve¿« Point Count
+    [Range(3, 200)] public int vertexCount = 20; // BezierCurve¿« Point Count
 
     [Header("Pull Action")]
     [Tooltip("If false, you must unselect to trigger pull action")]
@@ -23,6 +26,9 @@ public class GrabGuidanceInteractable : XRSimpleInteractable
     public AnimationCurve positionOverTime;
 
     private LineRenderer m_lineRenderer;
+    private Outline m_outline;
+    private XRCookingToolManager m_cookingToolManager;
+
     private Transform m_leftHandPhysical;
     private Transform m_rightHandPhysical;
 
@@ -31,34 +37,34 @@ public class GrabGuidanceInteractable : XRSimpleInteractable
         base.Awake();
 
         TryGetComponent(out m_lineRenderer);
+        TryGetComponent(out m_outline);
+        transform.parent.TryGetComponent(out m_cookingToolManager);
+
         m_leftHandPhysical = GameObject.FindGameObjectWithTag("LeftHandPhysical").transform;
         m_rightHandPhysical = GameObject.FindGameObjectWithTag("RightHandPhysical").transform;
     }
 
+    private IXRInteractor _currentInteractor = null;
     protected override void OnHoverEntered(HoverEnterEventArgs args)
     {
+        if (m_cookingToolManager.isGrabbed) return;
+
         base.OnHoverEntered(args);
 
-        var currentInteractor = args.interactorObject;
-        if (currentInteractor is not XRRayInteractor) return;
-
-        // Start Render Contour
-        HighlightContour(true);
+        if (_currentInteractor == null)
+            HighlightContour(true);
     }
     protected override void OnHoverExited(HoverExitEventArgs args)
     {
         base.OnHoverExited(args);
 
-        var currentInteractor = args.interactorObject;
-        if (currentInteractor is not XRRayInteractor) return;
-
-        // Stop Render Contour
         HighlightContour(false);
     }
-
-    private IXRInteractor _currentInteractor = null;
+    
     protected override void OnSelectEntered(SelectEnterEventArgs args)
     {
+        if (m_cookingToolManager.isGrabbed) return;
+
         base.OnSelectEntered(args);
 
         _currentInteractor = args.interactorObject;
@@ -71,6 +77,9 @@ public class GrabGuidanceInteractable : XRSimpleInteractable
         // Start Render Trajectory
         var handTransform = _currentInteractor.transform;
         HighlightTrajectory(true, handTransform);
+
+        // Stop Highlight Contour
+        HighlightContour(false);
     }
     protected override void OnSelectExited(SelectExitEventArgs args)
     {
@@ -152,15 +161,9 @@ public class GrabGuidanceInteractable : XRSimpleInteractable
     #endregion
 
     #region HighlightContour
-    public void HighlightContour(bool isHovering)
+    public void HighlightContour(bool isOn)
     {
-        if (!isHovering)
-        {
-            // Hide Contour
-            return;
-        }
-
-        // Show Contour
+        m_outline.enabled = isOn;
     }
     #endregion
 
@@ -250,7 +253,8 @@ public class GrabGuidanceInteractable : XRSimpleInteractable
             (startPos.z + endPos.z) / 2);
 
         float elapsedTime = 0f;
-        while (elapsedTime < duration)
+        while (!m_cookingToolManager.isGrabbed
+               && elapsedTime < duration)
         {
             yield return null;
             elapsedTime += Time.deltaTime;
