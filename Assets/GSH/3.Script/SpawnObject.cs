@@ -14,11 +14,6 @@ public class SpawnObject : XRGrabInteractable
     {
         OnSelectEntered(args);
     }
-    //private static void SetInteractor(SelectEnterEventArgs args, XRBaseInteractor interactor)
-    //{
-    //    var interactorProperty = typeof(SelectEnterEventArgs).GetProperty("interactor");
-    //    interactorProperty.SetValue(args, interactor);
-    //}
     protected override void OnSelectEntered(SelectEnterEventArgs args)
     {
         base.OnSelectEntered(args);

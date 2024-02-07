@@ -8,10 +8,9 @@ using Cooking;
 public class SliceCube : MonoBehaviour
 {
     public float SliceObjectVolume;
-
+    [Header("Transform")]
     public Transform startSlicePoint;
     public Transform endSlicePoint;
-
     public Transform StartCheckObj;
     public Transform EndCheckObj;
 
@@ -19,9 +18,12 @@ public class SliceCube : MonoBehaviour
     public LayerMask sliceableLayer;
     private Material CrossMaterial;
     public MeshCalculator meshcal;
+    [Header("Parameter")]
     public float cutForce = 5f;
-    public bool CanCut = true;
+    public bool isValidCut = true;
+    public bool isSliceable = true;
     public int RaycastCount;
+    public float SliceCoolTime = 0;
     public Vector3 EdgeSide;
 
     private void FixedUpdate()
@@ -30,7 +32,7 @@ public class SliceCube : MonoBehaviour
         bool hasHit = Physics.Linecast(startSlicePoint.position, endSlicePoint.position, out RaycastHit hit, sliceableLayer);
         //if (CheckAngle())
         //{
-            if (hasHit && CanCut)
+            if (hasHit && isValidCut && isSliceable)
             {
                 meshcal = hit.collider.gameObject.GetComponent<MeshCalculator>();
                 if (meshcal.Volume > SliceObjectVolume)
@@ -51,6 +53,7 @@ public class SliceCube : MonoBehaviour
 
         if (hull != null)
         {
+            StartCoroutine(SliceCoolTime_Co(SliceCoolTime));
             GameObject upperHull = hull.CreateUpperHull(target, CrossMaterial);
             SetupSlicedComponent(upperHull, target.transform.parent);
             GameObject lowerHull = hull.CreateLowerHull(target, CrossMaterial);
@@ -87,14 +90,20 @@ public class SliceCube : MonoBehaviour
     {
         if (other.gameObject.layer == LayerMask.NameToLayer(("Sliceable")))
         {
-            CanCut = false;
+            isValidCut = false;
         }
     }
     private void OnTriggerExit(Collider other)
     {
         if (other.gameObject.layer == LayerMask.NameToLayer(("Sliceable")))
         {
-            CanCut = true;
+            isValidCut = true;
         }
+    }
+    IEnumerator SliceCoolTime_Co(float CoolTime)
+    {
+        isSliceable = false;
+        yield return new WaitForSeconds(CoolTime);
+        isSliceable = true;
     }
 }
