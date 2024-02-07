@@ -483,7 +483,7 @@ MonoBehaviour:
   offsetHandUp: 0
   offsetHandRight: 0
   virtualTool: {fileID: 610835617}
-  isVirtualToolVisible: 1
+  isVirtualToolVisible: 0
   distanceThreshold: 0.1
   physicalTool: {fileID: 1691010147}
   maxSpeed: 30
@@ -3546,6 +3546,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: RightHand Model
       objectReference: {fileID: 0}
+    - target: {fileID: 7602268759321324513, guid: f51ba9b32b86dcd4c863f8ea0e6035e5, type: 3}
+      propertyPath: isVirtualHandVisible
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 8115195687405601441, guid: f51ba9b32b86dcd4c863f8ea0e6035e5, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0.10000001
@@ -3599,6 +3603,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 383821391}
     m_Modifications:
+    - target: {fileID: 371726829940041462, guid: c50b66a90602fb54fa6f7c749276e919, type: 3}
+      propertyPath: isVirtualHandVisible
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 635325506868440984, guid: c50b66a90602fb54fa6f7c749276e919, type: 3}
       propertyPath: m_LocalPosition.x
       value: -0.10000001

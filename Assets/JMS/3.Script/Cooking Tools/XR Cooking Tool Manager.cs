@@ -46,6 +46,14 @@ public class XRCookingToolManager : MonoBehaviour
         m_initialLayer = m_physicalToolTransform.gameObject.layer;
     }
 
+    private void Start()
+    {
+        foreach (var renderer in m_virtualToolRenderers)
+        {
+            renderer.enabled = isVirtualToolVisible;
+        }
+    }
+
     private void FixedUpdate()
     {
         // If tool is grabbed
