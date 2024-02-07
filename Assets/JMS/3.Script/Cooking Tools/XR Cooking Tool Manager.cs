@@ -6,11 +6,13 @@ using UnityEngine.XR.Interaction.Toolkit;
 public class XRCookingToolManager : MonoBehaviour
 {
     public bool isGrabbed = false;
-    [Range(1f,3f)] public float delayAfterGrabExited = 1f;
 
     [Header("Grabbed Option")]
     public LayerMask grabbedLayer;
     private LayerMask m_initialLayer;
+    [Range(1f, 3f)] public float delayToggleLayerAfterExit = 1f;
+    public float offsetHandUp = 0f;
+    public float offsetHandRight = 0f;
 
     [Header("Virtual Tool")]
     public GameObject virtualTool;
@@ -53,24 +55,25 @@ public class XRCookingToolManager : MonoBehaviour
 
     private void Update()
     {
-        // If tool is not grabbed
-        // Try to match position and rotation (virtual -> physical)
-        UpdateVirtualToolPosition();
-        UpdateVirtualToolRotation();
+        if (!isGrabbed)
+        {
+            // Try to match position and rotation (virtual -> physical)
+            UpdateVirtualToolPosition();
+            UpdateVirtualToolRotation();
+        }
 
-        ToggleVirtualHandRenderer();
+        if (isVirtualToolVisible)
+        {
+            ToggleVirtualHandRenderer();
+        }
     }
 
     private void UpdateVirtualToolPosition()
     {
-        if (isGrabbed) return;
-        
         m_virtualToolTransform.position = m_physicalToolTransform.position;
     }
     private void UpdateVirtualToolRotation()
     {
-        if (isGrabbed) return;
-
         m_virtualToolTransform.rotation = m_physicalToolTransform.rotation;
     }
     private void ToggleVirtualHandRenderer()
@@ -80,7 +83,7 @@ public class XRCookingToolManager : MonoBehaviour
 
         foreach (var renderer in m_virtualToolRenderers)
         {
-            renderer.enabled = isVirtualToolVisible && isFar;
+            renderer.enabled = isFar;
         }
     }
 
@@ -113,9 +116,15 @@ public class XRCookingToolManager : MonoBehaviour
         TogglePhysicalToolLayer();
 
         // Physical Tool의 Position, Rotation 변경
-        Transform handAttachPoint = interactor.transform.GetChild(0);
-        m_physicalToolTransform.position = handAttachPoint.position - handAttachPoint.localPosition;
-        m_physicalToolTransform.rotation = handAttachPoint.rotation;
+        Transform physicalHand = isLeftHand
+                                 ? m_leftHandPhysicalRigidbody.transform
+                                 : m_rightHandPhysicalRigidbody.transform;
+        Transform physicalHandAttachPoint = physicalHand.GetChild(0);
+
+        m_physicalToolTransform.position = physicalHandAttachPoint.position
+                                            + physicalHand.up * offsetHandUp
+                                            + physicalHand.right * offsetHandRight;
+        m_physicalToolTransform.rotation = physicalHandAttachPoint.rotation;
 
         // FixedJoint 생성, 물리손과 연결
         var jointToHand = m_physicalToolRigidbody.gameObject.AddComponent<FixedJoint>();
@@ -134,7 +143,7 @@ public class XRCookingToolManager : MonoBehaviour
         //m_physicalToolRigidbody.useGravity = true;
 
         isGrabbed = false;
-        Invoke(nameof(TogglePhysicalToolLayer), delayAfterGrabExited);
+        Invoke(nameof(TogglePhysicalToolLayer), delayToggleLayerAfterExit);
 
         // FixedJoint 삭제, 물리손과 분리
         var jointToHand = m_physicalToolRigidbody.gameObject.GetComponent<FixedJoint>();
@@ -159,6 +168,7 @@ public class XRCookingToolManager : MonoBehaviour
         var colliders = m_physicalToolTransform.GetComponentsInChildren<Collider>();
         foreach (var collider in colliders)
         {
+            if (collider.gameObject.layer != LayerMask.NameToLayer("Default")) continue;
             collider.gameObject.layer = targetLayerValue;
         }
     }
