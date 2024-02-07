@@ -48,8 +48,9 @@ namespace Cooking
 
         private void Update()
         {
-            if (_meshCalculator.isUpdating)
-                _volumeWeight = data.weightOverVolume.Evaluate(_meshCalculator.Volume);
+            if (!_meshCalculator.isUpdating) return;
+
+            _volumeWeight = data.weightOverVolume.Evaluate(_meshCalculator.Volume);
         }
     }
 }

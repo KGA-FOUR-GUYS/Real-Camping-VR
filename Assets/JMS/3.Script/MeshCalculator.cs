@@ -7,6 +7,7 @@ namespace Cooking
     public class MeshCalculator : MonoBehaviour
     {
         [field: SerializeField] public float Volume { get; private set; } = -1.0f;
+        [Tooltip("Resource intensive, recommended to set false")]
         public bool isUpdating = false;
 
         private Mesh _mesh;
@@ -14,15 +15,19 @@ namespace Cooking
 
         private void Awake()
         {
-            _lastLocalScale = transform.localScale;
             _mesh = GetComponent<MeshFilter>().sharedMesh;
+            _lastLocalScale = transform.localScale;
+        }
+
+        private void Start()
+        {
             Volume = VolumeOfMesh(_mesh, _lastLocalScale);
         }
 
         private void Update()
         {
-            if (!isUpdating
-                || transform.localScale == _lastLocalScale) return;
+            if (!isUpdating) return;
+            if (transform.localScale == _lastLocalScale) return;
 
             _lastLocalScale = transform.localScale;
             Volume = VolumeOfMesh(_mesh, _lastLocalScale);
@@ -43,7 +48,6 @@ namespace Cooking
 
             return (1.0f / 6.0f) * (-v321 + v231 + v312 - v132 - v213 + v123);
         }
-
         public float VolumeOfMesh(Mesh mesh, Vector3 localScale)
         {
             if (mesh == null)

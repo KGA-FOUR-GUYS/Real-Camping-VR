@@ -4,24 +4,31 @@ using UnityEngine;
 using UnityEngine.XR.Interaction.Toolkit;
 
 [RequireComponent(typeof(LineRenderer))]
+[RequireComponent(typeof(Outline))]
 public class GrabGuidanceInteractable : XRSimpleInteractable
 {
-    [Header("Render Trajectory")]
+    
+
+    [Header("Highlight Trajectory")]
     public float maxOffsetY = 1f;
-    [Range(3, 200)] public int vertexCount = 100; // BezierCurveÀÇ Point Count
+    [Range(3, 200)] public int vertexCount = 20; // BezierCurveÀÇ Point Count
 
     [Header("Pull Action")]
+    [Tooltip("If false, you must unselect to trigger pull action")]
+    public bool isAutoPull = false;
     [Tooltip("Maximum angle to regard as pull action")]
     [Range(5f, 90f)] public float angleThreshold = 30f;
     [Tooltip("Minimum speed to regard as pull action")]
     [Range(0f, 20f)] public float speedThreshold = 5f;
     [Tooltip("Total time to finish pull action")]
-    [Range(1f, 10f)] public float pullDuration = 2f;
-    [Tooltip("Pull speed over startPosition(left) to endPosition(right)")]
-    public AnimationCurve speedOverTrajectory;
-    [Range(0, 20)] public int maxDeviation = 10;
+    [Range(1f, 10f)] public float duration = 2f;
+    [Tooltip("start time(left) to end time(right)")]
+    public AnimationCurve positionOverTime;
 
     private LineRenderer m_lineRenderer;
+    private Outline m_outline;
+    private XRCookingToolManager m_cookingToolManager;
+
     private Transform m_leftHandPhysical;
     private Transform m_rightHandPhysical;
 
@@ -30,59 +37,64 @@ public class GrabGuidanceInteractable : XRSimpleInteractable
         base.Awake();
 
         TryGetComponent(out m_lineRenderer);
+        TryGetComponent(out m_outline);
+        transform.parent.TryGetComponent(out m_cookingToolManager);
+
         m_leftHandPhysical = GameObject.FindGameObjectWithTag("LeftHandPhysical").transform;
         m_rightHandPhysical = GameObject.FindGameObjectWithTag("RightHandPhysical").transform;
     }
 
+    private IXRInteractor _currentInteractor = null;
     protected override void OnHoverEntered(HoverEnterEventArgs args)
     {
+        if (m_cookingToolManager.isGrabbed) return;
+
         base.OnHoverEntered(args);
 
-        var currentInteractor = args.interactorObject;
-        if (currentInteractor is not XRRayInteractor) return;
-
-        // Start Render Contour
-        HighlightContour(true);
+        if (_currentInteractor == null)
+            HighlightContour(true);
     }
     protected override void OnHoverExited(HoverExitEventArgs args)
     {
         base.OnHoverExited(args);
 
-        var currentInteractor = args.interactorObject;
-        if (currentInteractor is not XRRayInteractor) return;
-
-        // Stop Render Contour
         HighlightContour(false);
     }
-
+    
     protected override void OnSelectEntered(SelectEnterEventArgs args)
     {
+        if (m_cookingToolManager.isGrabbed) return;
+
         base.OnSelectEntered(args);
 
-        var currentInteractor = args.interactorObject;
-        if (currentInteractor is not XRRayInteractor) return;
-
-        // Start Render Trajectory
-        var handTransform = currentInteractor.transform;
-        HighlightTrajectory(true, handTransform);
+        _currentInteractor = args.interactorObject;
+        if (_currentInteractor is not XRRayInteractor) return;
 
         // Start Check Pull Action
-        bool isLeftHand = currentInteractor.transform.gameObject.CompareTag("LeftHandInteractor");
+        bool isLeftHand = _currentInteractor.transform.gameObject.CompareTag("LeftHandInteractor");
         ToggleCheckPullAction(true, isLeftHand);
+
+        // Start Render Trajectory
+        var handTransform = _currentInteractor.transform;
+        HighlightTrajectory(true, handTransform);
+
+        // Stop Highlight Contour
+        HighlightContour(false);
     }
     protected override void OnSelectExited(SelectExitEventArgs args)
     {
         base.OnSelectExited(args);
 
-        var currentInteractor = args.interactorObject;
-        if (currentInteractor is not XRRayInteractor) return;
+        if (_currentInteractor is not XRRayInteractor) return;
+
+        // Stop Check Pull Action
+        bool isLeftHand = _currentInteractor.transform.gameObject.CompareTag("LeftHandInteractor");
+        ToggleCheckPullAction(false);
 
         // Stop Render Trajectory
         HighlightTrajectory(false);
 
-        // Stop Check Pull Action
-        bool isLeftHand = currentInteractor.transform.gameObject.CompareTag("LeftHandInteractor");
-        ToggleCheckPullAction(false);
+        _currentInteractor = null;
     }
 
     #region HighlightTrajectory
@@ -149,15 +161,9 @@ public class GrabGuidanceInteractable : XRSimpleInteractable
     #endregion
 
     #region HighlightContour
-    public void HighlightContour(bool isHovering)
+    public void HighlightContour(bool isOn)
     {
-        if (!isHovering)
-        {
-            // Hide Contour
-            return;
-        }
-
-        // Show Contour
+        m_outline.enabled = isOn;
     }
     #endregion
 
@@ -180,12 +186,20 @@ public class GrabGuidanceInteractable : XRSimpleInteractable
         _currentCheckPullAction = CheckPullAction(handTransform);
         StartCoroutine(_currentCheckPullAction);
     }
+
+    private bool _isPulling = false;
     private void StopCheckPullAction()
     {
         if (_currentCheckPullAction != null)
         {
             StopCoroutine(_currentCheckPullAction);
             _currentCheckPullAction = null;
+        }
+
+        if (_isPulling)
+        {
+            _isPulling = false;
+            PullObjectAlongTrajectory();
         }
     }
     private IEnumerator _currentCheckPullAction = null;
@@ -198,13 +212,16 @@ public class GrabGuidanceInteractable : XRSimpleInteractable
             yield return null;
 
             var moveDirection = handRigidbody.velocity.normalized;
-            var criterionDirection = -handTransform.forward;
+            var criterionDirection = handTransform.GetChild(0).up;
 
             var isValidAngle = Vector3.Dot(moveDirection, criterionDirection) >= Mathf.Cos(angleThreshold);
             var isValidSpeed = handRigidbody.velocity.magnitude >= speedThreshold;
 
-            if (isValidAngle && isValidSpeed)
+            _isPulling = isValidAngle && isValidSpeed;
+
+            if (isAutoPull && _isPulling)
             {
+                _isPulling = false;
                 PullObjectAlongTrajectory();
                 break;
             }
@@ -213,13 +230,6 @@ public class GrabGuidanceInteractable : XRSimpleInteractable
 
     private void PullObjectAlongTrajectory()
     {
-        // Cache last trajectory
-        List<Vector3> trajectory = new List<Vector3>();
-        for (int i = 0; i < m_lineRenderer.positionCount; i++)
-        {
-            trajectory.Add(m_lineRenderer.GetPosition(i));
-        }
-        
         StopDrawTrajectory();
 
         // Prevent redundant execution
@@ -229,27 +239,36 @@ public class GrabGuidanceInteractable : XRSimpleInteractable
             _currentPullObject = null;
         }
 
-        _currentPullObject = PullObject(trajectory);
+        _currentPullObject = PullObject();
         StartCoroutine(_currentPullObject);
     }
     private IEnumerator _currentPullObject = null;
-    private IEnumerator PullObject(List<Vector3> trajectory)
+    private IEnumerator PullObject()
     {
+        Vector3 startPos = transform.position;
+        Vector3 endPos = _currentInteractor.transform.position;
+        Vector3 midPos = new Vector3(
+            (startPos.x + endPos.x) / 2,
+            endPos.y + maxOffsetY,
+            (startPos.z + endPos.z) / 2);
+
         float elapsedTime = 0f;
-        while (elapsedTime < pullDuration)
+        while (!m_cookingToolManager.isGrabbed
+               && elapsedTime < duration)
         {
             yield return null;
             elapsedTime += Time.deltaTime;
 
-            float progress = elapsedTime / pullDuration;
-            int originalIndex = (int)(progress * vertexCount);
-            int deviation = (int)(speedOverTrajectory.Evaluate(progress)) * maxDeviation;
-            int lerpedIndex = originalIndex + deviation;
-
-            // Prevent invalid index
-            lerpedIndex = Mathf.Min(vertexCount - 1, lerpedIndex);
-            transform.position = trajectory[lerpedIndex];
+            float progress = positionOverTime.Evaluate(elapsedTime / duration);
+            transform.position = GetPointOnBezierCurve3(startPos, midPos, endPos, progress);
         }
+    }
+    private Vector3 GetPointOnBezierCurve3(Vector3 startPos, Vector3 midPos, Vector3 endPos, float progress)
+    {
+        var p1 = Vector3.Lerp(startPos, midPos, progress);
+        var p2 = Vector3.Lerp(midPos, endPos, progress);
+
+        return Vector3.Lerp(p1, p2, progress);
     }
     #endregion
 }
