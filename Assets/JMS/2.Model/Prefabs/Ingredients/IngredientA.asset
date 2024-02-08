@@ -14,18 +14,18 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   image: {fileID: 0}
   description: Test ingredient A.
-  raw: {fileID: 0}
-  undercook: {fileID: 0}
-  welldone: {fileID: 0}
-  overcook: {fileID: 0}
-  burnt: {fileID: 0}
-  baseCookWeight: 1
-  minVolume: 10
+  rawMaterial: {fileID: 2100000, guid: 16ed77441c9374046a359c3fcbaae4b2, type: 2}
+  undercookMaterial: {fileID: 2100000, guid: 76169d647bb037e4ca7f10e6b42ed83d, type: 2}
+  welldoneMaterial: {fileID: 2100000, guid: a839aeceae596504dbc86195552fcf82, type: 2}
+  overcookMaterial: {fileID: 2100000, guid: 2089b4ad92e78eb46b2445c3981c30dd, type: 2}
+  burntMaterial: {fileID: 2100000, guid: e9db7b33845aa9e4797935f1dd3982a1, type: 2}
+  baseWeight: 1
+  minVolume: 0
   weightOverVolume:
     serializedVersion: 2
     m_Curve:
     - serializedVersion: 3
-      time: 10
+      time: 0.1
       value: 2
       inSlope: Infinity
       outSlope: -0.00001559323
@@ -34,13 +34,13 @@ MonoBehaviour:
       inWeight: 0
       outWeight: 0.4583334
     - serializedVersion: 3
-      time: 1000
+      time: 200
       value: 0.5
-      inSlope: -0.0038117077
-      outSlope: -0.0038117077
+      inSlope: -0.017933462
+      outSlope: -0.017933462
       tangentMode: 0
       weightedMode: 0
-      inWeight: 0.03749994
+      inWeight: 0.037500057
       outWeight: 0
     m_PreInfinity: 2
     m_PostInfinity: 2
