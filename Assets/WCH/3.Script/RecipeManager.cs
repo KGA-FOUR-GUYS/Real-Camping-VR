@@ -34,6 +34,8 @@ public class RecipeManager : MonoBehaviour
     private Vector3 textOriginPos;
     [SerializeField] private GameObject RecipeSelectCanvas;
     [SerializeField] private GameObject RecipeDetailCanvas;
+    [SerializeField] private GameObject CookingProcessCanvas;
+    [SerializeField] private GameObject CookingProcessTopSpace;
 
     private void Awake()
     {
@@ -109,8 +111,6 @@ public class RecipeManager : MonoBehaviour
             ProcessChange(CookingProcess.SelectRecipe);
         }
     }
-
-
 
     /// <summary>
     /// Canvas must have CanvasGroup
@@ -219,4 +219,30 @@ public class RecipeManager : MonoBehaviour
 
         yield break;
     }
+
+    //-----------------------------ScrollRect---------------------------------
+    public IEnumerator Scaler(Transform transform, Vector3 origin, Vector3 target, float time)
+    {
+        float elapsedTime = 0f;
+        while (elapsedTime < time)
+        {
+            transform.localScale = Vector3.Lerp(origin, target, elapsedTime / time);
+            elapsedTime += Time.deltaTime;
+            yield return null;
+        }
+
+        yield break;
+    }
+    public IEnumerator MoveSmooth(RectTransform transform, Vector3 origin, Vector3 target, float time)
+    {
+        float elapsedTime = 0f;
+        while (elapsedTime < time)
+        {
+            transform.anchoredPosition = Vector3.Lerp(origin, target, elapsedTime / time);
+            elapsedTime += Time.deltaTime;
+            yield return null;
+        }
+        yield break;
+    }
+    //-----------------------------ScrollRect---------------------------------
 }
