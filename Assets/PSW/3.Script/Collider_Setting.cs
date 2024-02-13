@@ -14,7 +14,7 @@ public class Collider_Setting : MonoBehaviour
 
     private void Start()
     {
-        StartCoroutine(Col_Set_Co());
+        StartCoroutine(Col_Set_Co());        
     }
 
     private IEnumerator Col_Set_Co()
