@@ -15,12 +15,15 @@ MonoBehaviour:
   image: {fileID: 0}
   description: Test ingredient A.
   rawMaterial: {fileID: 2100000, guid: 16ed77441c9374046a359c3fcbaae4b2, type: 2}
+  ripeForUndercook: 10
   undercookMaterial: {fileID: 2100000, guid: 76169d647bb037e4ca7f10e6b42ed83d, type: 2}
+  ripeForWelldone: 20
   welldoneMaterial: {fileID: 2100000, guid: a839aeceae596504dbc86195552fcf82, type: 2}
+  ripeForOvercook: 30
   overcookMaterial: {fileID: 2100000, guid: 2089b4ad92e78eb46b2445c3981c30dd, type: 2}
-  burntMaterial: {fileID: 2100000, guid: e9db7b33845aa9e4797935f1dd3982a1, type: 2}
+  ripeForBurn: 40
+  burnMaterial: {fileID: 2100000, guid: e9db7b33845aa9e4797935f1dd3982a1, type: 2}
   baseWeight: 1
-  minVolume: 0
   weightOverVolume:
     serializedVersion: 2
     m_Curve:
@@ -45,3 +48,4 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+  minVolume: 0

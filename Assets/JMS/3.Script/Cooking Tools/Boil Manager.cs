@@ -4,8 +4,8 @@ using UnityEngine;
 
 namespace Cooking
 {
-    public class GrillManager : CookerManager
+    public class BoilManager : CookerManager
     {
-        // Griller functions
+        // Boiler functions
     }
 }
