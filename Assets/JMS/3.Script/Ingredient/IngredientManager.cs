@@ -4,44 +4,31 @@ using UnityEngine;
 
 namespace Cooking
 {
-    /// <summary>
-    /// 재료가 조리된 정도
-    /// </summary>
-    public enum RipeState
-    {
-        Raw = 0,
-        Undercook = 1,
-        Welldone = 2,
-        Overcook = 3,
-        Burnt = 4,
-    }
-
-    public enum CookType
-    {
-        None = 0,
-        Boil = 1,
-        Grill = 2,
-    }
-
     [RequireComponent(typeof(Renderer))]
     [RequireComponent(typeof(MeshCalculator))]
     public class IngredientManager : MonoBehaviour
     {
-        
-
-        [field: SerializeField] public float RipeValue { get; private set; } = 0f;
-        public float m_volumeWeight = 1f; // private으로 바꾸세요~
+        [field: SerializeField] public float Ripe { get; private set; } = 0f;
+        private float m_volumeWeight = 1f;
 
         [Tooltip("재료 정보")]
         public IngredientSO data;
 
-        [Header("Cook State")]
+        [Header("Current State")]
         [Tooltip("잘린 조각이면 false, 전체이면 true")]
         public bool isWhole = true;
         [field: Tooltip("현재 조리방식")]
         [field: SerializeField] public CookType CookType { get; set; } = CookType.None;
         [field: Tooltip("현재 익음상태")]
         [field: SerializeField] public RipeState RipeState { get; private set; } = RipeState.Raw;
+
+        [Header("Cook History")]
+        [SerializeField] private float m_ripeByBoil = 0f;
+        [SerializeField] private float m_ripeByBroil = 0f;
+        [SerializeField] private float m_ripeByGrill = 0f;
+        public float RateOfBoil => Ripe == 0 ? 0f : m_ripeByBoil / Ripe * 100f;
+        public float RateOfBroil => Ripe == 0 ? 0f : m_ripeByBroil / Ripe * 100f;
+        public float RateOfGrill => Ripe == 0 ? 0f : m_ripeByGrill / Ripe * 100f;
 
         private Renderer m_renderer;
         private MeshCalculator m_meshCalculator;
@@ -69,50 +56,54 @@ namespace Cooking
             if (!m_meshCalculator.isUpdating) return;
             m_volumeWeight = data.weightOverVolume.Evaluate(m_meshCalculator.Volume);
         }
+
         private void CheckCookState()
         {
-            if (RipeState == RipeState.Burnt) return;
+            if (RipeState == RipeState.Burn) return;
 
             if (RipeState == RipeState.Raw
-                && RipeValue < 200f && RipeValue >= 100f)
+                && data.ripeForWelldone < 200f && Ripe >= data.ripeForUndercook)
             {
                 RipeState = RipeState.Undercook;
                 m_renderer.material = data.undercookMaterial;
             }
             else if (RipeState == RipeState.Undercook
-                     && RipeValue < 300f && RipeValue >= 200f)
+                     && Ripe < data.ripeForOvercook && Ripe >= data.ripeForWelldone)
             {
                 RipeState = RipeState.Welldone;
                 m_renderer.material = data.welldoneMaterial;
             }
             else if (RipeState == RipeState.Welldone
-                     && RipeValue < 400f && RipeValue >= 300f)
+                     && Ripe < data.ripeForBurn && Ripe >= data.ripeForOvercook)
             {
                 RipeState = RipeState.Overcook;
                 m_renderer.material = data.overcookMaterial;
             }
 
             else if (RipeState == RipeState.Overcook
-                     && RipeValue < 500f && RipeValue >= 400f)
+                     && Ripe >= data.ripeForBurn)
             {
-                RipeState = RipeState.Burnt;
-                m_renderer.material = data.burntMaterial;
+                RipeState = RipeState.Burn;
+                m_renderer.material = data.burnMaterial;
             }
         }
 
         private void OnTriggerEnter(Collider other)
         {
-            if (RipeState == RipeState.Burnt
-                || other.gameObject.layer != LayerMask.NameToLayer("Boil")
-                && other.gameObject.layer != LayerMask.NameToLayer("Grill")) return;
+            var otherObj = other.gameObject;
+            if (!IsCookable(otherObj, out CookerManager manager)) return;
 
-            if (other.gameObject.layer == LayerMask.NameToLayer("Boil"))
+            if (manager is BoilManager)
             {
                 CookType = CookType.Boil;
                 return;
             }
-                
-            if (other.gameObject.layer == LayerMask.NameToLayer("Grill"))
+            else if (manager is BroilManager)
+            {
+                CookType = CookType.Broil;
+                return;
+            }
+            else if (manager is GrillManager)
             {
                 CookType = CookType.Grill;
                 return;
@@ -121,34 +112,50 @@ namespace Cooking
 
         private void OnTriggerStay(Collider other)
         {
-            if (RipeState == RipeState.Burnt
-                || other.gameObject.layer != LayerMask.NameToLayer("Boil")
-                && other.gameObject.layer != LayerMask.NameToLayer("Grill")) return;
+            var otherObj = other.gameObject;
+            if (!IsCookable(otherObj, out CookerManager manager)) return;
 
-            // 삶기
-            if (other.gameObject.TryGetComponent(out BoilerManager boiler))
+            // Ripe
+            var ripeValue = GetWeight() * manager.RipePerSecond * Time.deltaTime;
+
+            if (manager is BoilManager)
             {
-                RipeValue += GetWeight() * boiler.RipePerSecond * Time.deltaTime;
-                return;
+                m_ripeByBoil += ripeValue;
+            }
+            else if (manager is BroilManager)
+            {
+                m_ripeByBroil += ripeValue;
+            }
+            else if (manager is GrillManager)
+            {
+                m_ripeByGrill += ripeValue;
             }
 
-            // 굽기
-            if (other.gameObject.TryGetComponent(out GrillManager griller))
-            {
-                RipeValue += GetWeight() * griller.RipePerSecond * Time.deltaTime;
-                return;
-            }
+            Ripe += ripeValue;
         }
 
         private void OnTriggerExit(Collider other)
         {
-            if (RipeState == RipeState.Burnt
-                || other.gameObject.layer != LayerMask.NameToLayer("Boil")
-                && other.gameObject.layer != LayerMask.NameToLayer("Grill")) return;
+            var otherObj = other.gameObject;
+            if (!IsCookable(otherObj, out _)) return;
 
             CookType = CookType.None;
         }
 
+        /// <summary>
+        /// return base weight * volume weight
+        /// </summary>
+        /// <returns>total weight</returns>
         private float GetWeight() => data.baseWeight * m_volumeWeight;
+
+        private bool IsCookable(GameObject obj, out CookerManager manager) {
+            manager = null;
+
+            if (RipeState != RipeState.Burn
+                && obj.TryGetComponent(out CookerManager cookerManager))
+                manager = cookerManager;
+
+            return manager != null;
+        }
     }
 }

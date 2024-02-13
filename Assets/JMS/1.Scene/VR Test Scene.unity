@@ -138,7 +138,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &27677395
 Transform:
   m_ObjectHideFlags: 0
@@ -155,6 +155,7 @@ Transform:
   - {fileID: 768875922}
   - {fileID: 1222402305}
   - {fileID: 1681149548}
+  - {fileID: 748096903}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &165746665
@@ -1002,6 +1003,73 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1691010148}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &748096902
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 748096903}
+  - component: {fileID: 748096905}
+  - component: {fileID: 748096906}
+  m_Layer: 0
+  m_Name: Grill Area (Trigger Collider)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 0
+--- !u!4 &748096903
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 748096902}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0.2, z: 12}
+  m_LocalScale: {x: 5, y: 0.4, z: 5}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 27677395}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!65 &748096905
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 748096902}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 1, y: 1, z: 1}
+  m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &748096906
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 748096902}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 352428e9d24f2424a827af6d47e9681c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  <RipePerSecond>k__BackingField: 1
 --- !u!4 &768875922 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 2125380153041246837, guid: 545b5f08284d8f94b8634b40d976e8b6, type: 3}
@@ -1652,7 +1720,7 @@ GameObject:
   - component: {fileID: 1222402305}
   - component: {fileID: 1222402302}
   - component: {fileID: 1222402306}
-  m_Layer: 27
+  m_Layer: 0
   m_Name: Boil Area (Trigger Collider)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1707,7 +1775,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6878dfebc6e2f9a4181c783cc630b8a4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  <RipePerSecond>k__BackingField: 10
+  <RipePerSecond>k__BackingField: 1
 --- !u!1 &1234988187
 GameObject:
   m_ObjectHideFlags: 0
@@ -2587,13 +2655,13 @@ GameObject:
   - component: {fileID: 1681149548}
   - component: {fileID: 1681149549}
   - component: {fileID: 1681149552}
-  m_Layer: 26
-  m_Name: Grill Area (Trigger Collider)
+  m_Layer: 0
+  m_Name: Broil Area (Trigger Collider)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1681149548
 Transform:
   m_ObjectHideFlags: 0
