@@ -2,33 +2,58 @@
 // Upgrade NOTE: replaced 'mul(UNITY_MATRIX_MVP,*)' with 'UnityObjectToClipPos(*)'
 
 Shader "FX/Water" {
-Properties {
-	_WaveScale ("Wave scale", Range (0.02,0.15)) = 0.063
-	_ReflDistort ("Reflection distort", Range (0,1.5)) = 0.44
-	_RefrDistort ("Refraction distort", Range (0,1.5)) = 0.40
-	_RefrColor ("Refraction color", COLOR)  = ( .34, .85, .92, 1)
-	[NoScaleOffset] _Fresnel ("Fresnel (A) ", 2D) = "gray" {}
-	[NoScaleOffset] _BumpMap ("Normalmap ", 2D) = "bump" {}
-	WaveSpeed ("Wave speed (map1 x,y; map2 x,y)", Vector) = (19,9,-16,-7)
-	[NoScaleOffset] _ReflectiveColor ("Reflective color (RGB) fresnel (A) ", 2D) = "" {}
-	_HorizonColor ("Simple water horizon color", COLOR)  = ( .172, .463, .435, 1)
-	[HideInInspector] _ReflectionTex ("Internal Reflection", 2D) = "" {}
-	[HideInInspector] _RefractionTex ("Internal Refraction", 2D) = "" {}
-}
+
+
+//Properties {
+//	_WaveScale ("Wave scale", Range (0.02,0.15)) = 0.063
+//	_ReflDistort ("Reflection distort", Range (0,1.5)) = 0.44
+//	_RefrDistort ("Refraction distort", Range (0,1.5)) = 0.40
+//	_RefrColor ("Refraction color", COLOR)  = ( .34, .85, .92, 1)
+//	[NoScaleOffset] _Fresnel ("Fresnel (A) ", 2D) = "gray" {}
+//	[NoScaleOffset] _BumpMap ("Normalmap ", 2D) = "bump" {}
+//	WaveSpeed ("Wave speed (map1 x,y; map2 x,y)", Vector) = (19,9,-16,-7)
+//	[NoScaleOffset] _ReflectiveColor ("Reflective color (RGB) fresnel (A) ", 2D) = "" {}
+//	_HorizonColor ("Simple water horizon color", COLOR)  = ( .172, .463, .435, 1)
+//	[HideInInspector] _ReflectionTex ("Internal Reflection", 2D) = "" {}
+//	[HideInInspector] _RefractionTex ("Internal Refraction", 2D) = "" {}
+//}
+	Properties{
+		_WaveScale("Wave scale", Range(0.02,0.15)) = 0.063
+		_ReflDistort("Reflection distort", Range(0,1.5)) = 0.44
+		_RefrDistort("Refraction distort", Range(0,1.5)) = 0.40
+		_RefrColor("Refraction color", COLOR) = (.34, .85, .92, 1)
+		[NoScaleOffset] _Fresnel("Fresnel (A) ", 2D) = "gray" {}
+		[NoScaleOffset] _BumpMap("Normalmap ", 2D) = "bump" {}
+		WaveSpeed("Wave speed (map1 x,y; map2 x,y)", Vector) = (19,9,-16,-7)
+		[NoScaleOffset] _ReflectiveColor("Reflective color (RGB) fresnel (A) ", 2D) = "" {}
+		_HorizonColor("Simple water horizon color", COLOR) = (.172, .463, .435, 1)
+		[HideInInspector] _ReflectionTex("Internal Reflection", 2D) = "" {}
+		[HideInInspector] _RefractionTex("Internal Refraction", 2D) = "" {}
+	}
 
 
 // -----------------------------------------------------------
 // Fragment program cards
 
 
+
+//Opaque Transparent
 Subshader {
-	Tags { "WaterMode"="Refractive" "RenderType"="Opaque" }
+	//Tags { "WaterMode"="Refractive" "RenderType"="Transparent" }
+	Tags { "Queue" = "Transparent" }
 	Pass {
-CGPROGRAM
-#pragma vertex vert
-#pragma fragment frag
-#pragma multi_compile_fog
-#pragma multi_compile WATER_REFRACTIVE WATER_REFLECTIVE WATER_SIMPLE
+		Blend SrcAlpha OneMinusSrcAlpha
+			CGPROGRAM
+			#pragma vertex vert
+			#pragma fragment frag
+			#pragma multi_compile_fog
+			#pragma multi_compile WATER_REFRACTIVE WATER_REFLECTIVE WATER_SIMPLE
+//
+//CGPROGRAM
+//#pragma vertex vert
+//#pragma fragment frag
+//#pragma multi_compile_fog
+//#pragma multi_compile WATER_REFRACTIVE WATER_REFLECTIVE WATER_SIMPLE
 
 #if defined (WATER_REFLECTIVE) || defined (WATER_REFRACTIVE)
 #define HAS_REFLECTION 1
