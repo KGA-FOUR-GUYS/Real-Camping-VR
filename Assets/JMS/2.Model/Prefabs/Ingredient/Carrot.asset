@@ -1,0 +1,34 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 252f816ffa96fcb4f90ee1b3a74a9953, type: 3}
+  m_Name: Carrot
+  m_EditorClassIdentifier: 
+  image: {fileID: 21300000, guid: 7c78ea7ba6143df40a97c89364bd91ae, type: 3}
+  description: "\"\uB2F9\uADFC\uC740 \uC8FC\uD669\uC0C9\n\uB2F9\uADFC\uC740 \uB9DB\uC788\uC5B4\n\uB2F9\uADFC\uC740
+    \uBAB8\uC5D0\uC88B\uC544\n\uB2F9\uADFC\uB2F9\uADFC\""
+  rawMaterial: {fileID: 2100000, guid: 16ed77441c9374046a359c3fcbaae4b2, type: 2}
+  ripeForUndercook: 100
+  undercookMaterial: {fileID: 2100000, guid: 76169d647bb037e4ca7f10e6b42ed83d, type: 2}
+  ripeForWelldone: 200
+  welldoneMaterial: {fileID: 2100000, guid: a839aeceae596504dbc86195552fcf82, type: 2}
+  ripeForOvercook: 300
+  overcookMaterial: {fileID: 2100000, guid: 2089b4ad92e78eb46b2445c3981c30dd, type: 2}
+  ripeForBurn: 400
+  burnMaterial: {fileID: 0}
+  baseWeight: 1
+  weightOverVolume:
+    serializedVersion: 2
+    m_Curve: []
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  minVolume: 0.5
