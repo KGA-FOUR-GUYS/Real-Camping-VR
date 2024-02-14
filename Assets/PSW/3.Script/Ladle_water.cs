@@ -9,7 +9,6 @@ public class Ladle_water : MonoBehaviour
     [SerializeField] float Water_make_delay;
     [SerializeField] float Water_destroy_delay;
 
-
     private void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("Water Volume"))

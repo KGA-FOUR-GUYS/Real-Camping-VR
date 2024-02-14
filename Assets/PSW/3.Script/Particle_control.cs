@@ -4,22 +4,23 @@ using UnityEngine;
 
 public class Particle_control : MonoBehaviour
 {
-    int count = 0;
     [SerializeField] string Required_Tag = string.Empty;
     [SerializeField] int collision_count;
+    [SerializeField]int count = 0;
 
     void OnParticleCollision(GameObject other)
     {
         if (CanTrigger(other.gameObject))
         {
-            if (!other.transform.GetChild(0).gameObject.activeInHierarchy)
+            if (!other.transform.Find("Water_Box").gameObject.activeInHierarchy)
             {
                 count++;
             }
 
             if (count >= collision_count)
             {
-                other.transform.GetChild(0).gameObject.SetActive(true);
+                other.transform.Find("Water_Box").gameObject.SetActive(true);
+                
                 count = 0;
             }
         }
