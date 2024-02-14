@@ -7,10 +7,10 @@ public class CSVtoSO
 {
     // File Path
     private static string recipeCSVPath = $"CSVs/RecipeCSV";
-    private static string recipeSOPath = $"Assets/JMS/2.Model/Prefabs/Recipe";
+    private static string recipeSOPath = $"Assets/JMS/2.Model/Prefabs/RecipeSO";
 
     private static string ingredientCSVPath = $"CSVs/IngredientCSV";
-    private static string ingredientSOPath = $"Assets/JMS/2.Model/Prefabs/Ingredient";
+    private static string ingredientSOPath = $"Assets/JMS/2.Model/Prefabs/IngredientSO";
 
     private static string imagePath = $"Images";
     private static string materialPath = $"Materials";
@@ -18,7 +18,7 @@ public class CSVtoSO
     [MenuItem("Cook Data/Generate Recipes", true, 1)]
     public static bool ValidateGenerateRecipes()
     {
-        // GenerateRecipes() execute only in edit mode
+        // GenerateRecipes() can execute only in edit mode
         return !EditorApplication.isPlayingOrWillChangePlaymode;
     }
 
@@ -92,7 +92,7 @@ public class CSVtoSO
     [MenuItem("Cook Data/Generate Ingredients", true, 0)]
     public static bool ValidateGenerateIngredients()
     {
-        // GenerateIngredients() execute only in edit mode
+        // GenerateIngredients() can execute only in edit mode
         return !EditorApplication.isPlayingOrWillChangePlaymode;
     }
 
@@ -148,7 +148,7 @@ public class CSVtoSO
             }
             else if (isEOF)
             {
-                // If new ingredient found, create asset with gathered data
+                // If EOF, create asset with gathered data
                 if (currentIngredient != null)
                     AssetDatabase.CreateAsset(currentIngredient, $"{ingredientSOPath}/{currentIngredient.name}.asset");
 
