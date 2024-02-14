@@ -13,21 +13,11 @@ MonoBehaviour:
   m_Name: SpecialRecipe
   m_EditorClassIdentifier: 
   image: {fileID: 0}
-  description: "\"1. \uC2A4\uD398~\uC15C\uD55C \uC870\uB9AC\uACFC\uC815 \uD558\uB098\n2.
-    \uC870\uB9AC\uACFC\uC815 \uB458\""
+  description: "1. \uC2A4\uD398\uC15C~\uD55C \uC870\uB9AC\uACFC\uC815 \uD558\uB098\n2.
+    \uC870\uB9AC\uACFC\uC815 \uB458"
   ingredientList:
-  - name: A
-    quantity: 1
-    cookType: 1
-    ripeState: 1
-    targetVolume: 1
-  - name: B
-    quantity: 2
-    cookType: 3
-    ripeState: 2
-    targetVolume: 1
-  - name: C
+  - name: Carrot
     quantity: 3
     cookType: 2
-    ripeState: 3
-    targetVolume: 1
+    ripeState: 0
+    targetVolume: 2

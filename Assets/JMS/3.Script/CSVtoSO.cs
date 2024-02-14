@@ -2,15 +2,17 @@ using UnityEngine;
 using UnityEditor;
 using Cooking;
 using System.Text.RegularExpressions;
+using System.Text;
+using System.Collections.Generic;
 
 public class CSVtoSO
 {
     // File Path
     private static string recipeCSVPath = $"CSVs/RecipeCSV";
-    private static string recipeSOPath = $"Assets/JMS/2.Model/Prefabs/RecipeSO";
+    private static string recipeSOPath = $"Assets/Resources/RecipeSO";
 
     private static string ingredientCSVPath = $"CSVs/IngredientCSV";
-    private static string ingredientSOPath = $"Assets/JMS/2.Model/Prefabs/IngredientSO";
+    private static string ingredientSOPath = $"Assets/Resources/IngredientSO";
 
     private static string imagePath = $"Images";
     private static string materialPath = $"Materials";
@@ -37,6 +39,25 @@ public class CSVtoSO
         TextAsset csvData = Resources.Load<TextAsset>(recipeCSVPath);
         string[] lines = Regex.Split(csvData.text, "(?=(?:(?:[^\"]*\"){2})*[^\"]*$)\\n");
 
+        // Validation
+        if (!IsValidRecipeIngredient(lines, out List<string> invalidIngredients))
+        {
+            StringBuilder context = new StringBuilder();
+            context.AppendLine($"Invalid ingredient found in Assets/Resources/{recipeCSVPath}");
+            context.Append($"Please check -> ");
+            for (int i = 0; i < invalidIngredients.Count; i++)
+            {
+                // Last element
+                if (i == invalidIngredients.Count - 1)
+                    context.Append($"{invalidIngredients[i]}");
+                else
+                    context.Append($"{invalidIngredients[i]}, ");
+            }
+
+            Debug.LogError(context.ToString());
+            return;
+        }
+
         RecipeSO currentRecipe = null;
         RecipeIngredient currentIngredient;
 
@@ -44,24 +65,32 @@ public class CSVtoSO
         for (int i = 1; i < lines.Length; i++)
         {
             string[] datas = lines[i].Split(',');
-            bool isEOF = datas[RECIPE_NAME].Equals(string.Empty);
+            bool isEOF = string.IsNullOrEmpty(datas[RECIPE_NAME]) || string.IsNullOrWhiteSpace(datas[RECIPE_NAME]);
             bool isRecipeData = !datas[RECIPE_NAME].Equals("NULL");
 
             // Recipe data (0 ~ 1)
-            if (!isEOF && isRecipeData)
+            if (isRecipeData)
             {
-                // If new recipe found, create asset with gathered data
-                if (currentRecipe != null)
-                    AssetDatabase.CreateAsset(currentRecipe, $"{recipeSOPath}/{currentRecipe.name}.asset");
+                TryCreateScripatbleObject(currentRecipe);
+
+                if (isEOF)
+                {
+                    // Save created assets
+                    AssetDatabase.SaveAssets();
+                    AssetDatabase.Refresh();
+
+                    Debug.Log($"Recipe created at '{recipeSOPath}'");
+                    return;
+                }
 
                 // Create empty recipe
                 currentRecipe = ScriptableObject.CreateInstance<RecipeSO>();
                 currentRecipe.name = datas[RECIPE_NAME];
-                currentRecipe.description = datas[RECIPE_DESCRIPTION];
+                currentRecipe.description = datas[RECIPE_DESCRIPTION].Replace("\"", string.Empty);
                 currentRecipe.image = Resources.Load<Sprite>($"{imagePath}/{datas[RECIPE_NAME]}");
             }
             // Recipe ingredient data (2 ~ 6)
-            else if (!isEOF && !isRecipeData)
+            else
             {
                 // Create empty ingredient
                 currentIngredient = new RecipeIngredient();
@@ -74,19 +103,43 @@ public class CSVtoSO
                 // Add ingredient to list
                 currentRecipe.ingredientList.Add(currentIngredient);
             }
-            else if (isEOF)
-            {
-                // If EOF, create asset with gathered data
-                if (currentRecipe != null)
-                    AssetDatabase.CreateAsset(currentRecipe, $"{recipeSOPath}/{currentRecipe.name}.asset");
-
-                // Save created assets
-                AssetDatabase.SaveAssets();
-                AssetDatabase.Refresh();
-
-                Debug.Log($"Recipe created at '{recipeSOPath}'");
-            }
         }
+    }
+
+    private static bool IsValidRecipeIngredient(string[] csvLines, out List<string> invalidIngredients)
+    {
+        IngredientSO[] ingredientSOs = Resources.FindObjectsOfTypeAll<IngredientSO>();
+        List<string> invalidNames = new List<string>();
+
+        // Ignore first(header) row
+        for (int i = 1; i < csvLines.Length; i++)
+        {
+            // Ignore empty row
+            if (string.IsNullOrEmpty(csvLines[i]) || string.IsNullOrWhiteSpace(csvLines[i])) continue;
+            var name = csvLines[i].Split(',')[RECIPE_INGREDIENT_NAME];
+
+            // Ignore empty name
+            if (string.IsNullOrEmpty(name) || string.IsNullOrWhiteSpace(name)) continue;
+
+            // Ignore recipe data
+            if (name.Equals("NULL")) continue;
+
+            // Validate recipe ingredient data
+            bool isInvalid = true;
+            foreach (var ingredientSO in ingredientSOs)
+            {
+                if (name.Equals(ingredientSO.name))
+                    isInvalid = false;
+            }
+
+            // Add invalid ingredient name
+            if (isInvalid && !invalidNames.Contains(name))
+                invalidNames.Add(name);
+        }
+
+        invalidIngredients = invalidNames;
+
+        return invalidNames.Count == 0;
     }
 
     [MenuItem("Cook Data/Generate Ingredients", true, 0)]
@@ -119,45 +172,49 @@ public class CSVtoSO
         for (int i = 1; i < lines.Length; i++)
         {
             string[] datas = lines[i].Split(',');
-            bool isEOF = datas[INGREDIENT_NAME].Equals(string.Empty);
+            bool isEOF = string.IsNullOrEmpty(datas[INGREDIENT_NAME]) || string.IsNullOrWhiteSpace(datas[INGREDIENT_NAME]);
 
-            // Ingredient data (0 ~ 7)
-            if (!isEOF)
+            if (isEOF)
             {
-                // If new ingredient found, create asset with gathered data
-                if (currentIngredient != null)
-                    AssetDatabase.CreateAsset(currentIngredient, $"{ingredientSOPath}/{currentIngredient.name}.asset");
-
-                // Create empty recipe
-                currentIngredient = ScriptableObject.CreateInstance<IngredientSO>();
-                currentIngredient.name = datas[INGREDIENT_NAME];
-                currentIngredient.description = datas[INGREDIENT_DESCRIPTION];
-                currentIngredient.image = Resources.Load<Sprite>($"{imagePath}/{datas[INGREDIENT_NAME]}");
-                currentIngredient.ripeForUndercook = float.Parse(datas[INGREDIENT_RIPE_FOR_UNDERCOOK]);
-                currentIngredient.ripeForWelldone = float.Parse(datas[INGREDIENT_RIPE_FOR_WELLDONE]);
-                currentIngredient.ripeForOvercook = float.Parse(datas[INGREDIENT_RIPE_FOR_OVERCOOK]);
-                currentIngredient.ripeForBurn = float.Parse(datas[INGREDIENT_RIPE_FOR_BURN]);
-                currentIngredient.baseWeight = float.Parse(datas[INGREDIENT_BASE_WEIGHT]);
-                currentIngredient.minVolume = float.Parse(datas[INGREDIENT_MIN_VOLUME]);
-                // Set Materials
-                currentIngredient.rawMaterial = Resources.Load<Material>($"{materialPath}/{datas[INGREDIENT_NAME]}_Raw");
-                currentIngredient.undercookMaterial = Resources.Load<Material>($"{materialPath}/{datas[INGREDIENT_NAME]}_Undercook");
-                currentIngredient.welldoneMaterial = Resources.Load<Material>($"{materialPath}/{datas[INGREDIENT_NAME]}_Welldone");
-                currentIngredient.overcookMaterial = Resources.Load<Material>($"{materialPath}/{datas[INGREDIENT_NAME]}_Overcook");
-                currentIngredient.burnMaterial = Resources.Load<Material>($"{materialPath}/{datas[INGREDIENT_NAME]}_Burn");
-            }
-            else if (isEOF)
-            {
-                // If EOF, create asset with gathered data
-                if (currentIngredient != null)
-                    AssetDatabase.CreateAsset(currentIngredient, $"{ingredientSOPath}/{currentIngredient.name}.asset");
-
                 // Save created assets
                 AssetDatabase.SaveAssets();
                 AssetDatabase.Refresh();
 
                 Debug.Log($"Ingredient created at '{ingredientSOPath}'");
+                return;
             }
+
+            // Create empty ingredient
+            currentIngredient = ScriptableObject.CreateInstance<IngredientSO>();
+            currentIngredient.name = datas[INGREDIENT_NAME];
+            currentIngredient.description = datas[INGREDIENT_DESCRIPTION].Replace("\"", string.Empty);
+            currentIngredient.image = Resources.Load<Sprite>($"{imagePath}/{datas[INGREDIENT_NAME]}");
+            currentIngredient.ripeForUndercook = float.Parse(datas[INGREDIENT_RIPE_FOR_UNDERCOOK]);
+            currentIngredient.ripeForWelldone = float.Parse(datas[INGREDIENT_RIPE_FOR_WELLDONE]);
+            currentIngredient.ripeForOvercook = float.Parse(datas[INGREDIENT_RIPE_FOR_OVERCOOK]);
+            currentIngredient.ripeForBurn = float.Parse(datas[INGREDIENT_RIPE_FOR_BURN]);
+            currentIngredient.baseWeight = float.Parse(datas[INGREDIENT_BASE_WEIGHT]);
+            currentIngredient.minVolume = float.Parse(datas[INGREDIENT_MIN_VOLUME]);
+            // Set Materials
+            currentIngredient.rawMaterial = Resources.Load<Material>($"{materialPath}/{datas[INGREDIENT_NAME]}_Raw");
+            currentIngredient.undercookMaterial = Resources.Load<Material>($"{materialPath}/{datas[INGREDIENT_NAME]}_Undercook");
+            currentIngredient.welldoneMaterial = Resources.Load<Material>($"{materialPath}/{datas[INGREDIENT_NAME]}_Welldone");
+            currentIngredient.overcookMaterial = Resources.Load<Material>($"{materialPath}/{datas[INGREDIENT_NAME]}_Overcook");
+            currentIngredient.burnMaterial = Resources.Load<Material>($"{materialPath}/{datas[INGREDIENT_NAME]}_Burn");
+
+            TryCreateScripatbleObject(currentIngredient);
         }
+    }
+
+    private static bool TryCreateScripatbleObject(ScriptableObject so)
+    {
+        if (so is IngredientSO)
+            AssetDatabase.CreateAsset(so, $"{ingredientSOPath}/{so.name}.asset");
+        else if (so is RecipeSO)
+            AssetDatabase.CreateAsset(so, $"{recipeSOPath}/{so.name}.asset");
+        else
+            return false;
+
+        return true;
     }
 }
