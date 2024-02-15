@@ -4,24 +4,27 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 
-public enum CookingProcess
+public enum RecipeProcess
 {
     SelectRecipe = 1,
-    DetailRecipe
+    DetailRecipe,
+    CookingProcess,
+    Result=99
 }
 public class RecipeManager : MonoBehaviour
 {
     public static RecipeManager instance = null;
-
     //----inspector----
     public float canvasFadeSpeed = 0.2f;
     public float moveSpeed = 0.2f;
     public float expandSpeed = 0.2f;
+
+
     //----inspector----
 
     public UIAction uiAction = null;
     private bool isCoroutine = false;
-    private CookingProcess currentProcess;
+    private RecipeProcess currentProcess;
 
     //----Instantiate----
     [SerializeField] private Transform instantiateParent;
@@ -36,7 +39,10 @@ public class RecipeManager : MonoBehaviour
     [SerializeField] private GameObject RecipeDetailCanvas;
     [SerializeField] private GameObject CookingProcessCanvas;
     [SerializeField] private GameObject CookingProcessTopSpace;
+    [SerializeField] private Vector3 targetVector_CP;
 
+    [SerializeField] private GameObject ResultCanvas;
+    [SerializeField] private Transform ResultImgParent;
     private void Awake()
     {
         if (instance == null)
@@ -44,7 +50,7 @@ public class RecipeManager : MonoBehaviour
             instance = this;
             DontDestroyOnLoad(gameObject);
 
-            currentProcess = CookingProcess.SelectRecipe;
+            currentProcess = RecipeProcess.SelectRecipe;
             currentCanvas = RecipeSelectCanvas;
             textOriginPos = titleText.rectTransform.localPosition;
         }
@@ -52,43 +58,75 @@ public class RecipeManager : MonoBehaviour
     }
 
 
-    public void ProcessChange(CookingProcess process, string text = null)
+    public void ProcessChange(RecipeProcess process, string text = null)
     {
         if (isCoroutine) return;
 
-        if(process.Equals(CookingProcess.SelectRecipe))
+        if(process.Equals(RecipeProcess.SelectRecipe))
         {
-            currentProcess = CookingProcess.SelectRecipe;
+            currentProcess = RecipeProcess.SelectRecipe;
 
             StartCoroutine(CanvasAlphaChange(currentCanvas, canvasFadeSpeed, 1f, 0f));
-            //ActiveToggle(RecipeSelectCanvas);
             currentCanvas.GetComponent<CanvasGroup>().blocksRaycasts = false;
             currentCanvas = RecipeSelectCanvas;
             currentCanvas.GetComponent<CanvasGroup>().blocksRaycasts = true;
             StartCoroutine(CanvasAlphaChange(currentCanvas, canvasFadeSpeed, 0f, 1f));
+
             StartCoroutine(MoveOutText());
-            //titleText.text = "< Recipe List >";
             StartCoroutine(MoveInText("< Recipe List >"));
 
 
         }
 
-        else if (process.Equals(CookingProcess.DetailRecipe))
+        else if (process.Equals(RecipeProcess.DetailRecipe))
         {
-            currentProcess = CookingProcess.DetailRecipe;
+            if (currentProcess.Equals(RecipeProcess.CookingProcess))
+            {
+                StartCoroutine(TopSpaceMove(CookingProcessTopSpace.transform, targetVector_CP, canvasFadeSpeed));
+            }
+            else
+            {
+                StartCoroutine(MoveImgAndExpand());
+                StartCoroutine(MoveOutText());
+                StartCoroutine(MoveInText(string.Format($"< {text} >")));
+            }
+            currentProcess = RecipeProcess.DetailRecipe;
+
+            StartCoroutine(CanvasAlphaChange(currentCanvas, canvasFadeSpeed, 1f, 0f));
+            currentCanvas.GetComponent<CanvasGroup>().blocksRaycasts = false;
+            currentCanvas = RecipeDetailCanvas;
+            currentCanvas.GetComponent<CanvasGroup>().blocksRaycasts = true;
+            StartCoroutine(CanvasAlphaChange(currentCanvas, canvasFadeSpeed, 0f, 1f));
+
+        }
+
+        else if (process.Equals(RecipeProcess.CookingProcess))
+        {
+            currentProcess = RecipeProcess.CookingProcess;
+            //CookingProcess_Controller.instance.currentIndex = 0;
+            CookingProcess_Controller.instance.ResetFocus();
 
             StartCoroutine(CanvasAlphaChange(currentCanvas, canvasFadeSpeed, 1f, 0f));
             //ActiveToggle(RecipeDetailCanvas);
             currentCanvas.GetComponent<CanvasGroup>().blocksRaycasts = false;
-            currentCanvas = RecipeDetailCanvas;
+            currentCanvas = CookingProcessCanvas;
             currentCanvas.GetComponent<CanvasGroup>().blocksRaycasts = true;
+            StartCoroutine(CanvasAlphaChange(currentCanvas, canvasFadeSpeed, 0f, 1f));
 
-            StartCoroutine(MoveImgAndExpand());
-            //StartCoroutine(CanvasAlphaChange(currentCanvas, 0.2f, 0f, 1f));
-            StartCoroutine(MoveOutText());
-            //titleText.text = string.Format($"< {text} >");
-            StartCoroutine(MoveInText(string.Format($"< {text} >")));
+            StartCoroutine(TopSpaceMove(CookingProcessTopSpace.transform, Vector3.zero, moveSpeed));
+        }
 
+        else if (process.Equals(RecipeProcess.Result))
+        {
+            currentProcess = RecipeProcess.Result;
+
+            StartCoroutine(CanvasAlphaChange(currentCanvas, canvasFadeSpeed, 1f, 0f));
+            //ActiveToggle(RecipeDetailCanvas);
+            currentCanvas.GetComponent<CanvasGroup>().blocksRaycasts = false;
+            currentCanvas = ResultCanvas;
+            currentCanvas.GetComponent<CanvasGroup>().blocksRaycasts = true;
+            StartCoroutine(CanvasAlphaChange(currentCanvas, canvasFadeSpeed, 0f, 1f));
+            cookingImgObj.transform.parent = ResultImgParent;
         }
     }
 
@@ -98,17 +136,25 @@ public class RecipeManager : MonoBehaviour
         currentCanvas = origin;
         currentCanvas.SetActive(true);
     }
+    public void StartCookBtn()
+    {
+        ProcessChange(RecipeProcess.CookingProcess);
+    }
+    public void StopCookBtn()
+    {
+        ProcessChange(RecipeProcess.DetailRecipe);
+    }
 
     public void BackBtn()
     {
-        if (currentProcess.Equals(CookingProcess.SelectRecipe))
+        if (currentProcess.Equals(RecipeProcess.SelectRecipe))
         {
 
         }
-        else if (currentProcess.Equals(CookingProcess.DetailRecipe))
+        else if (currentProcess.Equals(RecipeProcess.DetailRecipe))
         {
             uiAction = null;
-            ProcessChange(CookingProcess.SelectRecipe);
+            ProcessChange(RecipeProcess.SelectRecipe);
         }
     }
 
@@ -150,7 +196,7 @@ public class RecipeManager : MonoBehaviour
         {
             Destroy(cookingImgObj);
         }
-
+        
         cookingImgObj = Instantiate(uiAction.instantiateObj);
         cookingImgObj.transform.parent = instantiateParent;
         cookingImgObj.transform.position = uiAction.instantiateObj.transform.position;
@@ -181,8 +227,8 @@ public class RecipeManager : MonoBehaviour
             yield return null;
         }
         cookingImgObj.transform.localScale = standardSize.localScale;
-        StartCoroutine(CanvasAlphaChange(currentCanvas, canvasFadeSpeed, 0f, 1f));
-        yield return new WaitForSeconds(canvasFadeSpeed);
+        //StartCoroutine(CanvasAlphaChange(currentCanvas, canvasFadeSpeed, 0f, 1f));
+        //yield return new WaitForSeconds(canvasFadeSpeed);
         cookingImgObj.GetComponent<CanvasGroup>().ignoreParentGroups = false;
 
         //if !CanvasAlphaChange - isCoroutine = false;
@@ -244,5 +290,33 @@ public class RecipeManager : MonoBehaviour
         }
         yield break;
     }
+
+    private IEnumerator TopSpaceMove(Transform target, Vector3 targetVector, float time)
+    {
+        float elapsedTime = 0f;
+        Vector3 origin = target.localPosition;
+        while (elapsedTime < time)
+        {
+            target.localPosition = Vector3.Lerp(origin, targetVector, elapsedTime / time);
+
+            elapsedTime += Time.deltaTime;
+            yield return null;
+        }
+        target.localPosition = targetVector;
+
+        yield break;
+    }
     //-----------------------------ScrollRect---------------------------------
+    
+    
+    
+    //-----------------------------Result---------------------------------
+    public void ExitBtn()
+    {
+        ProcessChange(RecipeProcess.SelectRecipe);
+        cookingImgObj = null;
+    }
+
+    //-----------------------------Result---------------------------------
+
 }

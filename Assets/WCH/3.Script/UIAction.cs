@@ -17,7 +17,7 @@ public class UIAction : MonoBehaviour
     public void NextStep()
     {
         RecipeManager.instance.uiAction = this;
-        RecipeManager.instance.ProcessChange(CookingProcess.DetailRecipe, myText.text);
+        RecipeManager.instance.ProcessChange(RecipeProcess.DetailRecipe, myText.text);
     }
 
 
