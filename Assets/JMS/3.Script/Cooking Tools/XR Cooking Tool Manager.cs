@@ -24,7 +24,7 @@ public class XRCookingToolManager : MonoBehaviour
 
     [Header("Physical Tool")]
     public GameObject physicalTool;
-    public float maxSpeed = 5f;
+    public float maxSpeed = 30f;
 
     private Transform m_physicalToolTransform;
     private Rigidbody m_physicalToolRigidbody;

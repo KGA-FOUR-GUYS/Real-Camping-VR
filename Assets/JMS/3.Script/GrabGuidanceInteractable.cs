@@ -7,15 +7,13 @@ using UnityEngine.XR.Interaction.Toolkit;
 [RequireComponent(typeof(Outline))]
 public class GrabGuidanceInteractable : XRSimpleInteractable
 {
-    
-
     [Header("Highlight Trajectory")]
     public float maxOffsetY = 1f;
     [Range(3, 200)] public int vertexCount = 20; // BezierCurve¿« Point Count
 
     [Header("Pull Action")]
     [Tooltip("If false, you must unselect to trigger pull action")]
-    public bool isAutoPull = false;
+    public bool isAutoPull = true;
     [Tooltip("Maximum angle to regard as pull action")]
     [Range(5f, 90f)] public float angleThreshold = 30f;
     [Tooltip("Minimum speed to regard as pull action")]
