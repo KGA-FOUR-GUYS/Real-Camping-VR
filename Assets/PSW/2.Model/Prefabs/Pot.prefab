@@ -22,7 +22,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &3245773760758311998
 Transform:
   m_ObjectHideFlags: 0
@@ -32,8 +32,8 @@ Transform:
   m_GameObject: {fileID: 754222644520933779}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -3.5527133e-15, w: 1}
-  m_LocalPosition: {x: 0, y: 0.3599988, z: 0}
-  m_LocalScale: {x: 0.48, y: 0.12, z: 0.48}
+  m_LocalPosition: {x: -1.035, y: 0.36, z: -1.035}
+  m_LocalScale: {x: 0.415, y: 0.12, z: 0.415}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 3052168270136778935}
@@ -107,8 +107,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 5, y: 5, z: 5}
-  m_Center: {x: 2.5, y: -2.5, z: 2.5}
+  m_Size: {x: 5, y: 6, z: 5}
+  m_Center: {x: 2.5, y: -3, z: 2.5}
 --- !u!114 &7564671872833298208
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -202,7 +202,7 @@ Transform:
   m_GameObject: {fileID: 802531252979479522}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 100, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 1
   m_Children:
@@ -1544,7 +1544,7 @@ GameObject:
   - component: {fileID: 765041583753365136}
   m_Layer: 0
   m_Name: Body&Handle
-  m_TagString: Untagged
+  m_TagString: Dish
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1692,7 +1692,7 @@ MeshCollider:
   m_LayerOverridePriority: 0
   m_IsTrigger: 0
   m_ProvidesContacts: 0
-  m_Enabled: 0
+  m_Enabled: 1
   serializedVersion: 5
   m_Convex: 1
   m_CookingOptions: 30
@@ -1714,7 +1714,7 @@ MeshCollider:
   m_LayerOverridePriority: 0
   m_IsTrigger: 0
   m_ProvidesContacts: 0
-  m_Enabled: 0
+  m_Enabled: 1
   serializedVersion: 5
   m_Convex: 1
   m_CookingOptions: 30
