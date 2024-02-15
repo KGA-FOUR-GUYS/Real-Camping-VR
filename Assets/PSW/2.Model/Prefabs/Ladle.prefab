@@ -106,9 +106,11 @@ GameObject:
   - component: {fileID: 4488541513660704437}
   - component: {fileID: 2387267211150016707}
   - component: {fileID: 3615770529669527133}
+  - component: {fileID: 4332090270545307729}
+  - component: {fileID: 7236493233895118551}
   m_Layer: 0
   m_Name: Body
-  m_TagString: Untagged
+  m_TagString: Ladle
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -463,6 +465,67 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   centerOfGravity: {fileID: 6375913439451839040}
+--- !u!114 &4332090270545307729
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 762271029215657557}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 653cb6708039c7543afd81f17f0de999, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Threshold: 0.15
+  m_Target: {fileID: 2325788658598299232}
+  m_UpSource: {fileID: 0}
+  m_OnBegin:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 7236493233895118551}
+        m_TargetAssemblyTypeName: Ladle_water, Assembly-CSharp
+        m_MethodName: Water_Fall_Start
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  m_OnEnd:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 8942089660416832924}
+        m_TargetAssemblyTypeName: UnityEngine.ParticleSystem, UnityEngine
+        m_MethodName: Stop
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+--- !u!114 &7236493233895118551
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 762271029215657557}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7deb010aed6e9744b9e7698434ac163c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Ladle_Water: {fileID: 3506257581854480937}
+  Water_Particle: {fileID: 8942089660416832924}
+  Water_make_delay: 0.5
+  Water_destroy_delay: 3
 --- !u!1 &1259452887988845966
 GameObject:
   m_ObjectHideFlags: 0
@@ -597,14 +660,13 @@ GameObject:
   - component: {fileID: 7966362705564274374}
   - component: {fileID: 8125650967391127239}
   - component: {fileID: 5124008109459596833}
-  - component: {fileID: 7421752334092021770}
   m_Layer: 4
   m_Name: Water_Box
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &5619790355219507279
 Transform:
   m_ObjectHideFlags: 0
@@ -692,22 +754,6 @@ MonoBehaviour:
   refractLayers:
     serializedVersion: 2
     m_Bits: 4294967295
---- !u!114 &7421752334092021770
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3506257581854480937}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8e4e9958e78383848bd557dc9ae0eeb9, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  speed: 1
-  height: 0.2
-  noiseWalk: 0.5
-  noiseStrength: 0.1
 --- !u!1 &3816850440650639170
 GameObject:
   m_ObjectHideFlags: 0
@@ -1044,7 +1090,7 @@ Transform:
   m_GameObject: {fileID: 5134615240461779559}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 100, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
