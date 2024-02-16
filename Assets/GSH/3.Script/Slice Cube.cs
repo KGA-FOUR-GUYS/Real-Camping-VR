@@ -25,7 +25,6 @@ public class SliceCube : MonoBehaviour
     public int RaycastCount;
     public float SliceCoolTime = 0;
     public Vector3 EdgeSide;
-
     private void FixedUpdate()
     {
 
@@ -50,7 +49,7 @@ public class SliceCube : MonoBehaviour
         planeNormal.Normalize();
 
         SlicedHull hull = target.Slice(endSlicePoint.position, planeNormal);
-
+        CrossMaterial = target.GetComponent<MeshRenderer>().material;
         if (hull != null)
         {
             StartCoroutine(SliceCoolTime_Co(SliceCoolTime));
@@ -65,6 +64,7 @@ public class SliceCube : MonoBehaviour
     {
         Rigidbody rb = slicedObject.AddComponent<Rigidbody>();
         MeshCollider collider = slicedObject.AddComponent<MeshCollider>();
+        //MeshRenderer mesh = slicedObject.AddComponent<MeshRenderer>();
         slicedObject.layer = LayerMask.NameToLayer("Sliceable");
         slicedObject.AddComponent<MeshCalculator>();
         slicedObject.transform.parent = parent;

@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.44657874, g: 0.49641275, b: 0.5748172, a: 1}
+  m_IndirectSpecularColor: {r: 0.18028352, g: 0.22571376, b: 0.30692244, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -666,7 +666,7 @@ MonoBehaviour:
   m_Camera: {fileID: 3037929}
   m_OriginBaseGameObject: {fileID: 169962703}
   m_CameraFloorOffsetObject: {fileID: 735685347}
-  m_RequestedTrackingOriginMode: 2
+  m_RequestedTrackingOriginMode: 1
   m_CameraYOffset: 1.1176
 --- !u!4 &169962709
 Transform:
@@ -677,7 +677,7 @@ Transform:
   m_GameObject: {fileID: 169962703}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -12.92, y: 4, z: -5.28}
+  m_LocalPosition: {x: -12.92, y: 0, z: -5.28}
   m_LocalScale: {x: 3, y: 3, z: 3}
   m_ConstrainProportionsScale: 1
   m_Children:
@@ -2612,7 +2612,7 @@ Transform:
   m_GameObject: {fileID: 735685347}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 1.1176, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -20586,7 +20586,8 @@ GameObject:
   - component: {fileID: 7199192398829875103}
   - component: {fileID: 7199192398829875102}
   - component: {fileID: 7199192398829875101}
-  m_Layer: 0
+  - component: {fileID: 7199192398829875108}
+  m_Layer: 6
   m_Name: Body
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -20830,6 +20831,20 @@ MonoBehaviour:
   - {fileID: 7199192398829875101}
   _isTrigger: 0
   _material: {fileID: 0}
+--- !u!114 &7199192398829875108
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7199192398826681246}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e82445d646235a04f913c833c5f743b4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  <Volume>k__BackingField: -1
+  isUpdating: 1
 --- !u!4 &7208861095234757135
 Transform:
   m_ObjectHideFlags: 0
