@@ -129,9 +129,11 @@ public class XRCookingToolManager : MonoBehaviour
                                  : m_rightHandPhysicalRigidbody.transform;
         Transform physicalHandAttachPoint = physicalHand.GetChild(0);
 
+        int direction = isLeftHand ? -1 : 1;
         m_physicalToolTransform.position = physicalHandAttachPoint.position
                                             + physicalHand.up * offsetHandUp
-                                            + physicalHand.right * offsetHandRight;
+                                            + physicalHand.right * offsetHandRight * direction;
+
         m_physicalToolTransform.rotation = physicalHandAttachPoint.rotation;
 
         // FixedJoint 생성, 물리손과 연결
