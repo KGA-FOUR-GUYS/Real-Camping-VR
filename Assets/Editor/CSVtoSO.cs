@@ -27,11 +27,14 @@ public class CSVtoSO
     // Colume Index (0 ~ N)
     private const int RECIPE_NAME = 0;
     private const int RECIPE_DESCRIPTION = 1;
-    private const int RECIPE_INGREDIENT_NAME = 2;
-    private const int RECIPE_INGREDIENT_QUANTITY = 3;
-    private const int RECIPE_INGREDIENT_COOK_TYPE = 4;
-    private const int RECIPE_INGREDIENT_RIPE_STATE = 5;
-    private const int RECIPE_INGREDIENT_TARGET_VOLUME = 6;
+    private const int RECIPE_REQUIRED_LEVEL = 2;
+    private const int RECIPE_REWARD_EXP = 3;
+    private const int RECIPE_REWARD_MONEY = 4;
+    private const int RECIPE_INGREDIENT_NAME = 5;
+    private const int RECIPE_INGREDIENT_QUANTITY = 6;
+    private const int RECIPE_INGREDIENT_COOK_TYPE = 7;
+    private const int RECIPE_INGREDIENT_RIPE_STATE = 8;
+    private const int RECIPE_INGREDIENT_TARGET_VOLUME = 9;
 
     [MenuItem("Cook Data/Generate Recipes", false, 1)]
     public static void GenerateRecipes()
@@ -85,9 +88,12 @@ public class CSVtoSO
 
                 // Create empty recipe
                 currentRecipe = ScriptableObject.CreateInstance<RecipeSO>();
+                currentRecipe.image = Resources.Load<Sprite>($"{imagePath}/{datas[RECIPE_NAME]}");
                 currentRecipe.name = datas[RECIPE_NAME];
                 currentRecipe.description = datas[RECIPE_DESCRIPTION].Replace("\"", string.Empty);
-                currentRecipe.image = Resources.Load<Sprite>($"{imagePath}/{datas[RECIPE_NAME]}");
+                currentRecipe.requiredLevel = int.Parse(datas[RECIPE_REQUIRED_LEVEL]);
+                currentRecipe.rewardExp = int.Parse(datas[RECIPE_REWARD_EXP]);
+                currentRecipe.rewardMoney = int.Parse(datas[RECIPE_REWARD_MONEY]);
             }
             // Recipe ingredient data (2 ~ 6)
             else
@@ -186,9 +192,9 @@ public class CSVtoSO
 
             // Create empty ingredient
             currentIngredient = ScriptableObject.CreateInstance<IngredientSO>();
+            currentIngredient.image = Resources.Load<Sprite>($"{imagePath}/{datas[INGREDIENT_NAME]}");
             currentIngredient.name = datas[INGREDIENT_NAME];
             currentIngredient.description = datas[INGREDIENT_DESCRIPTION].Replace("\"", string.Empty);
-            currentIngredient.image = Resources.Load<Sprite>($"{imagePath}/{datas[INGREDIENT_NAME]}");
             currentIngredient.ripeForUndercook = float.Parse(datas[INGREDIENT_RIPE_FOR_UNDERCOOK]);
             currentIngredient.ripeForWelldone = float.Parse(datas[INGREDIENT_RIPE_FOR_WELLDONE]);
             currentIngredient.ripeForOvercook = float.Parse(datas[INGREDIENT_RIPE_FOR_OVERCOOK]);
