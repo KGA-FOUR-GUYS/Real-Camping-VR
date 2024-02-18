@@ -27,8 +27,13 @@ public class GrabGuidanceInteractable : XRSimpleInteractable
     private Outline m_outline;
     private XRCookingToolManager m_cookingToolManager;
 
+    private Rigidbody m_toolRigidbody;
+
     private Transform m_leftHandPhysical;
     private Transform m_rightHandPhysical;
+
+    private Rigidbody m_leftHandRigidbody;
+    private Rigidbody m_rightHandRigidbody;
 
     protected override void Awake()
     {
@@ -36,10 +41,14 @@ public class GrabGuidanceInteractable : XRSimpleInteractable
 
         TryGetComponent(out m_lineRenderer);
         TryGetComponent(out m_outline);
+        TryGetComponent(out m_toolRigidbody);
         transform.parent.TryGetComponent(out m_cookingToolManager);
 
         m_leftHandPhysical = GameObject.FindGameObjectWithTag("LeftHandPhysical").transform;
         m_rightHandPhysical = GameObject.FindGameObjectWithTag("RightHandPhysical").transform;
+
+        m_leftHandRigidbody = m_leftHandPhysical.GetComponent<Rigidbody>();
+        m_rightHandRigidbody = m_rightHandPhysical.GetComponent<Rigidbody>();
     }
 
     private IXRInteractor _currentInteractor = null;
@@ -87,7 +96,7 @@ public class GrabGuidanceInteractable : XRSimpleInteractable
 
         // Stop Check Pull Action
         bool isLeftHand = _currentInteractor.transform.gameObject.CompareTag("LeftHandInteractor");
-        ToggleCheckPullAction(false);
+        ToggleCheckPullAction(false, isLeftHand);
 
         // Stop Render Trajectory
         HighlightTrajectory(false);
@@ -166,7 +175,7 @@ public class GrabGuidanceInteractable : XRSimpleInteractable
     #endregion
 
     #region ToggleCheckPullAction
-    private void ToggleCheckPullAction(bool isOn, bool isLeftHand = false)
+    private void ToggleCheckPullAction(bool isOn, bool isLeftHand)
     {
         if (!isOn)
         {
@@ -180,8 +189,7 @@ public class GrabGuidanceInteractable : XRSimpleInteractable
     {
         StopCheckPullAction();
 
-        var handTransform = isLeftHand ? m_leftHandPhysical : m_rightHandPhysical;
-        _currentCheckPullAction = CheckPullAction(handTransform);
+        _currentCheckPullAction = CheckPullAction(isLeftHand);
         StartCoroutine(_currentCheckPullAction);
     }
 
@@ -201,9 +209,10 @@ public class GrabGuidanceInteractable : XRSimpleInteractable
         }
     }
     private IEnumerator _currentCheckPullAction = null;
-    private IEnumerator CheckPullAction(Transform handTransform)
+    private IEnumerator CheckPullAction(bool isLeftHand)
     {
-        var handRigidbody = handTransform.GetComponent<Rigidbody>();
+        var handTransform = isLeftHand ? m_leftHandPhysical : m_rightHandPhysical;
+        var handRigidbody = isLeftHand ? m_leftHandRigidbody : m_rightHandRigidbody;
 
         while (true)
         {
@@ -250,6 +259,11 @@ public class GrabGuidanceInteractable : XRSimpleInteractable
             endPos.y + maxOffsetY,
             (startPos.z + endPos.z) / 2);
 
+        // isKinematic = true, 경로를 이동하며 발생하는 문제를 해결
+        // 1. 경로의 끝에서 누적된 중력이 적용되어 빠르게 낙하
+        // 2. 다른 Object들과 의도하지 않은 충돌
+        m_toolRigidbody.isKinematic = true;
+
         float elapsedTime = 0f;
         while (!m_cookingToolManager.isGrabbed
                && elapsedTime < duration)
@@ -260,6 +274,8 @@ public class GrabGuidanceInteractable : XRSimpleInteractable
             float progress = positionOverTime.Evaluate(elapsedTime / duration);
             transform.position = GetPointOnBezierCurve3(startPos, midPos, endPos, progress);
         }
+
+        m_toolRigidbody.isKinematic = false;
     }
     private Vector3 GetPointOnBezierCurve3(Vector3 startPos, Vector3 midPos, Vector3 endPos, float progress)
     {

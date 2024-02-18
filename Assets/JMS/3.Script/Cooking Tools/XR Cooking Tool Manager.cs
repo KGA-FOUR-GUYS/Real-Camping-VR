@@ -11,8 +11,6 @@ public class XRCookingToolManager : MonoBehaviour
     public LayerMask grabbedLayer;
     private LayerMask m_initialLayer;
     [Range(1f, 3f)] public float delayToggleLayerAfterExit = 1f;
-    public float offsetHandUp = 0f;
-    public float offsetHandRight = 0f;
 
     [Header("Virtual Tool")]
     public GameObject virtualTool;
@@ -29,12 +27,18 @@ public class XRCookingToolManager : MonoBehaviour
     private Transform m_physicalToolTransform;
     private Rigidbody m_physicalToolRigidbody;
 
+    private Transform m_leftHandPhysicalTransform;
     private Rigidbody m_leftHandPhysicalRigidbody;
+
+    private Transform m_rightHandPhysicalTransform;
     private Rigidbody m_rightHandPhysicalRigidbody;
     private void Awake()
     {
-        m_leftHandPhysicalRigidbody = GameObject.FindGameObjectWithTag("LeftHandPhysical").GetComponent<Rigidbody>();
-        m_rightHandPhysicalRigidbody = GameObject.FindGameObjectWithTag("RightHandPhysical").GetComponent<Rigidbody>();
+        m_leftHandPhysicalTransform = GameObject.FindGameObjectWithTag("LeftHandPhysical").transform;
+        m_leftHandPhysicalRigidbody = m_leftHandPhysicalTransform.GetComponent<Rigidbody>();
+
+        m_rightHandPhysicalTransform = GameObject.FindGameObjectWithTag("RightHandPhysical").transform;
+        m_rightHandPhysicalRigidbody = m_rightHandPhysicalTransform.GetComponent<Rigidbody>();
 
         m_virtualToolTransform = virtualTool.transform;
         foreach (var renderer in m_virtualToolTransform.GetComponentsInChildren<Renderer>())
@@ -97,49 +101,42 @@ public class XRCookingToolManager : MonoBehaviour
 
     // XR Grab Interactable Events
     public void OnGrabEntered(SelectEnterEventArgs e)
-    {
-        var interactor = e.interactorObject;
+	{
+		var interactor = e.interactorObject;
 
-        bool isLeftHand = interactor.transform.gameObject.CompareTag("LeftHandInteractor");
-        bool isRightHand = interactor.transform.gameObject.CompareTag("RightHandInteractor");
+		bool isLeftHand = interactor.transform.gameObject.CompareTag("LeftHandInteractor");
+		bool isRightHand = interactor.transform.gameObject.CompareTag("RightHandInteractor");
 
-        if (!isLeftHand && !isRightHand) return;
+		if (!isLeftHand && !isRightHand) return;
 
-        Rigidbody bodyToConnect = null;
-        if (isLeftHand && !isRightHand)
-        {
-            bodyToConnect = m_leftHandPhysicalRigidbody;
-        }
-        else if (!isLeftHand && isRightHand)
-        {
-            bodyToConnect = m_rightHandPhysicalRigidbody;
-        }
+        Rigidbody bodyToConnect = isLeftHand ? m_leftHandPhysicalRigidbody : m_rightHandPhysicalRigidbody;
 
-        if (bodyToConnect == null) return;
+		isGrabbed = true;
+		TogglePhysicalToolLayer();
+		MatchToolToHand(isLeftHand);
 
-        // 중력을 껐다/켰다 하면 이상해짐... Rigidbody Mass를 조정하는 방식 사용중
-        //m_physicalToolRigidbody.useGravity = false;
+		// FixedJoint 생성, 물리손과 연결
+		var jointToHand = m_physicalToolRigidbody.gameObject.AddComponent<FixedJoint>();
+		jointToHand.connectedBody = bodyToConnect;
+	}
 
-        isGrabbed = true;
-        TogglePhysicalToolLayer();
+	private void MatchToolToHand(bool isLeftHand)
+	{
+        Transform hand = isLeftHand ? m_leftHandPhysicalTransform : m_rightHandPhysicalTransform;
+        Transform handAttachPoint = hand.GetChild(0);
 
-        // Physical Tool의 Position, Rotation 변경
-        Transform physicalHand = isLeftHand
-                                 ? m_leftHandPhysicalRigidbody.transform
-                                 : m_rightHandPhysicalRigidbody.transform;
-        Transform physicalHandAttachPoint = physicalHand.GetChild(0);
+        Transform tool = m_physicalToolTransform;
+        Transform toolAttachPoint = tool.GetChild(0);
 
-        int direction = isLeftHand ? -1 : 1;
-        m_physicalToolTransform.position = physicalHandAttachPoint.position
-                                            + physicalHand.up * offsetHandUp
-                                            + physicalHand.right * offsetHandRight * direction;
+        // toolAttachPoint에 맞게 회전
+        Quaternion rotationOffset = Quaternion.Inverse(tool.rotation) * toolAttachPoint.rotation;
+        tool.rotation = handAttachPoint.rotation * Quaternion.Inverse(rotationOffset);
 
-        m_physicalToolTransform.rotation = physicalHandAttachPoint.rotation;
-
-        // FixedJoint 생성, 물리손과 연결
-        var jointToHand = m_physicalToolRigidbody.gameObject.AddComponent<FixedJoint>();
-        jointToHand.connectedBody = bodyToConnect;
+        // toolAttachPoint에 맞게 위치
+        Vector3 positionOffset = tool.position - toolAttachPoint.position;
+        tool.position = handAttachPoint.position + positionOffset;
     }
+
     public void OnGrabExited(SelectExitEventArgs e)
     {
         var interactor = e.interactorObject;
