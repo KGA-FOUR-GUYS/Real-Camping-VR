@@ -41,15 +41,23 @@ namespace Cooking
 
         private void Start()
         {
+            if (data == null)
+			{
+                Debug.LogError($"There is no ingredient data. [ObjectName : {gameObject.name}]");
+                return;
+			}
+
             m_volumeWeight = data.weightOverVolume.Evaluate(m_meshCalculator.Volume);
             m_renderer.material = data.rawMaterial;
-
-            if (data == null)
-                Debug.LogError($"There is no ingredient data. [ObjectName : {gameObject.name}]");
         }
 
         private void Update()
         {
+            if (data == null)
+            {
+                return;
+            }
+
             CheckCookState();
 
             // Check volume
