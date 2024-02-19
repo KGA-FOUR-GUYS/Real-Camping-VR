@@ -12,6 +12,12 @@ public class RecipeSO : ScriptableObject
     [Tooltip("레시피 설명")]
     [TextArea(minLines: 3, maxLines: 10)]
     public string description;
+    [Tooltip("레시피 요구 레벨")]
+    public int requiredLevel;
+    [Tooltip("레시피 보상 경험치")]
+    public int rewardExp;
+    [Tooltip("레시피 보상 돈")]
+    public int rewardMoney;
 
     [Header("Ingredients")]
     public List<RecipeIngredient> ingredientList = new List<RecipeIngredient>();

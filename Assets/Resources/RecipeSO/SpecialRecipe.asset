@@ -13,11 +13,14 @@ MonoBehaviour:
   m_Name: SpecialRecipe
   m_EditorClassIdentifier: 
   image: {fileID: 0}
-  description: "1. \uC2A4\uD398\uC15C~\uD55C \uC870\uB9AC\uACFC\uC815 \uD558\uB098\n2.
+  description: "1. \uC2A4\uD398~\uC15C\uD55C \uC870\uB9AC\uACFC\uC815 \uD558\uB098\n2.
     \uC870\uB9AC\uACFC\uC815 \uB458"
+  requiredLevel: 2
+  rewardExp: 400
+  rewardMoney: 150
   ingredientList:
-  - name: Carrot
-    quantity: 3
-    cookType: 2
-    ripeState: 0
-    targetVolume: 2
+  - name: Beef
+    quantity: 1
+    cookType: 1
+    ripeState: 1
+    targetVolume: 1
