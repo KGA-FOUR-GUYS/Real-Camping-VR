@@ -17,6 +17,7 @@ GameObject:
   - component: {fileID: 7189018088364160547}
   - component: {fileID: 7337087760431895160}
   - component: {fileID: 704043735688972217}
+  - component: {fileID: 8658863120603498831}
   m_Layer: 0
   m_Name: Body
   m_TagString: Untagged
@@ -106,14 +107,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _hideColliders: 1
-  _quality: 0
+  _quality: 3
   _combineMeshesBeforeCompute: 1
   _parameters:
     m_concavity: 0.001
     m_alpha: 0.05
     m_beta: 0.05
     m_minVolumePerCH: 0.0001
-    m_resolution: 10000
+    m_resolution: 4000000
     m_maxNumVerticesPerCH: 64
     m_planeDownsampling: 4
     m_convexhullDownsampling: 4
@@ -121,11 +122,12 @@ MonoBehaviour:
     m_mode: 0
     m_convexhullApproximation: 1
     m_oclAcceleration: 0
-    m_maxConvexHulls: 32
+    m_maxConvexHulls: 256
     m_projectHullVertices: 1
   _colliderData: {fileID: 11400000, guid: 2ffb106f9b209774586377f791f9ebcf, type: 2}
   _colliders:
   - {fileID: 4495973885883319570}
+  - {fileID: 8658863120603498831}
   _isTrigger: 0
   _material: {fileID: 0}
 --- !u!64 &4495973885883319570
@@ -149,7 +151,7 @@ MeshCollider:
   serializedVersion: 5
   m_Convex: 1
   m_CookingOptions: 30
-  m_Mesh: {fileID: -2502176939073814193, guid: 2ffb106f9b209774586377f791f9ebcf, type: 2}
+  m_Mesh: {fileID: 7996178617971387493, guid: 2ffb106f9b209774586377f791f9ebcf, type: 2}
 --- !u!114 &7370262071385668990
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -363,6 +365,28 @@ MonoBehaviour:
   m_StartingSingleGrabTransformers: []
   m_StartingMultipleGrabTransformers: []
   m_AddDefaultGrabTransformers: 1
+--- !u!64 &8658863120603498831
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1659297424235803999}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 5
+  m_Convex: 1
+  m_CookingOptions: 30
+  m_Mesh: {fileID: 1931018690366556529, guid: 2ffb106f9b209774586377f791f9ebcf, type: 2}
 --- !u!1 &8288853750144230074
 GameObject:
   m_ObjectHideFlags: 0
@@ -387,7 +411,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8288853750144230074}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0.44048575, z: -0, w: 0.8977596}
+  m_LocalRotation: {x: 0, y: -0.44048756, z: 0, w: 0.8977587}
   m_LocalPosition: {x: -24.847801, y: 3.864, z: -18.210512}
   m_LocalScale: {x: 0.035, y: 0.035, z: 0.035}
   m_ConstrainProportionsScale: 0

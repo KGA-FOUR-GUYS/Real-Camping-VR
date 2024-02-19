@@ -24,7 +24,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4107108791448266866}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0.44048575, z: -0, w: 0.8977596}
+  m_LocalRotation: {x: 0, y: -0.44048756, z: 0, w: 0.8977587}
   m_LocalPosition: {x: -21.043383, y: 3.397, z: -20.970816}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -50,6 +50,9 @@ GameObject:
   - component: {fileID: 3162521732166084081}
   - component: {fileID: 7158531774592381199}
   - component: {fileID: 504080351965753003}
+  - component: {fileID: 8296680380059478538}
+  - component: {fileID: 3334351690840473590}
+  - component: {fileID: 3954005740423866926}
   m_Layer: 6
   m_Name: Body
   m_TagString: Untagged
@@ -156,14 +159,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _hideColliders: 1
-  _quality: 0
+  _quality: 2
   _combineMeshesBeforeCompute: 1
   _parameters:
     m_concavity: 0.001
     m_alpha: 0.05
     m_beta: 0.05
     m_minVolumePerCH: 0.0001
-    m_resolution: 10000
+    m_resolution: 1000000
     m_maxNumVerticesPerCH: 64
     m_planeDownsampling: 4
     m_convexhullDownsampling: 4
@@ -171,11 +174,14 @@ MonoBehaviour:
     m_mode: 0
     m_convexhullApproximation: 1
     m_oclAcceleration: 0
-    m_maxConvexHulls: 32
+    m_maxConvexHulls: 128
     m_projectHullVertices: 1
   _colliderData: {fileID: 11400000, guid: 6a16622308306da4aa3c28558e928ed6, type: 2}
   _colliders:
   - {fileID: 6826846730050565809}
+  - {fileID: 8296680380059478538}
+  - {fileID: 3334351690840473590}
+  - {fileID: 3954005740423866926}
   _isTrigger: 0
   _material: {fileID: 0}
 --- !u!64 &6826846730050565809
@@ -199,7 +205,7 @@ MeshCollider:
   serializedVersion: 5
   m_Convex: 1
   m_CookingOptions: 30
-  m_Mesh: {fileID: 4919164466646140573, guid: 6a16622308306da4aa3c28558e928ed6, type: 2}
+  m_Mesh: {fileID: -8474664937684835691, guid: 6a16622308306da4aa3c28558e928ed6, type: 2}
 --- !u!114 &5709044691224835553
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -413,3 +419,69 @@ MonoBehaviour:
   m_StartingSingleGrabTransformers: []
   m_StartingMultipleGrabTransformers: []
   m_AddDefaultGrabTransformers: 1
+--- !u!64 &8296680380059478538
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7322566643782939817}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 5
+  m_Convex: 1
+  m_CookingOptions: 30
+  m_Mesh: {fileID: 8648345594659575669, guid: 6a16622308306da4aa3c28558e928ed6, type: 2}
+--- !u!64 &3334351690840473590
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7322566643782939817}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 5
+  m_Convex: 1
+  m_CookingOptions: 30
+  m_Mesh: {fileID: -7622844575268678228, guid: 6a16622308306da4aa3c28558e928ed6, type: 2}
+--- !u!64 &3954005740423866926
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7322566643782939817}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 5
+  m_Convex: 1
+  m_CookingOptions: 30
+  m_Mesh: {fileID: -5862805200299301761, guid: 6a16622308306da4aa3c28558e928ed6, type: 2}

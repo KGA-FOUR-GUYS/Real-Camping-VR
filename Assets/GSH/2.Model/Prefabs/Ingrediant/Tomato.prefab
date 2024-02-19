@@ -103,14 +103,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _hideColliders: 1
-  _quality: 0
+  _quality: 2
   _combineMeshesBeforeCompute: 1
   _parameters:
     m_concavity: 0.001
     m_alpha: 0.05
     m_beta: 0.05
     m_minVolumePerCH: 0.0001
-    m_resolution: 10000
+    m_resolution: 1000000
     m_maxNumVerticesPerCH: 64
     m_planeDownsampling: 4
     m_convexhullDownsampling: 4
@@ -118,7 +118,7 @@ MonoBehaviour:
     m_mode: 0
     m_convexhullApproximation: 1
     m_oclAcceleration: 0
-    m_maxConvexHulls: 32
+    m_maxConvexHulls: 128
     m_projectHullVertices: 1
   _colliderData: {fileID: 11400000, guid: 862ee9ce8df15364d98a05110e0aa26a, type: 2}
   _colliders:
@@ -146,7 +146,7 @@ MeshCollider:
   serializedVersion: 5
   m_Convex: 1
   m_CookingOptions: 30
-  m_Mesh: {fileID: -7717592979434762328, guid: 862ee9ce8df15364d98a05110e0aa26a, type: 2}
+  m_Mesh: {fileID: 5405821517465829324, guid: 862ee9ce8df15364d98a05110e0aa26a, type: 2}
 --- !u!54 &8000305035221863954
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -467,7 +467,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6616151760453364029}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0.44048575, z: -0, w: 0.8977596}
+  m_LocalRotation: {x: 0, y: -0.44048756, z: 0, w: 0.8977587}
   m_LocalPosition: {x: -23.209227, y: 3.496, z: -19.622486}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 1
