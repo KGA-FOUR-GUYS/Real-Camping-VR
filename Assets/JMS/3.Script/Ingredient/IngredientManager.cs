@@ -37,15 +37,15 @@ namespace Cooking
         {
             TryGetComponent(out m_renderer);
             TryGetComponent(out m_meshCalculator);
-
-            if (data == null)
-                Debug.LogError($"There is no ingredient data. [ObjectName : {gameObject.name}]");
         }
 
         private void Start()
         {
             m_volumeWeight = data.weightOverVolume.Evaluate(m_meshCalculator.Volume);
             m_renderer.material = data.rawMaterial;
+
+            if (data == null)
+                Debug.LogError($"There is no ingredient data. [ObjectName : {gameObject.name}]");
         }
 
         private void Update()
