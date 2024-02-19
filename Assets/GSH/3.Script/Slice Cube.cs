@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using EzySlice;
+using UnityEngine.XR.Interaction.Toolkit;
 using UnityEngine.InputSystem;
 using Cooking;
 
@@ -25,7 +26,6 @@ public class SliceCube : MonoBehaviour
     public int RaycastCount;
     public float SliceCoolTime = 0;
     public Vector3 EdgeSide;
-
     private void FixedUpdate()
     {
 
@@ -50,23 +50,29 @@ public class SliceCube : MonoBehaviour
         planeNormal.Normalize();
 
         SlicedHull hull = target.Slice(endSlicePoint.position, planeNormal);
-
+        CrossMaterial = target.GetComponent<MeshRenderer>().material;
         if (hull != null)
         {
             StartCoroutine(SliceCoolTime_Co(SliceCoolTime));
             GameObject upperHull = hull.CreateUpperHull(target, CrossMaterial);
-            SetupSlicedComponent(upperHull, target.transform.parent);
+            SetupSlicedComponent(upperHull, target.transform.parent, target);
             GameObject lowerHull = hull.CreateLowerHull(target, CrossMaterial);
-            SetupSlicedComponent(lowerHull, target.transform.parent);
+            SetupSlicedComponent(lowerHull, target.transform.parent, target);
             Destroy(target);
         }
     }
-    public void SetupSlicedComponent(GameObject slicedObject, Transform parent)
+    public void SetupSlicedComponent(GameObject slicedObject, Transform parent,GameObject Target)
     {
         Rigidbody rb = slicedObject.AddComponent<Rigidbody>();
         MeshCollider collider = slicedObject.AddComponent<MeshCollider>();
+        //MeshRenderer mesh = slicedObject.AddComponent<MeshRenderer>();
         slicedObject.layer = LayerMask.NameToLayer("Sliceable");
         slicedObject.AddComponent<MeshCalculator>();
+        XRGrabInteractable ObjectGrabInteractable = slicedObject.AddComponent<XRGrabInteractable>();
+        ObjectGrabInteractable.interactionLayers = 1 << InteractionLayerMask.NameToLayer("DirectGrab");
+        IngredientManager originIngredient = Target.GetComponent<IngredientManager>();
+        IngredientManager copiedIngredient = CopyComponent(originIngredient, slicedObject);
+        copiedIngredient.isWhole = false;
         slicedObject.transform.parent = parent;
         collider.convex = true;
         rb.AddExplosionForce(cutForce, slicedObject.transform.position, 1);
@@ -105,5 +111,20 @@ public class SliceCube : MonoBehaviour
         isSliceable = false;
         yield return new WaitForSeconds(CoolTime);
         isSliceable = true;
+    }
+    public T CopyComponent<T>(T original, GameObject destination) where T : Component
+    {
+        System.Type type = original.GetType(); // 원본 컴포넌트의 타입을 가져옴
+        Component copy = destination.AddComponent(type); // 대상 GameObject에 같은 타입의 컴포넌트를 추가하고, 그 인스턴스를 가져옴
+
+        // 원본 컴포넌트의 모든 필드를 가져와서 복사
+        System.Reflection.FieldInfo[] fields = type.GetFields();
+        foreach (System.Reflection.FieldInfo field in fields)
+        {
+            // 각 필드의 값을 가져와서 복사된 컴포넌트에 설정
+            field.SetValue(copy, field.GetValue(original));
+        }
+
+        return copy as T; // 복사된 컴포넌트를 반환
     }
 }
