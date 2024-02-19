@@ -19,10 +19,11 @@ public class RecipeManager : MonoBehaviour
     public float moveSpeed = 0.2f;
     public float expandSpeed = 0.2f;
 
+    public RecipeSO currentSO;
 
     //----inspector----
 
-    public UIAction uiAction = null;
+    public Recipe_UI recipe_UI = null;
     private bool isCoroutine = false;
     private RecipeProcess currentProcess;
 
@@ -35,8 +36,10 @@ public class RecipeManager : MonoBehaviour
     private GameObject currentCanvas;
     [SerializeField] private TextMeshProUGUI titleText;
     private Vector3 textOriginPos;
+
     [SerializeField] private GameObject RecipeSelectCanvas;
     [SerializeField] private GameObject RecipeDetailCanvas;
+
     [SerializeField] private GameObject CookingProcessCanvas;
     [SerializeField] private GameObject CookingProcessTopSpace;
     [SerializeField] private Vector3 targetVector_CP;
@@ -153,7 +156,7 @@ public class RecipeManager : MonoBehaviour
         }
         else if (currentProcess.Equals(RecipeProcess.DetailRecipe))
         {
-            uiAction = null;
+            recipe_UI = null;
             ProcessChange(RecipeProcess.SelectRecipe);
         }
     }
@@ -197,10 +200,10 @@ public class RecipeManager : MonoBehaviour
             Destroy(cookingImgObj);
         }
         
-        cookingImgObj = Instantiate(uiAction.instantiateObj);
+        cookingImgObj = Instantiate(recipe_UI.instantiateObj);
         cookingImgObj.transform.parent = instantiateParent;
-        cookingImgObj.transform.position = uiAction.instantiateObj.transform.position;
-        cookingImgObj.transform.localScale = uiAction.instantiateObj.transform.localScale;
+        cookingImgObj.transform.position = recipe_UI.instantiateObj.transform.position;
+        cookingImgObj.transform.localScale = recipe_UI.instantiateObj.transform.localScale;
         cookingImgObj.AddComponent<CanvasGroup>().ignoreParentGroups = true;
     }
 
@@ -318,5 +321,7 @@ public class RecipeManager : MonoBehaviour
     }
 
     //-----------------------------Result---------------------------------
+
+
 
 }

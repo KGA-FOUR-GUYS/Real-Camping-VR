@@ -7,6 +7,7 @@ using Cooking;
 public class RecipeSO : ScriptableObject
 {
     [Header("UI")]
+    public int id;
     [Tooltip("레시피 UI 이미지")]
     public Sprite image;
     [Tooltip("레시피 설명")]
