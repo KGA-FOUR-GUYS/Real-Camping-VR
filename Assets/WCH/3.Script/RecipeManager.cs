@@ -38,7 +38,10 @@ public class RecipeManager : MonoBehaviour
     private Vector3 textOriginPos;
 
     [SerializeField] private GameObject RecipeSelectCanvas;
+
     [SerializeField] private GameObject RecipeDetailCanvas;
+    [SerializeField] private Transform detailTextParent;
+    [SerializeField] private GameObject detailTextPrefab;
 
     [SerializeField] private GameObject CookingProcessCanvas;
     [SerializeField] private GameObject CookingProcessTopSpace;
@@ -83,6 +86,7 @@ public class RecipeManager : MonoBehaviour
 
         else if (process.Equals(RecipeProcess.DetailRecipe))
         {
+            DetailTextChange();
             if (currentProcess.Equals(RecipeProcess.CookingProcess))
             {
                 StartCoroutine(TopSpaceMove(CookingProcessTopSpace.transform, targetVector_CP, canvasFadeSpeed));
@@ -106,11 +110,9 @@ public class RecipeManager : MonoBehaviour
         else if (process.Equals(RecipeProcess.CookingProcess))
         {
             currentProcess = RecipeProcess.CookingProcess;
-            //CookingProcess_Controller.instance.currentIndex = 0;
             CookingProcess_Controller.instance.ResetFocus();
 
             StartCoroutine(CanvasAlphaChange(currentCanvas, canvasFadeSpeed, 1f, 0f));
-            //ActiveToggle(RecipeDetailCanvas);
             currentCanvas.GetComponent<CanvasGroup>().blocksRaycasts = false;
             currentCanvas = CookingProcessCanvas;
             currentCanvas.GetComponent<CanvasGroup>().blocksRaycasts = true;
@@ -124,7 +126,6 @@ public class RecipeManager : MonoBehaviour
             currentProcess = RecipeProcess.Result;
 
             StartCoroutine(CanvasAlphaChange(currentCanvas, canvasFadeSpeed, 1f, 0f));
-            //ActiveToggle(RecipeDetailCanvas);
             currentCanvas.GetComponent<CanvasGroup>().blocksRaycasts = false;
             currentCanvas = ResultCanvas;
             currentCanvas.GetComponent<CanvasGroup>().blocksRaycasts = true;
@@ -310,8 +311,28 @@ public class RecipeManager : MonoBehaviour
         yield break;
     }
     //-----------------------------ScrollRect---------------------------------
+
+
+
+    //------------------------------Detail-------------------------------------
+    private void DetailTextChange()
+    {
+        if (detailTextParent.childCount > 0)
+        {
+            Destroy(detailTextParent.GetChild(0).gameObject);
+        }
+
+        GameObject instantiateText = Instantiate(detailTextPrefab, detailTextParent);
+
+        instantiateText.GetComponent<TextMeshProUGUI>().text = currentSO.description;
+    }
+
+
+
+    //------------------------------Detail-------------------------------------
     
-    
+
+
     
     //-----------------------------Result---------------------------------
     public void ExitBtn()
