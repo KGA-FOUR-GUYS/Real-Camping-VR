@@ -6,15 +6,10 @@ public class SoundManager : MonoBehaviour
 {
     public static SoundManager instance = null;
 
-    public enum SFXName
-    {
-
-    }
     private int count = 0;
 
     private AudioSource[] audioSources;
 
-    [Header("")]
     public AudioClip[] SFX;
 
     private void Awake()
@@ -29,17 +24,19 @@ public class SoundManager : MonoBehaviour
         }
 
         audioSources = GetComponentsInChildren<AudioSource>();
-    
     }
 
 
-    public void PlaySound()
+    public void PlaySFX(int index)
     {
-        if (count >= audioSources.Length - 1)
+        if (count >= audioSources.Length)
         {
             count = 0;
         }
 
+        audioSources[count].clip = SFX[index];
+
+        audioSources[count].Play();
 
         count++;
     }
