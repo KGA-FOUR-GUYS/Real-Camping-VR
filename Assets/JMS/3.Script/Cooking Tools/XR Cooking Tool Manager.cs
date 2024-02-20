@@ -99,14 +99,8 @@ public class XRCookingToolManager : MonoBehaviour
 
 		if (!isLeftHand && !isRightHand) return;
 
-        Rigidbody bodyToConnect = isLeftHand ? m_leftHandPhysicalRigidbody : m_rightHandPhysicalRigidbody;
-
 		TogglePhysicalToolLayer();
 		MatchPhysicalToolToPhysicalHand(isLeftHand);
-
-		// FixedJoint 생성, 물리손과 연결
-		var jointToHand = m_physicalToolRigidbody.gameObject.AddComponent<FixedJoint>();
-		jointToHand.connectedBody = bodyToConnect;
 
         isGrabbed = true;
     }
@@ -131,6 +125,11 @@ public class XRCookingToolManager : MonoBehaviour
         grabCollider.position = toolAttachPoint.position;
         grabCollider.rotation = toolAttachPoint.rotation;
         grabCollider.SetParent(toolAttachPoint);
+
+        // FixedJoint 생성, 물리손과 연결
+        Rigidbody bodyToConnect = isLeftHand ? m_leftHandPhysicalRigidbody : m_rightHandPhysicalRigidbody;
+        var jointToHand = m_physicalToolRigidbody.gameObject.AddComponent<FixedJoint>();
+        jointToHand.connectedBody = bodyToConnect;
     }
 
     public void OnGrabExited(SelectExitEventArgs e)
