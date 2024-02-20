@@ -14,8 +14,10 @@ public class XRCookingToolManager : MonoBehaviour
 
     [Header("Virtual Tool")]
     public GameObject virtualTool;
+    public Transform grabCollider;
+    private Vector3 _grabColliderOriginalLocalPosition;
+    private Quaternion _grabColliderOriginalLocalRotation;
     private List<Renderer> m_virtualToolRenderers = new List<Renderer>();
-    public bool isVirtualToolVisible = true;
     [Range(.01f, 10f)] public float distanceThreshold = .1f;
 
     private Transform m_virtualToolTransform;
@@ -52,10 +54,8 @@ public class XRCookingToolManager : MonoBehaviour
 
     private void Start()
     {
-        foreach (var renderer in m_virtualToolRenderers)
-        {
-            renderer.enabled = isVirtualToolVisible;
-        }
+        _grabColliderOriginalLocalPosition = grabCollider.localPosition;
+        _grabColliderOriginalLocalRotation = grabCollider.localRotation;
     }
 
     private void FixedUpdate()
@@ -69,24 +69,14 @@ public class XRCookingToolManager : MonoBehaviour
     {
         if (!isGrabbed)
         {
-            // Try to match position and rotation (virtual -> physical)
-            UpdateVirtualToolPosition();
-            UpdateVirtualToolRotation();
-        }
-
-        if (isVirtualToolVisible)
-        {
-            ToggleVirtualHandRenderer();
+            MatchVirtualToolToPhysicalTool();
         }
     }
 
-    private void UpdateVirtualToolPosition()
-    {
-        m_virtualToolTransform.position = m_physicalToolTransform.position;
-    }
-    private void UpdateVirtualToolRotation()
+    private void MatchVirtualToolToPhysicalTool()
     {
         m_virtualToolTransform.rotation = m_physicalToolTransform.rotation;
+        m_virtualToolTransform.position = m_physicalToolTransform.position;
     }
     private void ToggleVirtualHandRenderer()
     {
@@ -111,16 +101,17 @@ public class XRCookingToolManager : MonoBehaviour
 
         Rigidbody bodyToConnect = isLeftHand ? m_leftHandPhysicalRigidbody : m_rightHandPhysicalRigidbody;
 
-		isGrabbed = true;
 		TogglePhysicalToolLayer();
-		MatchToolToHand(isLeftHand);
+		MatchPhysicalToolToPhysicalHand(isLeftHand);
 
 		// FixedJoint 생성, 물리손과 연결
 		var jointToHand = m_physicalToolRigidbody.gameObject.AddComponent<FixedJoint>();
 		jointToHand.connectedBody = bodyToConnect;
-	}
 
-	private void MatchToolToHand(bool isLeftHand)
+        isGrabbed = true;
+    }
+
+	private void MatchPhysicalToolToPhysicalHand(bool isLeftHand)
 	{
         Transform hand = isLeftHand ? m_leftHandPhysicalTransform : m_rightHandPhysicalTransform;
         Transform handAttachPoint = hand.GetChild(0);
@@ -135,6 +126,11 @@ public class XRCookingToolManager : MonoBehaviour
         // toolAttachPoint에 맞게 위치
         Vector3 positionOffset = tool.position - toolAttachPoint.position;
         tool.position = handAttachPoint.position + positionOffset;
+
+        // Grab collider 위치 변경
+        grabCollider.position = toolAttachPoint.position;
+        grabCollider.rotation = toolAttachPoint.rotation;
+        grabCollider.SetParent(toolAttachPoint);
     }
 
     public void OnGrabExited(SelectExitEventArgs e)
@@ -146,15 +142,18 @@ public class XRCookingToolManager : MonoBehaviour
 
         if (!isLeftHand && !isRightHand) return;
 
-        // 중력을 껐다/켰다 하면 이상해짐... Rigidbody Mass를 조정하는 방식 사용중
-        //m_physicalToolRigidbody.useGravity = true;
-
-        isGrabbed = false;
         Invoke(nameof(TogglePhysicalToolLayer), delayToggleLayerAfterExit);
 
         // FixedJoint 삭제, 물리손과 분리
         var jointToHand = m_physicalToolRigidbody.gameObject.GetComponent<FixedJoint>();
         Destroy(jointToHand);
+
+        // Grab collider 위치 복원
+        grabCollider.SetParent(m_virtualToolTransform);
+        grabCollider.localPosition = _grabColliderOriginalLocalPosition;
+        grabCollider.localRotation = _grabColliderOriginalLocalRotation;
+
+        isGrabbed = false;
     }
     private void TogglePhysicalToolLayer()
     {
