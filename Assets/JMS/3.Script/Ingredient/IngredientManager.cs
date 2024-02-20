@@ -43,7 +43,7 @@ namespace Cooking
         {
             if (data == null)
 			{
-                Debug.LogError($"There is no ingredient data. [ObjectName : {gameObject.name}]");
+                Debug.LogWarning($"There is no IngredientSO data. [ObjectName : {gameObject.name}]");
                 return;
 			}
 
