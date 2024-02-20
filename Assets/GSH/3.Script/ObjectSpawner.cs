@@ -26,7 +26,7 @@ public class ObjectSpawner : XRGrabInteractable
 
     SpawnObject CreatePrefab()
     {
-        SpawnObject newObj = Instantiate(prefab, transform.position - attachOffset, transform.rotation).GetComponent<SpawnObject>();
+        SpawnObject newObj = Instantiate(prefab, transform.position - attachOffset, transform.rotation, transform).GetComponent<SpawnObject>();
         newObj.gameObject.SetActive(false);
         return newObj;
     }
