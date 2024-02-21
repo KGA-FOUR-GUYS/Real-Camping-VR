@@ -9,7 +9,7 @@ public class GrabGuidanceInteractable : XRSimpleInteractable
 {
     [Header("Highlight Trajectory")]
     public float maxOffsetY = 1f;
-    [Range(3, 200)] public int vertexCount = 20; // BezierCurve¿« Point Count
+    [Range(3, 50)] public int vertexCount = 20;
 
     [Header("Pull Action")]
     [Tooltip("If false, you must unselect to trigger pull action")]
@@ -54,7 +54,7 @@ public class GrabGuidanceInteractable : XRSimpleInteractable
     private IXRInteractor _currentInteractor = null;
     protected override void OnHoverEntered(HoverEnterEventArgs args)
     {
-        if (m_cookingToolManager.isGrabbed) return;
+        if (m_cookingToolManager.isPrimaryGrabbed) return;
 
         base.OnHoverEntered(args);
 
@@ -70,7 +70,7 @@ public class GrabGuidanceInteractable : XRSimpleInteractable
     
     protected override void OnSelectEntered(SelectEnterEventArgs args)
     {
-        if (m_cookingToolManager.isGrabbed) return;
+        if (m_cookingToolManager.isPrimaryGrabbed) return;
 
         base.OnSelectEntered(args);
 
@@ -265,7 +265,7 @@ public class GrabGuidanceInteractable : XRSimpleInteractable
         m_toolRigidbody.isKinematic = true;
 
         float elapsedTime = 0f;
-        while (!m_cookingToolManager.isGrabbed
+        while (!m_cookingToolManager.isPrimaryGrabbed
                && elapsedTime < duration)
         {
             yield return null;

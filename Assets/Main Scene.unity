@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.18028378, g: 0.22571412, b: 0.30692285, a: 1}
+  m_IndirectSpecularColor: {r: 0.18028352, g: 0.22571376, b: 0.30692244, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -687,8 +687,8 @@ Transform:
   m_GameObject: {fileID: 144195382}
   serializedVersion: 2
   m_LocalRotation: {x: 0.12940967, y: 0.8365164, z: -0.22414434, w: 0.4829626}
-  m_LocalPosition: {x: -9.059999, y: 2.71, z: -24.169998}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalPosition: {x: -9.26, y: 3.14, z: -24.05}
+  m_LocalScale: {x: 1.4, y: 1.4, z: 1.4}
   m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 919223500}
@@ -707,16 +707,24 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4b687884ce7380e49b4d4b097561a886, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isGrabbed: 0
+  isPrimaryGrabbed: 0
+  isSecondaryGrabbed: 0
   grabbedLayer:
     serializedVersion: 2
     m_Bits: 536870912
   delayToggleLayerAfterExit: 1
+  toolType: 2
   virtualTool: {fileID: 919223499}
-  grabCollider: {fileID: 608827672}
-  distanceThreshold: 0.1
+  primaryGrabCollider: {fileID: 608827673}
+  secondaryGrabColliders:
+  - {fileID: 660071893}
+  - {fileID: 1708651441}
   physicalTool: {fileID: 893041021}
-  maxSpeed: 30
+  primaryAttachPoint: {fileID: 183050982}
+  secondaryAttachPoints:
+  - {fileID: 742609327}
+  - {fileID: 2134896831}
+  _debugRadius: 0.2
 --- !u!1 &157141455
 GameObject:
   m_ObjectHideFlags: 0
@@ -911,6 +919,37 @@ Transform:
   - {fileID: 735685348}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &183050981
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 183050982}
+  m_Layer: 0
+  m_Name: Primary Attach Point
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &183050982
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 183050981}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0.707107, y: -0.000000014901159, z: -0.0000000074505797, w: 0.70710665}
+  m_LocalPosition: {x: 0, y: 0, z: 0.5}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 893041022}
+  m_LocalEulerAnglesHint: {x: 90, y: 0, z: 0}
 --- !u!1 &196585297
 GameObject:
   m_ObjectHideFlags: 0
@@ -2027,7 +2066,7 @@ GameObject:
   - component: {fileID: 493039071}
   - component: {fileID: 493039070}
   m_Layer: 0
-  m_Name: Capsule
+  m_Name: Capsule Renderer
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2419,7 +2458,7 @@ GameObject:
   m_Component:
   - component: {fileID: 608827672}
   - component: {fileID: 608827673}
-  m_Layer: 0
+  m_Layer: 27
   m_Name: Primary Grab Collider
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2540,7 +2579,7 @@ GameObject:
   - component: {fileID: 660071892}
   - component: {fileID: 660071894}
   - component: {fileID: 660071893}
-  m_Layer: 0
+  m_Layer: 27
   m_Name: Secondary Grab Collider 1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2954,7 +2993,7 @@ GameObject:
   m_Component:
   - component: {fileID: 742609327}
   m_Layer: 0
-  m_Name: Attach Point 1
+  m_Name: Secondary Attach Point 1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2969,7 +3008,7 @@ Transform:
   m_GameObject: {fileID: 742609326}
   serializedVersion: 2
   m_LocalRotation: {x: 0.707107, y: -0.000000014901159, z: -0.0000000074505797, w: 0.70710665}
-  m_LocalPosition: {x: -0, y: 0, z: 0.2}
+  m_LocalPosition: {x: 0, y: 0, z: -0.1}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -3402,6 +3441,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
+  - {fileID: 183050982}
   - {fileID: 742609327}
   - {fileID: 2134896831}
   - {fileID: 1912965385}
@@ -3615,7 +3655,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   maxOffsetY: 2
-  vertexCount: 100
+  vertexCount: 20
   isAutoPull: 1
   angleThreshold: 30
   speedThreshold: 5
@@ -3845,34 +3885,10 @@ MonoBehaviour:
       m_Calls: []
   m_SelectEntered:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 144195384}
-        m_TargetAssemblyTypeName: XRCookingToolManager, Assembly-CSharp
-        m_MethodName: OnGrabEntered
-        m_Mode: 0
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
   m_SelectExited:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 144195384}
-        m_TargetAssemblyTypeName: XRCookingToolManager, Assembly-CSharp
-        m_MethodName: OnGrabExited
-        m_Mode: 0
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
   m_FirstFocusEntered:
     m_PersistentCalls:
       m_Calls: []
@@ -4071,7 +4087,7 @@ GameObject:
   - component: {fileID: 929729160}
   - component: {fileID: 929729159}
   m_Layer: 0
-  m_Name: Capsule
+  m_Name: Capsule Renderer
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -5997,7 +6013,7 @@ GameObject:
   - component: {fileID: 1708651440}
   - component: {fileID: 1708651442}
   - component: {fileID: 1708651441}
-  m_Layer: 0
+  m_Layer: 27
   m_Name: Secondary Grab Collider 2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -6431,7 +6447,7 @@ GameObject:
   - component: {fileID: 1859115969}
   - component: {fileID: 1859115968}
   m_Layer: 0
-  m_Name: Capsule
+  m_Name: Capsule Renderer
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -6530,7 +6546,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 2, y: 2, z: 2}
   m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 893041022}
@@ -6569,7 +6585,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   frameInterval: 5
-  maxScale: 5
+  maxScale: 10
   maxDistance: 30
 --- !u!1 &1927570729
 GameObject:
@@ -6674,7 +6690,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2134896831}
   m_Layer: 0
-  m_Name: Attach Point 2
+  m_Name: Secondary Attach Point 2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -6689,7 +6705,7 @@ Transform:
   m_GameObject: {fileID: 2134896830}
   serializedVersion: 2
   m_LocalRotation: {x: 0.707107, y: -0.000000014901159, z: -0.0000000074505797, w: 0.70710665}
-  m_LocalPosition: {x: -0, y: 0, z: -0.6}
+  m_LocalPosition: {x: 0, y: 0, z: -0.7}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -7147,7 +7163,7 @@ MeshCollider:
   m_Mesh: {fileID: -3699376103449728544, guid: 7d02936afc609b844923437e5382e3e9, type: 2}
 --- !u!64 &77928655292548796
 MeshCollider:
-  m_ObjectHideFlags: 0
+  m_ObjectHideFlags: 2
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
@@ -7196,7 +7212,7 @@ GameObject:
   - component: {fileID: 7595606521328464218}
   - component: {fileID: 7708380936666875325}
   - component: {fileID: 7236956568357914956}
-  m_Layer: 0
+  m_Layer: 27
   m_Name: Direct Interactor (Direct Grab)
   m_TagString: RightHandInteractor
   m_Icon: {fileID: 0}
@@ -7300,19 +7316,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4b687884ce7380e49b4d4b097561a886, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isGrabbed: 0
+  isPrimaryGrabbed: 0
+  isSecondaryGrabbed: 0
   grabbedLayer:
     serializedVersion: 2
     m_Bits: 536870912
   delayToggleLayerAfterExit: 1
+  toolType: 1
   virtualTool: {fileID: 7450240357374032614}
-  grabCollider: {fileID: 2305786065791787205}
-  distanceThreshold: 0.1
+  primaryGrabCollider: {fileID: 4116153952939795663}
+  secondaryGrabColliders: []
   physicalTool: {fileID: 778649266418474851}
-  maxSpeed: 30
+  primaryAttachPoint: {fileID: 5236034357115558427}
+  secondaryAttachPoints: []
+  _debugRadius: 0.2
 --- !u!64 &118794448551073046
 MeshCollider:
-  m_ObjectHideFlags: 0
+  m_ObjectHideFlags: 2
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
@@ -7334,7 +7354,7 @@ MeshCollider:
   m_Mesh: {fileID: -2892361590011492287, guid: 16e1bb4379701534d9a9eb3150b68652, type: 2}
 --- !u!64 &124484881964477233
 MeshCollider:
-  m_ObjectHideFlags: 0
+  m_ObjectHideFlags: 2
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
@@ -7703,7 +7723,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7392321508424431583}
   m_Layer: 0
-  m_Name: Attach Point 2
+  m_Name: Secondary Attach Point
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -7776,7 +7796,7 @@ MeshRenderer:
   m_AdditionalVertexStreams: {fileID: 0}
 --- !u!64 &267077330177451657
 MeshCollider:
-  m_ObjectHideFlags: 0
+  m_ObjectHideFlags: 2
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
@@ -7889,7 +7909,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3101265843552604582}
   m_Layer: 0
-  m_Name: Attach Point
+  m_Name: Primary Attach Point
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -8709,7 +8729,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   maxOffsetY: 2
-  vertexCount: 100
+  vertexCount: 20
   isAutoPull: 1
   angleThreshold: 30
   speedThreshold: 5
@@ -9487,7 +9507,7 @@ MonoBehaviour:
   m_AddDefaultGrabTransformers: 1
 --- !u!64 &715197595458119639
 MeshCollider:
-  m_ObjectHideFlags: 0
+  m_ObjectHideFlags: 2
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
@@ -9918,7 +9938,7 @@ GameObject:
   m_IsActive: 1
 --- !u!64 &777892903189808036
 MeshCollider:
-  m_ObjectHideFlags: 0
+  m_ObjectHideFlags: 2
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
@@ -10798,8 +10818,8 @@ GameObject:
   m_Component:
   - component: {fileID: 471447938356590654}
   - component: {fileID: 1167207052958510067}
-  m_Layer: 0
-  m_Name: Grab Collider 2
+  m_Layer: 27
+  m_Name: Secondary Grab Collider
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -11077,7 +11097,7 @@ GameObject:
   m_IsActive: 1
 --- !u!64 &1128800965920546390
 MeshCollider:
-  m_ObjectHideFlags: 0
+  m_ObjectHideFlags: 2
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
@@ -11166,7 +11186,7 @@ Transform:
   m_LocalEulerAnglesHint: {x: 20, y: 0, z: 0}
 --- !u!64 &1186328970810708310
 MeshCollider:
-  m_ObjectHideFlags: 0
+  m_ObjectHideFlags: 2
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
@@ -11424,7 +11444,7 @@ MonoBehaviour:
   m_ripeByGrill: 0
 --- !u!64 &1328216960200134391
 MeshCollider:
-  m_ObjectHideFlags: 0
+  m_ObjectHideFlags: 2
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
@@ -12256,8 +12276,8 @@ GameObject:
   m_Component:
   - component: {fileID: 2305786065791787205}
   - component: {fileID: 4116153952939795663}
-  m_Layer: 0
-  m_Name: Grab Collider
+  m_Layer: 27
+  m_Name: Primary Grab Collider
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -12824,7 +12844,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 6927257725982119422}
         m_TargetAssemblyTypeName: XRCookingToolManager, Assembly-CSharp
-        m_MethodName: OnGrabEntered
+        m_MethodName: OnPrimaryGrabEntered
         m_Mode: 0
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -12839,7 +12859,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 6927257725982119422}
         m_TargetAssemblyTypeName: XRCookingToolManager, Assembly-CSharp
-        m_MethodName: OnGrabExited
+        m_MethodName: OnPrimaryGrabExited
         m_Mode: 0
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -13254,7 +13274,7 @@ Transform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!64 &1901442442450918998
 MeshCollider:
-  m_ObjectHideFlags: 0
+  m_ObjectHideFlags: 2
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
@@ -13835,7 +13855,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4415930368104652777}
   m_Layer: 0
-  m_Name: Attach Point
+  m_Name: Primary Attach Point
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -15251,7 +15271,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 118282481294034876}
         m_TargetAssemblyTypeName: XRCookingToolManager, Assembly-CSharp
-        m_MethodName: OnGrabEntered
+        m_MethodName: OnPrimaryGrabEntered
         m_Mode: 0
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -15266,7 +15286,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 118282481294034876}
         m_TargetAssemblyTypeName: XRCookingToolManager, Assembly-CSharp
-        m_MethodName: OnGrabExited
+        m_MethodName: OnPrimaryGrabExited
         m_Mode: 0
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -15636,8 +15656,8 @@ GameObject:
   m_Component:
   - component: {fileID: 2377589493651972348}
   - component: {fileID: 4520320486375182438}
-  m_Layer: 0
-  m_Name: Grab Collider
+  m_Layer: 27
+  m_Name: Primary Grab Collider
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -16124,7 +16144,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   maxOffsetY: 2
-  vertexCount: 100
+  vertexCount: 20
   isAutoPull: 0
   angleThreshold: 30
   speedThreshold: 5
@@ -16213,7 +16233,7 @@ MeshRenderer:
   m_AdditionalVertexStreams: {fileID: 0}
 --- !u!64 &2815804131857512321
 MeshCollider:
-  m_ObjectHideFlags: 0
+  m_ObjectHideFlags: 2
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
@@ -16903,7 +16923,7 @@ Transform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!64 &3005288667921426795
 MeshCollider:
-  m_ObjectHideFlags: 0
+  m_ObjectHideFlags: 2
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
@@ -16925,7 +16945,7 @@ MeshCollider:
   m_Mesh: {fileID: 6083582236132907756, guid: 16e1bb4379701534d9a9eb3150b68652, type: 2}
 --- !u!64 &3015682146018981644
 MeshCollider:
-  m_ObjectHideFlags: 0
+  m_ObjectHideFlags: 2
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
@@ -17241,6 +17261,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5557627487549054834}
   - component: {fileID: 3378969502266848643}
+  - component: {fileID: 5557627487549054835}
   m_Layer: 0
   m_Name: Pot
   m_TagString: Untagged
@@ -18168,16 +18189,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4b687884ce7380e49b4d4b097561a886, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isGrabbed: 0
+  isPrimaryGrabbed: 0
+  isSecondaryGrabbed: 0
   grabbedLayer:
     serializedVersion: 2
     m_Bits: 536870912
   delayToggleLayerAfterExit: 1
+  toolType: 1
   virtualTool: {fileID: 6641137461535256825}
-  grabCollider: {fileID: 7895111289584091359}
-  distanceThreshold: 0.1
+  primaryGrabCollider: {fileID: 5268170070890615692}
+  secondaryGrabColliders: []
   physicalTool: {fileID: 7936403957344678291}
-  maxSpeed: 30
+  primaryAttachPoint: {fileID: 1091162489437902987}
+  secondaryAttachPoints: []
+  _debugRadius: 0.2
 --- !u!1 &3385919576841719315
 GameObject:
   m_ObjectHideFlags: 0
@@ -18234,7 +18259,7 @@ MeshCollider:
   m_Mesh: {fileID: 6117936118906041905, guid: 7d02936afc609b844923437e5382e3e9, type: 2}
 --- !u!64 &3406372505219137781
 MeshCollider:
-  m_ObjectHideFlags: 0
+  m_ObjectHideFlags: 2
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
@@ -18359,7 +18384,7 @@ Transform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!64 &3465180800893177893
 MeshCollider:
-  m_ObjectHideFlags: 0
+  m_ObjectHideFlags: 2
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
@@ -19475,7 +19500,7 @@ MeshCollider:
   m_Mesh: {fileID: 4789266893278096113, guid: 9892fa0d6acc4954da76d28e764a383d, type: 2}
 --- !u!64 &3484729277351713692
 MeshCollider:
-  m_ObjectHideFlags: 0
+  m_ObjectHideFlags: 2
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
@@ -19824,7 +19849,7 @@ GameObject:
   m_IsActive: 1
 --- !u!64 &3631198703560355244
 MeshCollider:
-  m_ObjectHideFlags: 0
+  m_ObjectHideFlags: 2
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
@@ -20245,7 +20270,7 @@ LineRenderer:
   m_ApplyActiveColorSpace: 1
 --- !u!64 &3742669610082416607
 MeshCollider:
-  m_ObjectHideFlags: 0
+  m_ObjectHideFlags: 2
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
@@ -20267,7 +20292,7 @@ MeshCollider:
   m_Mesh: {fileID: 8301177993860817588, guid: 16e1bb4379701534d9a9eb3150b68652, type: 2}
 --- !u!64 &3744359716903805218
 MeshCollider:
-  m_ObjectHideFlags: 0
+  m_ObjectHideFlags: 2
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
@@ -20289,7 +20314,7 @@ MeshCollider:
   m_Mesh: {fileID: -1164748253555004562, guid: 16e1bb4379701534d9a9eb3150b68652, type: 2}
 --- !u!64 &3745047691801301497
 MeshCollider:
-  m_ObjectHideFlags: 0
+  m_ObjectHideFlags: 2
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
@@ -20546,16 +20571,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4b687884ce7380e49b4d4b097561a886, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isGrabbed: 0
+  isPrimaryGrabbed: 0
+  isSecondaryGrabbed: 0
   grabbedLayer:
     serializedVersion: 2
     m_Bits: 536870912
   delayToggleLayerAfterExit: 1
+  toolType: 1
   virtualTool: {fileID: 4623560798405045476}
-  grabCollider: {fileID: 2377589493651972348}
-  distanceThreshold: 0.1
+  primaryGrabCollider: {fileID: 4520320486375182438}
+  secondaryGrabColliders: []
   physicalTool: {fileID: 7881246235735332539}
-  maxSpeed: 30
+  primaryAttachPoint: {fileID: 9191805393563234459}
+  secondaryAttachPoints: []
+  _debugRadius: 0.2
 --- !u!64 &3822923043708648109
 MeshCollider:
   m_ObjectHideFlags: 2
@@ -20863,7 +20892,7 @@ MeshCollider:
   m_Mesh: {fileID: -6948453351650146257, guid: 9892fa0d6acc4954da76d28e764a383d, type: 2}
 --- !u!64 &3895488026465626167
 MeshCollider:
-  m_ObjectHideFlags: 0
+  m_ObjectHideFlags: 2
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
@@ -21369,7 +21398,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 3378969502266848643}
         m_TargetAssemblyTypeName: XRCookingToolManager, Assembly-CSharp
-        m_MethodName: OnGrabEntered
+        m_MethodName: OnPrimaryGrabEntered
         m_Mode: 0
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -21384,7 +21413,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 3378969502266848643}
         m_TargetAssemblyTypeName: XRCookingToolManager, Assembly-CSharp
-        m_MethodName: OnGrabExited
+        m_MethodName: OnPrimaryGrabExited
         m_Mode: 0
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -21709,7 +21738,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   maxOffsetY: 2
-  vertexCount: 100
+  vertexCount: 20
   isAutoPull: 0
   angleThreshold: 30
   speedThreshold: 5
@@ -22107,16 +22136,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4b687884ce7380e49b4d4b097561a886, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isGrabbed: 0
+  isPrimaryGrabbed: 0
+  isSecondaryGrabbed: 0
   grabbedLayer:
     serializedVersion: 2
     m_Bits: 536870912
   delayToggleLayerAfterExit: 1
+  toolType: 1
   virtualTool: {fileID: 3629517088340447524}
-  grabCollider: {fileID: 449812080935958248}
-  distanceThreshold: 0.1
+  primaryGrabCollider: {fileID: 3134942042437145336}
+  secondaryGrabColliders: []
   physicalTool: {fileID: 8774264934591722062}
-  maxSpeed: 30
+  primaryAttachPoint: {fileID: 8877879107768955420}
+  secondaryAttachPoints: []
+  _debugRadius: 0.2
 --- !u!1 &4235760929343635939
 GameObject:
   m_ObjectHideFlags: 0
@@ -22480,7 +22513,7 @@ Transform:
   m_LocalEulerAnglesHint: {x: -30.370998, y: 66.142, z: 163.606}
 --- !u!64 &4317760246496648339
 MeshCollider:
-  m_ObjectHideFlags: 0
+  m_ObjectHideFlags: 2
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
@@ -22510,7 +22543,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5236034357115558427}
   m_Layer: 0
-  m_Name: Attach Point
+  m_Name: Primary Attach Point
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -22614,7 +22647,7 @@ Transform:
   m_LocalEulerAnglesHint: {x: -30, y: 0, z: -30}
 --- !u!64 &4349239929721331986
 MeshCollider:
-  m_ObjectHideFlags: 0
+  m_ObjectHideFlags: 2
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
@@ -22863,7 +22896,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   maxOffsetY: 2
-  vertexCount: 100
+  vertexCount: 20
   isAutoPull: 1
   angleThreshold: 30
   speedThreshold: 5
@@ -23447,8 +23480,8 @@ GameObject:
   m_Component:
   - component: {fileID: 4729285023965174290}
   - component: {fileID: 5431185683154962355}
-  m_Layer: 0
-  m_Name: Grab Collider
+  m_Layer: 27
+  m_Name: Primary Grab Collider
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -24236,7 +24269,7 @@ MeshCollider:
   m_Mesh: {fileID: -9186079842725598649, guid: 94b70fd610e16904d9de9cf8e22d9dba, type: 2}
 --- !u!64 &4784758437500963136
 MeshCollider:
-  m_ObjectHideFlags: 0
+  m_ObjectHideFlags: 2
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
@@ -24723,7 +24756,7 @@ MonoBehaviour:
   centerOfGravity: {fileID: 7815110719684792928}
 --- !u!64 &4966262548915163598
 MeshCollider:
-  m_ObjectHideFlags: 0
+  m_ObjectHideFlags: 2
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
@@ -30715,7 +30748,7 @@ Animator:
   m_WriteDefaultValuesOnDisable: 0
 --- !u!64 &5327032782727531422
 MeshCollider:
-  m_ObjectHideFlags: 0
+  m_ObjectHideFlags: 2
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
@@ -32394,6 +32427,33 @@ Transform:
   - {fileID: 8277011356075849382}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 75, z: 0}
+--- !u!54 &5557627487549054835
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3067672146751139935}
+  serializedVersion: 4
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_CenterOfMass: {x: 0, y: 0, z: 0}
+  m_InertiaTensor: {x: 1, y: 1, z: 1}
+  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ImplicitCom: 1
+  m_ImplicitTensor: 1
+  m_UseGravity: 1
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
 --- !u!64 &5561814624895176258
 MeshCollider:
   m_ObjectHideFlags: 2
@@ -32591,7 +32651,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   maxOffsetY: 2
-  vertexCount: 100
+  vertexCount: 20
   isAutoPull: 1
   angleThreshold: 30
   speedThreshold: 5
@@ -33416,7 +33476,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8877879107768955420}
   m_Layer: 0
-  m_Name: Attach Point
+  m_Name: Primary Attach Point
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -33759,7 +33819,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7317655180728382387}
   m_Layer: 0
-  m_Name: Attach Point 2
+  m_Name: Secondary Attach Point
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -34418,7 +34478,7 @@ MeshCollider:
   m_Mesh: {fileID: 1083729596699265575, guid: 7d02936afc609b844923437e5382e3e9, type: 2}
 --- !u!64 &6253942697046023370
 MeshCollider:
-  m_ObjectHideFlags: 0
+  m_ObjectHideFlags: 2
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
@@ -35626,8 +35686,8 @@ GameObject:
   m_Component:
   - component: {fileID: 449812080935958248}
   - component: {fileID: 3134942042437145336}
-  m_Layer: 0
-  m_Name: Grab Collider
+  m_Layer: 27
+  m_Name: Primary Grab Collider
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -35743,7 +35803,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7748428288899416760}
   m_Layer: 0
-  m_Name: Attach Point
+  m_Name: Primary Attach Point
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -36968,7 +37028,7 @@ GameObject:
   - component: {fileID: 410165337533994202}
   - component: {fileID: 512361043527289428}
   - component: {fileID: 6069563917179799918}
-  m_Layer: 0
+  m_Layer: 27
   m_Name: Direct Interactor (Direct Grab)
   m_TagString: LeftHandInteractor
   m_Icon: {fileID: 0}
@@ -36977,7 +37037,7 @@ GameObject:
   m_IsActive: 1
 --- !u!64 &6820980772674783597
 MeshCollider:
-  m_ObjectHideFlags: 0
+  m_ObjectHideFlags: 2
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
@@ -37224,7 +37284,7 @@ GameObject:
   m_Component:
   - component: {fileID: 9191805393563234459}
   m_Layer: 0
-  m_Name: Attach Point
+  m_Name: Primary Attach Point
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -37390,16 +37450,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4b687884ce7380e49b4d4b097561a886, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isGrabbed: 0
+  isPrimaryGrabbed: 0
+  isSecondaryGrabbed: 0
   grabbedLayer:
     serializedVersion: 2
     m_Bits: 536870912
   delayToggleLayerAfterExit: 1
+  toolType: 1
   virtualTool: {fileID: 6310188836424573967}
-  grabCollider: {fileID: 4729285023965174290}
-  distanceThreshold: 0.1
+  primaryGrabCollider: {fileID: 5431185683154962355}
+  secondaryGrabColliders: []
   physicalTool: {fileID: 3720979783141375547}
-  maxSpeed: 30
+  primaryAttachPoint: {fileID: 4415930368104652777}
+  secondaryAttachPoints: []
+  _debugRadius: 0.2
 --- !u!114 &6929367528904793868
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -37676,7 +37740,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1863860382617698013}
   m_Layer: 0
-  m_Name: Attach Point
+  m_Name: Primary Attach Point
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -38926,7 +38990,7 @@ MonoBehaviour:
   m_AddDefaultGrabTransformers: 1
 --- !u!64 &7077083669889102158
 MeshCollider:
-  m_ObjectHideFlags: 0
+  m_ObjectHideFlags: 2
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
@@ -39032,7 +39096,7 @@ MeshRenderer:
   m_AdditionalVertexStreams: {fileID: 0}
 --- !u!64 &7104818020738662166
 MeshCollider:
-  m_ObjectHideFlags: 0
+  m_ObjectHideFlags: 2
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
@@ -44171,7 +44235,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 3821681204922754470}
         m_TargetAssemblyTypeName: XRCookingToolManager, Assembly-CSharp
-        m_MethodName: OnGrabEntered
+        m_MethodName: OnPrimaryGrabEntered
         m_Mode: 0
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -44186,7 +44250,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 3821681204922754470}
         m_TargetAssemblyTypeName: XRCookingToolManager, Assembly-CSharp
-        m_MethodName: OnGrabExited
+        m_MethodName: OnPrimaryGrabExited
         m_Mode: 0
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -44468,7 +44532,7 @@ GameObject:
   m_IsActive: 1
 --- !u!64 &7830311908210281759
 MeshCollider:
-  m_ObjectHideFlags: 0
+  m_ObjectHideFlags: 2
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
@@ -45690,7 +45754,7 @@ MeshCollider:
   m_Mesh: {fileID: 8066704751147020812, guid: c02cbd54f7e93cd4aa1d5b9d943c944f, type: 2}
 --- !u!64 &8171288239787981511
 MeshCollider:
-  m_ObjectHideFlags: 0
+  m_ObjectHideFlags: 2
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
@@ -46366,7 +46430,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1091162489437902987}
   m_Layer: 0
-  m_Name: Attach Point 1
+  m_Name: Primary Attach Point
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -47151,7 +47215,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 4226532318873611539}
         m_TargetAssemblyTypeName: XRCookingToolManager, Assembly-CSharp
-        m_MethodName: OnGrabEntered
+        m_MethodName: OnPrimaryGrabEntered
         m_Mode: 0
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -47166,7 +47230,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 4226532318873611539}
         m_TargetAssemblyTypeName: XRCookingToolManager, Assembly-CSharp
-        m_MethodName: OnGrabExited
+        m_MethodName: OnPrimaryGrabExited
         m_Mode: 0
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -47960,7 +48024,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7895111289584091359}
   m_Layer: 0
-  m_Name: Attach Point 1
+  m_Name: Primary Attach Point
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -48079,8 +48143,8 @@ GameObject:
   m_Component:
   - component: {fileID: 4604485610918171346}
   - component: {fileID: 5268170070890615692}
-  m_Layer: 0
-  m_Name: Grab Collider 1
+  m_Layer: 27
+  m_Name: Primary Grab Collider
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -52499,7 +52563,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2917816753301504881}
   m_Layer: 0
-  m_Name: Attach Point
+  m_Name: Primary Attach Point
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
