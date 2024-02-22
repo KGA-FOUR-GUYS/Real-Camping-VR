@@ -26,21 +26,27 @@ public class SliceCube : MonoBehaviour
     public int RaycastCount;
     public float SliceCoolTime = 0;
     public Vector3 EdgeSide;
+    private SpawnObject spawnobject;
+    private IngredientManager ingredient;
     private void FixedUpdate()
     {
 
         bool hasHit = Physics.Linecast(startSlicePoint.position, endSlicePoint.position, out RaycastHit hit, sliceableLayer);
         //if (CheckAngle())
         //{
-            if (hasHit && isValidCut && isSliceable)
+        if (hasHit && isValidCut && isSliceable)
+        {
+            meshcal = hit.collider.gameObject.GetComponent<MeshCalculator>();
+            spawnobject = hit.collider.gameObject.GetComponent<SpawnObject>();
+            if (meshcal.Volume > SliceObjectVolume)
             {
-                meshcal = hit.collider.gameObject.GetComponent<MeshCalculator>();
-                if (meshcal.Volume > SliceObjectVolume)
+                if (!spawnobject.isselect)
                 {
                     GameObject target = hit.transform.gameObject;
                     Slice(target);
                 }
-           // }
+            }
+            // }
         }
     }
     public void Slice(GameObject target)
@@ -51,14 +57,22 @@ public class SliceCube : MonoBehaviour
 
         SlicedHull hull = target.Slice(endSlicePoint.position, planeNormal);
         CrossMaterial = target.GetComponent<MeshRenderer>().material;
+        ingredient = target.GetComponent<IngredientManager>();
         if (hull != null)
         {
             StartCoroutine(SliceCoolTime_Co(SliceCoolTime));
             GameObject upperHull = hull.CreateUpperHull(target, CrossMaterial);
             SetupSlicedComponent(upperHull, target.transform.parent, target);
             GameObject lowerHull = hull.CreateLowerHull(target, CrossMaterial);
-            SetupSlicedComponent(lowerHull, target.transform.parent, target);
-            Destroy(target);
+            SetupSlicedComponent(lowerHull, target.transform.parent.transform, target);
+            if (ingredient.isWhole)
+            {
+                target.transform.parent.GetComponent<ObjectSpawner>().ReturnToPool(target);
+            }
+            else
+            {
+                Destroy(target);
+            }
         }
     }
     public void SetupSlicedComponent(GameObject slicedObject, Transform parent,GameObject Target)
@@ -68,7 +82,7 @@ public class SliceCube : MonoBehaviour
         //MeshRenderer mesh = slicedObject.AddComponent<MeshRenderer>();
         slicedObject.layer = LayerMask.NameToLayer("Sliceable");
         slicedObject.AddComponent<MeshCalculator>();
-        XRGrabInteractable ObjectGrabInteractable = slicedObject.AddComponent<XRGrabInteractable>();
+        SpawnObject ObjectGrabInteractable = slicedObject.AddComponent<SpawnObject>();
         ObjectGrabInteractable.interactionLayers = 1 << InteractionLayerMask.NameToLayer("DirectGrab");
         IngredientManager originIngredient = Target.GetComponent<IngredientManager>();
         IngredientManager copiedIngredient = CopyComponent(originIngredient, slicedObject);

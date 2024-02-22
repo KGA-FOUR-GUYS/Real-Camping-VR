@@ -2,79 +2,99 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.XR.Interaction.Toolkit;
+
 public class ObjectSpawner : XRGrabInteractable
 {
     [SerializeField] GameObject prefab = default;
     private Vector3 attachOffset = Vector3.zero;
     public int SpawnPooling = 0;
-    [SerializeField] private ObjectPool<SpawnObject> prefabPool;
+    public GameObjectPool prefabPool { get; private set; }
+
     protected override void Awake()
     {
         base.Awake();
-        prefabPool = new ObjectPool<SpawnObject>(() => CreatePrefab(), SpawnPooling);
-        
+        prefabPool = new GameObjectPool(() => CreatePrefab(), SpawnPooling);
     }
+
     protected override void OnSelectEntered(SelectEnterEventArgs args)
     {
-        CreateAndSelectPrefab();
-    }
-    void CreateAndSelectPrefab()
-    {
-        SpawnObject interactable = prefabPool.GetObject();
-        SelectPrefab(interactable);
+        CreateAndSelectPrefab(args);
     }
 
-    SpawnObject CreatePrefab()
+    void CreateAndSelectPrefab(SelectEnterEventArgs args)
     {
-        SpawnObject newObj = Instantiate(prefab, transform.position - attachOffset, transform.rotation, transform).GetComponent<SpawnObject>();
-        newObj.gameObject.SetActive(false);
-        return newObj;
-    }
-
-    void SelectPrefab(SpawnObject interactable)
-    {
-        if (interactable != null)
+        GameObject newObject = prefabPool.GetObject();
+        if (newObject != null)
         {
-            var args = new SelectEnterEventArgs();
-            interactable.SelectPrefab(args);
+            SpawnObject newSpawnObject = newObject.GetComponent<SpawnObject>();
+            if (newSpawnObject != null)
+            {
+                newObject.SetActive(true);
+                interactionManager.SelectEnter(args.interactorObject, newSpawnObject);
+            }
+            else
+            {
+                prefabPool.ReturnObject(newObject);
+            }
         }
     }
-}
-public class ObjectPool<T> where T : MonoBehaviour
-{
-    private Queue<T> objectQueue = new Queue<T>();
-    private System.Func<T> createFunc;
 
-    public ObjectPool(System.Func<T> createFunc, int initialSize = 0)
+    private GameObject CreatePrefab()
+    {
+        if (prefab == null)
+        {
+            return null;
+        }
+
+        GameObject newPrefab = Instantiate(prefab, transform.position, transform.rotation, transform);
+        newPrefab.SetActive(false);
+        return newPrefab;
+    }
+
+    public void ReturnToPool(GameObject objectToReturn)
+    {
+        if (objectToReturn != null)
+        {
+            prefabPool.ReturnObject(objectToReturn);
+        }
+    }
+    public void ResetObject()
+    {
+        
+    }
+}
+
+public class GameObjectPool
+{
+    private Queue<GameObject> objectQueue = new Queue<GameObject>();
+    private System.Func<GameObject> createFunc;
+
+    public GameObjectPool(System.Func<GameObject> createFunc, int initialSize = 0)
     {
         this.createFunc = createFunc;
 
         for (int i = 0; i < initialSize; i++)
         {
-            T obj = createFunc();
-            obj.gameObject.SetActive(false);
+            GameObject obj = createFunc();
+            if (obj != null)
+            {
+                obj.SetActive(false);
+                objectQueue.Enqueue(obj);
+            }
+        }
+    }
+
+    public GameObject GetObject()
+    {
+        return objectQueue.Count > 0 ? objectQueue.Dequeue() : null;
+    }
+
+    public void ReturnObject(GameObject obj)
+    {
+        if (obj != null)
+        {
+            obj.SetActive(false);
             objectQueue.Enqueue(obj);
         }
-    }
-
-    public T GetObject()
-    {
-        if (objectQueue.Count > 0)
-        {
-                T obj = objectQueue.Dequeue();
-                obj.gameObject.SetActive(true);
-                return obj;
-        }
-        else
-        {
-            T newObj = createFunc();
-            return newObj;
-        }
-    }
-
-    public void ReturnObject(T obj)
-    {
-        obj.gameObject.SetActive(false);
-        objectQueue.Enqueue(obj);
     }
 }
