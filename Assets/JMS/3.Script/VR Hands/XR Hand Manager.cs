@@ -6,7 +6,7 @@ public class XRHandManager : MonoBehaviour
 {
     [Header("Virtual Hand")]
     public GameObject virtualHand;
-    public bool isVirtualHandVisible = true;
+    public bool isVirtualHandVisible = false;
     [Range(.01f, 10f)] public float distanceThreshold = .1f;
 
     private Transform m_virtualHandTransform;
@@ -16,7 +16,7 @@ public class XRHandManager : MonoBehaviour
     public GameObject physicalHand;
     public bool isTrackingPosition = true;
     public bool isTrackingRotation = true;
-    public float maxSpeed = 5f;
+    public float maxSpeed = 30f;
 
     private Transform m_physicalHandTransform;
     private Rigidbody m_physicalHandRigidbody;
@@ -32,13 +32,25 @@ public class XRHandManager : MonoBehaviour
 
     private void FixedUpdate()
     {
-        UpdatePhysicalHandPosition();
         UpdatePhysicalHandRotation();
+        UpdatePhysicalHandPosition();
     }
 
     private void Update()
     {
-        ToggleVirtualToolRenderer();
+        ToggleVirtualHandRenderer();
+    }
+    private void UpdatePhysicalHandRotation()
+    {
+        if (!isTrackingRotation) return;
+
+        // Try to match rotation (physical -> virtual)
+        Quaternion rotationDiff = m_virtualHandTransform.rotation * Quaternion.Inverse(m_physicalHandTransform.rotation);
+        rotationDiff.ToAngleAxis(out float angleInDegree, out Vector3 rotationAxis);
+
+        Vector3 rotationDiffInDegree = angleInDegree * rotationAxis;
+
+        m_physicalHandRigidbody.angularVelocity = (rotationDiffInDegree * Mathf.Deg2Rad) / Time.fixedDeltaTime;
     }
 
     private void UpdatePhysicalHandPosition()
@@ -55,20 +67,8 @@ public class XRHandManager : MonoBehaviour
 
         m_physicalHandRigidbody.velocity = desiredVelocity;
     }
-    private void UpdatePhysicalHandRotation()
-    {
-        if (!isTrackingRotation) return;
 
-        // Try to match rotation (physical -> virtual)
-        Quaternion rotationDiff = m_virtualHandTransform.rotation * Quaternion.Inverse(m_physicalHandTransform.rotation);
-        rotationDiff.ToAngleAxis(out float angleInDegree, out Vector3 rotationAxis);
-
-        Vector3 rotationDiffInDegree = angleInDegree * rotationAxis;
-
-        m_physicalHandRigidbody.angularVelocity = (rotationDiffInDegree * Mathf.Deg2Rad) / Time.fixedDeltaTime;
-    }
-
-    private void ToggleVirtualToolRenderer()
+    private void ToggleVirtualHandRenderer()
     {
         float distance = Vector3.Distance(m_virtualHandTransform.position, m_physicalHandTransform.position);
         bool isFar = distance >= distanceThreshold;
