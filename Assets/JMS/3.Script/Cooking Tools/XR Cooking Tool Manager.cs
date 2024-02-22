@@ -95,7 +95,7 @@ public class XRCookingToolManager : MonoBehaviour
     private void UpdatePhysicalToolRotation()
     {
         // Try to match rotation (physical -> virtual)
-        Quaternion rotationDiff = _physicalToolTransform.rotation * Quaternion.Inverse(_virtualToolTransform.rotation);
+        Quaternion rotationDiff = _virtualToolTransform.rotation * Quaternion.Inverse(_physicalToolTransform.rotation);
         rotationDiff.ToAngleAxis(out float angleInDegree, out Vector3 rotationAxis);
 
         Vector3 rotationDiffInDegree = angleInDegree * rotationAxis;
@@ -106,7 +106,7 @@ public class XRCookingToolManager : MonoBehaviour
     private void UpdatePhysicalToolPosition()
     {
         // Try to match position (physical -> virtual)
-        var desiredVelocity = (_physicalToolTransform.position - _virtualToolTransform.position) / Time.fixedDeltaTime;
+        var desiredVelocity = (_virtualToolTransform.position - _physicalToolTransform.position) / Time.fixedDeltaTime;
         if (desiredVelocity.magnitude > maxSpeed)
         {
             var ratio = maxSpeed / desiredVelocity.magnitude;
