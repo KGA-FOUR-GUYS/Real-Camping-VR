@@ -15,9 +15,9 @@ public class GrabGuidanceInteractable : XRSimpleInteractable
     [Tooltip("If false, you must unselect to trigger pull action")]
     public bool isAutoPull = true;
     [Tooltip("Maximum angle to regard as pull action")]
-    [Range(5f, 90f)] public float angleThreshold = 30f;
+    [Range(5f, 90f)] public float angleThreshold = 40f;
     [Tooltip("Minimum speed to regard as pull action")]
-    [Range(0f, 20f)] public float speedThreshold = 5f;
+    [Range(0f, 20f)] public float speedThreshold = 2f;
     [Tooltip("Total time to finish pull action")]
     [Range(1f, 10f)] public float duration = 2f;
     [Tooltip("start time(left) to end time(right)")]

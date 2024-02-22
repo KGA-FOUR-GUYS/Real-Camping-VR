@@ -17,19 +17,21 @@ public class XRCookingToolManager : MonoBehaviour
     public bool isSecondaryGrabbed = false;
 
     [Header("Grabbed Option")]
+    public CookingToolType toolType = CookingToolType.OneHand;
     public LayerMask grabbedLayer;
     [Range(1f, 3f)] public float delayToggleLayerAfterExit = 1f;
 
     [Header("Virtual Tool")]
-    public CookingToolType toolType = CookingToolType.OneHand;
+    public bool isVirtualHandVisible = false;
     public GameObject virtualTool;
-    public Collider primaryGrabCollider;
-    public List<Collider> secondaryGrabColliders = new List<Collider>();
-    
+    public Collider grabCollider;
+    public Renderer virtualToolRenderer;
+    [Range(.01f, 10f)] public float distanceThreshold = .1f;
+
     [Header("Physical Tool")]
     public GameObject physicalTool;
     public Transform primaryAttachPoint;
-    public List<Transform> secondaryAttachPoints = new List<Transform>();
+    public float maxSpeed = 30f;
 
     private Transform _virtualToolTransform;
 
@@ -56,12 +58,6 @@ public class XRCookingToolManager : MonoBehaviour
         _leftHandPhysicalRigidbody = _leftHandPhysicalTransform.GetComponent<Rigidbody>();
         _rightHandPhysicalTransform = GameObject.FindGameObjectWithTag("RightHandPhysical").transform;
         _rightHandPhysicalRigidbody = _rightHandPhysicalTransform.GetComponent<Rigidbody>();
-
-        if (toolType == CookingToolType.TwoHand)
-        {
-            Assert.IsTrue(secondaryGrabColliders.Count == secondaryAttachPoints.Count
-                        , $"secondaryGrabColliders.Count and secondaryAttachPoints.Count have to be same");
-        }
     }
 
     private void FixedUpdate()
@@ -70,10 +66,18 @@ public class XRCookingToolManager : MonoBehaviour
         {
             MatchVirtualToolToPhysicalTool();
         }
-
+        else if (isSecondaryGrabbed)
+        {
+            MatchPhysicalToolToVirtualTool();
+        }
         // If tool is grabbed
         // Check distance from interacting physical hand
         // 손과 거리가 너무 멀어지면 놓치기
+    }
+
+    private void Update()
+    {
+        ToggleVirtualToolRenderer();
     }
 
     private void MatchVirtualToolToPhysicalTool()
@@ -82,44 +86,76 @@ public class XRCookingToolManager : MonoBehaviour
         _virtualToolTransform.position = _physicalToolTransform.position;
     }
 
+    private void MatchPhysicalToolToVirtualTool()
+    {
+        UpdatePhysicalToolRotation();
+        UpdatePhysicalToolPosition();
+    }
+
+    private void UpdatePhysicalToolRotation()
+    {
+        // Try to match rotation (physical -> virtual)
+        Quaternion rotationDiff = _physicalToolTransform.rotation * Quaternion.Inverse(_virtualToolTransform.rotation);
+        rotationDiff.ToAngleAxis(out float angleInDegree, out Vector3 rotationAxis);
+
+        Vector3 rotationDiffInDegree = angleInDegree * rotationAxis;
+
+        _physicalToolRigidbody.angularVelocity = (rotationDiffInDegree * Mathf.Deg2Rad) / Time.fixedDeltaTime;
+    }
+
+    private void UpdatePhysicalToolPosition()
+    {
+        // Try to match position (physical -> virtual)
+        var desiredVelocity = (_physicalToolTransform.position - _virtualToolTransform.position) / Time.fixedDeltaTime;
+        if (desiredVelocity.magnitude > maxSpeed)
+        {
+            var ratio = maxSpeed / desiredVelocity.magnitude;
+            desiredVelocity = new Vector3(desiredVelocity.x * ratio, desiredVelocity.y * ratio, desiredVelocity.z * ratio);
+        }
+
+        _physicalToolRigidbody.velocity = desiredVelocity;
+    }
+
+    private IXRSelectInteractor _primaryInteractor = null;
+    private IXRSelectInteractor _secondaryInteractor = null;
     // XR Grab Interactable Events
-    public void OnPrimaryGrabEntered(SelectEnterEventArgs e)
+    public void OnGrabEntered(SelectEnterEventArgs e)
 	{
 		bool isLeftHand = e.interactorObject.transform.gameObject.CompareTag("LeftHandInteractor");
 		bool isRightHand = e.interactorObject.transform.gameObject.CompareTag("RightHandInteractor");
 		if (!isLeftHand && !isRightHand) return;
 
-        isPrimaryGrabbed = true;
-
-		TogglePhysicalToolLayer();
-		AttachPrimaryPointToHand(e);
+        if (!isPrimaryGrabbed)
+        {
+            _primaryInteractor = e.interactorObject;
+            isPrimaryGrabbed = true;
+            TogglePhysicalToolLayer();
+            AttachPrimaryPointToHand(e);
+        }
+        else if (!isSecondaryGrabbed)
+        {
+            _secondaryInteractor = e.interactorObject;
+            isSecondaryGrabbed = true;
+            AttachSecondaryPointToHand(e);
+        }
     }
-    public void OnPrimaryGrabExited(SelectExitEventArgs e)
+
+    // XR Grab Interactable Events
+    public void OnGrabExited(SelectExitEventArgs e)
     {
-        isPrimaryGrabbed = false;
-
-        Invoke(nameof(TogglePhysicalToolLayer), delayToggleLayerAfterExit);
-        DetachPrimaryPointFromHand(e);
-    }
-    public void OnSecondaryGrabEntered(SelectEnterEventArgs e)
-    {
-        bool isLeftHand = e.interactorObject.transform.gameObject.CompareTag("LeftHandInteractor");
-        bool isRightHand = e.interactorObject.transform.gameObject.CompareTag("RightHandInteractor");
-        if (!isLeftHand && !isRightHand) return;
-
-        isSecondaryGrabbed = true;
-
-        //AttachSecondaryPointToHand(e);
-    }
-    public void OnSecondaryGrabExited(SelectExitEventArgs e)
-    {
-        bool isLeftHand = e.interactorObject.transform.gameObject.CompareTag("LeftHandInteractor");
-        bool isRightHand = e.interactorObject.transform.gameObject.CompareTag("RightHandInteractor");
-        if (!isLeftHand && !isRightHand) return;
-
-        isSecondaryGrabbed = false;
-
-        //DetachSecondaryPointFromHand(e);
+        if (isPrimaryGrabbed && !isSecondaryGrabbed)
+        {
+            _primaryInteractor = null;
+            isPrimaryGrabbed = false;
+            Invoke(nameof(TogglePhysicalToolLayer), delayToggleLayerAfterExit);
+            DetachPrimaryPointFromHand(e);
+        }
+        else if (isPrimaryGrabbed && isSecondaryGrabbed)
+        {
+            _secondaryInteractor = null;
+            isSecondaryGrabbed = false;
+            DetachSecondaryPointFromHand(e);
+        }
     }
 
     private void TogglePhysicalToolLayer()
@@ -146,30 +182,11 @@ public class XRCookingToolManager : MonoBehaviour
         }
     }
 
-    private Collider _primaryGrabCollider;
-    private Transform _primaryAttachPoint;
-    private Vector3 _primaryColliderLocalPos;
-    private Quaternion _primaryColliderLocalRot;
+    private Vector3 _primaryColliderLocalPosition;
+    private Quaternion _primaryColliderLocalRotation;
     private FixedJoint _primaryJointToHand;
     private void AttachPrimaryPointToHand(SelectEnterEventArgs e)
 	{
-        // e로 받아와야 일반화 가능...
-        //var virtualHandAttachPoint = e.interactorObject.GetAttachTransform(e.interactableObject);
-        //var virtualHandCollider = virtualHandAttachPoint.parent.GetComponent<Collider>();
-        //_debugAttachPoint = virtualHandAttachPoint;
-        //Collider[] colliders = Physics.OverlapSphere(virtualHandAttachPoint.position, _debugRadius, 1 << LayerMask.NameToLayer("DirectGrab"));
-        //foreach (var collider in colliders)
-        //{
-        //    if (collider != virtualHandCollider)
-        //    {
-        //        _primaryGrabCollider = collider;
-        //        break;
-        //    }
-        //}
-        //_primaryAttachPoint = e.interactableObject.GetAttachTransform(e.interactorObject);
-        _primaryGrabCollider = primaryGrabCollider;
-        _primaryAttachPoint = primaryAttachPoint;
-
         bool isLeftHand = e.interactorObject.transform.gameObject.CompareTag("LeftHandInteractor");
 
         Transform hand = isLeftHand ? _leftHandPhysicalTransform : _rightHandPhysicalTransform;
@@ -183,27 +200,12 @@ public class XRCookingToolManager : MonoBehaviour
         Vector3 positionOffset = _physicalToolTransform.position - primaryAttachPoint.position;
         _physicalToolTransform.position = handAttachPoint.position + positionOffset;
 
-        // Priamry Grab collider 저장
-        _primaryColliderLocalPos = _primaryGrabCollider.transform.localPosition;
-        _primaryColliderLocalRot = _primaryGrabCollider.transform.localRotation;
-        // Priamry Grab collider 이동
-        _primaryGrabCollider.transform.position = _primaryAttachPoint.position;
-        _primaryGrabCollider.transform.rotation = _primaryAttachPoint.rotation;
-        _primaryGrabCollider.transform.SetParent(_primaryAttachPoint);
-
-        if (toolType == CookingToolType.TwoHand)
-        {
-            // Secondary Grab collider 이동
-            for (int i = 0; i < secondaryGrabColliders.Count; i++)
-            {
-                var grabCollider = secondaryGrabColliders[i];
-                var attachPoint = secondaryAttachPoints[i];
-
-                grabCollider.transform.position = attachPoint.position;
-                grabCollider.transform.rotation = attachPoint.rotation;
-                grabCollider.transform.SetParent(attachPoint);
-            }
-        }
+        // Priamry Grab collider 보정
+        _primaryColliderLocalPosition = grabCollider.transform.localPosition;
+        _primaryColliderLocalRotation = grabCollider.transform.localRotation;
+        grabCollider.transform.SetParent(primaryAttachPoint);
+        grabCollider.transform.rotation = primaryAttachPoint.rotation;
+        //grabCollider.transform.position = primaryAttachPoint.position;
 
         // Hand를 기준으로 Physical Tool을 FixedJoint로 연결
         Rigidbody bodyToConnect = isLeftHand ? _leftHandPhysicalRigidbody : _rightHandPhysicalRigidbody;
@@ -216,14 +218,12 @@ public class XRCookingToolManager : MonoBehaviour
 
     private void DetachPrimaryPointFromHand(SelectExitEventArgs e)
     {
-        _debugAttachPoint = null;
-
         Destroy(_primaryJointToHand);
 
-        // Primary Grab collider 복원
-        _primaryGrabCollider.transform.SetParent(_virtualToolTransform);
-        _primaryGrabCollider.transform.localPosition = _primaryColliderLocalPos;
-        _primaryGrabCollider.transform.localRotation = _primaryColliderLocalRot;
+        // Primary Grab collider 원복
+        grabCollider.transform.SetParent(_virtualToolTransform);
+        grabCollider.transform.localPosition = _primaryColliderLocalPosition;
+        grabCollider.transform.localRotation = _primaryColliderLocalRotation;
 
         bool isLeftHand = e.interactorObject.transform.gameObject.CompareTag("LeftHandInteractor");
         string context = isLeftHand ? "Left Hand" : "Right Hand";
@@ -231,58 +231,21 @@ public class XRCookingToolManager : MonoBehaviour
     }
 
 
-    private Collider _secondaryGrabCollider;
-    private Transform _secondaryAttachPoint;
-    private Vector3 _secondaryColliderOriginPosition;
-    private Quaternion _secondaryColliderOriginRotation;
-    private FixedJoint _secondaryJointToHand;
     private void AttachSecondaryPointToHand(SelectEnterEventArgs e)
     {
-        bool isLeftHand = e.interactorObject.transform.gameObject.CompareTag("LeftHandInteractor");
-
-        // e로 받아와야 동작 가능...
-        _secondaryGrabCollider = e.interactableObject.GetAttachTransform(e.interactorObject).GetComponent<Collider>();
-        _secondaryAttachPoint = e.interactableObject.GetAttachTransform(e.interactorObject);
-
-        // Secondary Grab collider 저장
-        _secondaryColliderOriginPosition = _secondaryGrabCollider.transform.localPosition;
-        _secondaryColliderOriginRotation = _secondaryGrabCollider.transform.localRotation;
-        // Priamry Grab collider 이동
-        _secondaryGrabCollider.transform.position = _secondaryAttachPoint.position;
-        _secondaryGrabCollider.transform.rotation = _secondaryAttachPoint.rotation;
-        _secondaryGrabCollider.transform.SetParent(_secondaryAttachPoint);
-
-        // Hand를 기준으로 Physical Tool을 FixedJoint로 연결
-        Rigidbody bodyToConnect = isLeftHand ? _leftHandPhysicalRigidbody : _rightHandPhysicalRigidbody;
-        _secondaryJointToHand = _physicalToolRigidbody.gameObject.AddComponent<FixedJoint>();
-        _secondaryJointToHand.connectedBody = bodyToConnect;
-
-        string context = isLeftHand ? "Left Hand" : "Right Hand";
-        Debug.Log($"Secondary Hand Grabbed: {context}");
+        Debug.Log("AttachSecondaryPointToHand");
     }
 
     private void DetachSecondaryPointFromHand(SelectExitEventArgs e)
     {
-        Destroy(_secondaryJointToHand);
-
-        // Secondary Grab collider 위치 복원
-        _secondaryGrabCollider.transform.SetParent(_virtualToolTransform);
-        _secondaryGrabCollider.transform.localPosition = _secondaryColliderOriginPosition;
-        _secondaryGrabCollider.transform.localRotation = _secondaryColliderOriginRotation;
-
-        bool isLeftHand = e.interactorObject.transform.gameObject.CompareTag("LeftHandInteractor");
-        string context = isLeftHand ? "Left Hand" : "Right Hand";
-        Debug.Log($"Primary Hand Released: {context}");
+        Debug.Log("DetachSecondaryPointFromHand");
     }
 
-    public float _debugRadius = .2f;
-    private Transform _debugAttachPoint;
-    private void OnDrawGizmos()
+    private void ToggleVirtualToolRenderer()
     {
-        if (_debugAttachPoint != null)
-        {
-            Gizmos.color = Color.red;
-            Gizmos.DrawSphere(_debugAttachPoint.position, _debugRadius);
-        }
+        float distance = Vector3.Distance(_virtualToolTransform.position, _physicalToolTransform.position);
+        bool isFar = distance >= distanceThreshold;
+
+        virtualToolRenderer.enabled = isVirtualHandVisible && isFar;
     }
 }
