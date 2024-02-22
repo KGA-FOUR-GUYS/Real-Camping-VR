@@ -1,24 +1,21 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.XR.Interaction.Toolkit;
+
 public class SpawnObject : XRGrabInteractable
 {
-    private Rigidbody rb;
+    public bool isselect = false;
     protected override void Awake()
     {
         base.Awake();
-        rb = GetComponent<Rigidbody>();
     }
-    public void SelectPrefab(SelectEnterEventArgs args)
+    private void Update()
     {
-        OnSelectEntered(args);
+        isselect = isSelected;
     }
-    protected override void OnSelectEntered(SelectEnterEventArgs args)
+    protected override void OnSelectEntering(SelectEnterEventArgs args)
     {
-        base.OnSelectEntered(args);
+        base.OnSelectEntering(args);
     }
-
     protected override void OnSelectExited(SelectExitEventArgs args)
     {
         base.OnSelectExited(args);
