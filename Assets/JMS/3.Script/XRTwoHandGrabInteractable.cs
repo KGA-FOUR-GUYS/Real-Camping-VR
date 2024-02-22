@@ -6,6 +6,8 @@ using UnityEngine.XR.Interaction.Toolkit;
 
 public class XRTwoHandGrabInteractable : XRGrabInteractable
 {
+    [Space(20)]
+    [Header("Custom")]
     public XRCookingToolManager toolManager;
     public List<XRSimpleInteractable> secondaryGrabPoints = new List<XRSimpleInteractable>();
     public enum RotationType
@@ -21,7 +23,10 @@ public class XRTwoHandGrabInteractable : XRGrabInteractable
     private IXRSelectInteractor _secondaryInteractor = null;
     private IXRSelectInteractable _secondaryInteractable = null;
     private Quaternion _primaryAttachPointInitialRotation;
+    private Quaternion _secondaryAttachPointInitialRotation;
 
+    private bool _isOneHandGrabbed => _primaryInteractor != null && _secondaryInteractor == null;
+    private bool _isTwoHandGrabbed => _primaryInteractor != null && _secondaryInteractor != null;
     private void Start()
     {
         foreach (var grabPoint in secondaryGrabPoints)
@@ -34,24 +39,48 @@ public class XRTwoHandGrabInteractable : XRGrabInteractable
         Assert.IsNotNull(toolManager, $"Can not find cooking tool manager");
     }
 
-	public override void ProcessInteractable(XRInteractionUpdateOrder.UpdatePhase updatePhase)
+    private void FixedUpdate()
+    {
+        if (_isTwoHandGrabbed)
+        {
+            MatchPhysicalToolToPrimaryAttachPoint();
+        }
+    }
+
+    private void MatchPhysicalToolToPrimaryAttachPoint()
+    {
+        var primaryAttachPoint = _primaryInteractor.GetAttachTransform(_primaryInteractable);
+        toolManager.virtualTool.transform.rotation = primaryAttachPoint.rotation;
+        toolManager.virtualTool.transform.localRotation *= Quaternion.Euler(-90f, 0f, 0);
+
+        toolManager.physicalTool.transform.rotation = toolManager.virtualTool.transform.rotation;
+    }
+
+    public override void ProcessInteractable(XRInteractionUpdateOrder.UpdatePhase updatePhase)
 	{
         base.ProcessInteractable(updatePhase);
 
-        // When two-handed grab
-        if (_primaryInteractor != null && _secondaryInteractor != null)
+        if (_isTwoHandGrabbed)
 		{
-            // Compute rotation
-            var primaryAttachPoint = _primaryInteractor.GetAttachTransform(_primaryInteractable);
-            primaryAttachPoint.rotation = GetTwoHandedRotation();
-            // Axe의 AttachPoint의 localRotation의 Inverse만큼 추가 연산 필요
-            primaryAttachPoint.localRotation *= Quaternion.Euler(-90f, 0f, 0);
+            // FixedUpdate
+            if (updatePhase == XRInteractionUpdateOrder.UpdatePhase.Fixed)
+            {
+                // Compute rotation
+                var primaryAttachPoint = _primaryInteractor.GetAttachTransform(_primaryInteractable);
+                primaryAttachPoint.rotation = GetTwoHandedRotation();
+                // Axe의 AttachPoint의 localRotation의 Inverse만큼 추가 연산 필요
+                primaryAttachPoint.localRotation *= Quaternion.Euler(-90f, 0f, 0f);
+            }
 
-            // Update문에서만 Debug.Log
+            // Update
             if (updatePhase == XRInteractionUpdateOrder.UpdatePhase.Dynamic)
 			{
                 Debug.Log($"On Two Handed Grab");
             }
+        }
+        else if (_isOneHandGrabbed)
+        {
+            
         }
 	}
 
@@ -68,6 +97,7 @@ public class XRTwoHandGrabInteractable : XRGrabInteractable
         }
         else if (_twoHandedRotationType.Equals(RotationType.First))
 		{
+            // 오류 발생. 미친듯이 회전...
             targetRotation = Quaternion.LookRotation(secondaryAttachPoint.position - primaryAttachPoint.position, primaryAttachPoint.up);
         }
         else if (_twoHandedRotationType.Equals(RotationType.Second))
@@ -75,65 +105,63 @@ public class XRTwoHandGrabInteractable : XRGrabInteractable
             targetRotation = Quaternion.LookRotation(secondaryAttachPoint.position - primaryAttachPoint.position, secondaryAttachPoint.up);
         }
 
-        return targetRotation;
+        return targetRotation * Quaternion.Euler(0f, 0f, -90f);
 	}
 
 	public void OnSecondHandGrabbed(SelectEnterEventArgs e)
     {
-        Debug.Log($"OnSecondHandGrabbed [{e.interactableObject.transform.gameObject.name}]");
-
-        if (!toolManager.isGrabbed)
+        if (_isOneHandGrabbed)
         {
-            // Tool을 아직 잡지 않았으면, SecondaryAttachPoint를 잡아도 PrimaryAttachPoint를 잡은 것 처럼 동작
-            // OnSelectEntered(e);
-        }
+            toolManager.OnSecondaryGrabEntered(e);
 
-        _secondaryInteractor = e.interactorObject;
-        _secondaryInteractable = e.interactableObject;
+            // Store rotation
+            var secondaryAttachPoint = e.interactorObject.GetAttachTransform(e.interactableObject);
+            _secondaryAttachPointInitialRotation = secondaryAttachPoint.localRotation;
+            _secondaryInteractor = e.interactorObject;
+            _secondaryInteractable = e.interactableObject;
+        }
     }
 
     public void OnSecondHandReleased(SelectExitEventArgs e)
     {
-        Debug.Log($"OnSecondHandReleased [{e.interactableObject.transform.gameObject.name}]");
-
-        if (!toolManager.isGrabbed)
+        if (_isTwoHandGrabbed)
         {
-            // SecondaryAttachPoint만 잡은 상황이면, PrimaryAttachPoint를 놓은 것 처럼 동작
-            // OnSelectExited(e);
-        }
+            toolManager.OnSecondaryGrabExited(e);
 
-        _secondaryInteractor = null;
-        _secondaryInteractable = null;
+            // Reset rotation
+            var secondaryAttachPoint = e.interactorObject.GetAttachTransform(e.interactableObject);
+            secondaryAttachPoint.localRotation = _secondaryAttachPointInitialRotation;
+            _secondaryInteractor = null;
+            _secondaryInteractable = null;
+        }
     }
-    
+
     protected override void OnSelectEntered(SelectEnterEventArgs e)
     {
         base.OnSelectEntered(e);
-        Debug.Log($"OnPrimaryHandGrabbed");
+        toolManager.OnPrimaryGrabEntered(e);
 
+        // Store rotation
         var primaryAttachPoint = e.interactorObject.GetAttachTransform(e.interactableObject);
         _primaryAttachPointInitialRotation = primaryAttachPoint.localRotation;
-
         _primaryInteractor = e.interactorObject;
         _primaryInteractable = e.interactableObject;
     }
 
     protected override void OnSelectExited(SelectExitEventArgs e)
     {
-        // Release secondary hand, on primary hand released.
-        if (_secondaryInteractor != null)
+        // Release secondary hand when primary hand released
+        if (_isTwoHandGrabbed)
 		{
             OnSecondHandReleased(e);
-		}
+        }
 
         base.OnSelectExited(e);
-
-        Debug.Log($"OnPrimaryHandReleased");
+        toolManager.OnPrimaryGrabExited(e);
 
         // Reset rotation
         var primaryAttachPoint = _primaryInteractor.GetAttachTransform(_primaryInteractable);
         primaryAttachPoint.localRotation = _primaryAttachPointInitialRotation;
-
         _primaryInteractor = null;
         _primaryInteractable = null;
     }
