@@ -6,6 +6,7 @@ namespace Cooking
 {
     [RequireComponent(typeof(Renderer))]
     [RequireComponent(typeof(MeshCalculator))]
+    [RequireComponent(typeof(Rigidbody))]
     public class IngredientManager : MonoBehaviour
     {
         [field: SerializeField] public float Ripe { get; private set; } = 0f;
@@ -32,11 +33,13 @@ namespace Cooking
 
         private Renderer m_renderer;
         private MeshCalculator m_meshCalculator;
+        private Rigidbody m_rigidbody;
 
         private void Awake()
         {
             TryGetComponent(out m_renderer);
             TryGetComponent(out m_meshCalculator);
+            TryGetComponent(out m_rigidbody);
         }
 
         private void Start()
@@ -164,6 +167,42 @@ namespace Cooking
                 manager = cookerManager;
 
             return manager != null;
+        }
+
+        public IEnumerator FlyToDish(Transform dish, float maxOffsetY, float endOffsetY, float randomRange, float duration, AnimationCurve positionOverTime)
+        {
+            Vector3 startPos = transform.position;
+            Vector3 endPos = dish.position + new Vector3(Random.Range(-randomRange, randomRange),
+                                                        endOffsetY,
+                                                        Random.Range(-randomRange, randomRange));
+            Vector3 midPos = new Vector3(
+                (startPos.x + endPos.x) / 2,
+                endPos.y + maxOffsetY,
+                (startPos.z + endPos.z) / 2);
+
+            // isKinematic = true, 경로를 이동하며 발생하는 문제를 해결
+            // 1. 경로의 끝에서 누적된 중력이 적용되어 빠르게 낙하
+            // 2. 다른 Object들과 의도하지 않은 충돌
+            m_rigidbody.isKinematic = true;
+
+            float elapsedTime = 0f;
+            while (elapsedTime < duration)
+            {
+                yield return null;
+                elapsedTime += Time.deltaTime;
+
+                float progress = positionOverTime.Evaluate(elapsedTime / duration);
+                transform.position = GetPointOnBezierCurve3(startPos, midPos, endPos, progress);
+            }
+
+            m_rigidbody.isKinematic = false;
+        }
+        private Vector3 GetPointOnBezierCurve3(Vector3 startPos, Vector3 midPos, Vector3 endPos, float progress)
+        {
+            var p1 = Vector3.Lerp(startPos, midPos, progress);
+            var p2 = Vector3.Lerp(midPos, endPos, progress);
+
+            return Vector3.Lerp(p1, p2, progress);
         }
     }
 }
