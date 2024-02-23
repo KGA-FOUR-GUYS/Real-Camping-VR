@@ -67,7 +67,7 @@ public class SliceCube : MonoBehaviour
             SetupSlicedComponent(lowerHull, target.transform.parent.transform, target);
             if (ingredient.isWhole)
             {
-                target.transform.parent.GetComponent<ObjectSpawner>().ReturnToPool(target);
+                spawnobject.spawner.GetComponent<ObjectSpawner>().ReturnToPool(target);
             }
             else
             {

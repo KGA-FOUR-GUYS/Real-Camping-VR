@@ -3,6 +3,7 @@ using UnityEngine.XR.Interaction.Toolkit;
 
 public class SpawnObject : XRGrabInteractable
 {
+    public ObjectSpawner spawner;
     public bool isselect = false;
     protected override void Awake()
     {
