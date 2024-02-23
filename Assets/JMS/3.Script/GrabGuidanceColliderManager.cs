@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.XR.Interaction.Toolkit;
 
+[RequireComponent(typeof(SphereCollider))]
 public class GrabGuidanceColliderManager : MonoBehaviour
 {
     [Range(1, 30)] public int frameInterval = 5;
