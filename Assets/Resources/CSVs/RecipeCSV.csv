@@ -1,12 +1,12 @@
-레시피 이름,레시피 설명,레시피 요구 레벨,레시피 보상 경험치,레시피 보상 돈,재료 이름,재료 개수,재료 조리방식,재료 익힘정도,재료 적정부피
+레시피 이름,레시피 설명,레시피 요구 레벨,레시피 보상 경험치,레시피 보상 돈,재료 이름,재료 개수,재료 Broil 비율,재료 Boil 비율,재료 Grill 비율,재료 목표 익힘상태,재료 자르기 부피,재료 자르기 개수,,,,,
 BeefStew,"1. 소고기를 깍뚝썰기 하세요
 2. 야채를 볶으세요
 3. 고기도 볶으세요
 4. 소금후추를 뿌리세요
 5. 냄비에 넣고 끓이세요
-6. 음식을 그릇에 담으세요",1,150,50,NULL,NULL,NULL,NULL,NULL
-NULL,NULL,NULL,NULL,NULL,Beef,1,BOIL,RAW,1.00
-NULL,NULL,NULL,NULL,NULL,Carrot,2,GRILL,UNDERCOOK,1.00
+6. 음식을 그릇에 담으세요",1,150,50,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,,,,,
+NULL,NULL,NULL,NULL,NULL,Beef,1,40.00 ,60.00 ,0.00 ,RAW,1.00 ,8 ,,,,,
+NULL,NULL,NULL,NULL,NULL,Carrot,2,20.00 ,40.00 ,40.00 ,UNDERCOOK,1.00 ,5 ,,,,,
 SpecialRecipe,"1. 스페~셜한 조리과정 하나
-2. 조리과정 둘",2,400,150,NULL,NULL,NULL,NULL,NULL
-NULL,NULL,NULL,NULL,NULL,Beef,1,BOIL,RAW,1.00
+2. 조리과정 둘",2,400,150,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,,,,,
+NULL,NULL,NULL,NULL,NULL,Beef,1,100.00 ,0.00 ,0.00 ,RAW,1.00 ,3 ,,,,,

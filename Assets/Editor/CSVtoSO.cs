@@ -24,17 +24,22 @@ public class CSVtoSO
         return !EditorApplication.isPlayingOrWillChangePlaymode;
     }
 
-    // Colume Index (0 ~ N)
+    // Colume Index (0 ~ 4) - Recipe
     private const int RECIPE_NAME = 0;
     private const int RECIPE_DESCRIPTION = 1;
     private const int RECIPE_REQUIRED_LEVEL = 2;
     private const int RECIPE_REWARD_EXP = 3;
     private const int RECIPE_REWARD_MONEY = 4;
+
+    // Colume Index (5 ~ 12) - Ingredients in Recipe
     private const int RECIPE_INGREDIENT_NAME = 5;
     private const int RECIPE_INGREDIENT_QUANTITY = 6;
-    private const int RECIPE_INGREDIENT_COOK_TYPE = 7;
-    private const int RECIPE_INGREDIENT_RIPE_STATE = 8;
-    private const int RECIPE_INGREDIENT_TARGET_VOLUME = 9;
+    private const int RECIPE_INGREDIENT_RIPE_BY_BROIL = 7;
+    private const int RECIPE_INGREDIENT_RIPE_BY_BOIL = 8;
+    private const int RECIPE_INGREDIENT_RIPE_BY_GRILL = 9;
+    private const int RECIPE_INGREDIENT_RIPE_STATE = 10;
+    private const int RECIPE_INGREDIENT_SLICE_VOLUME = 11;
+    private const int RECIPE_INGREDIENT_SLICE_COUNT = 12;
 
     [MenuItem("Cook Data/Generate Recipes", false, 1)]
     public static void GenerateRecipes()
@@ -71,7 +76,7 @@ public class CSVtoSO
             bool isEOF = string.IsNullOrEmpty(datas[RECIPE_NAME]) || string.IsNullOrWhiteSpace(datas[RECIPE_NAME]);
             bool isRecipeData = !datas[RECIPE_NAME].Equals("NULL");
 
-            // Recipe data (0 ~ 1)
+            // Colume Index (0 ~ 4) - Recipe
             if (isRecipeData)
             {
                 TryCreateScripatbleObject(currentRecipe);
@@ -95,16 +100,19 @@ public class CSVtoSO
                 currentRecipe.rewardExp = int.Parse(datas[RECIPE_REWARD_EXP]);
                 currentRecipe.rewardMoney = int.Parse(datas[RECIPE_REWARD_MONEY]);
             }
-            // Recipe ingredient data (2 ~ 6)
+            // Colume Index (5 ~ 12) - Ingredients in Recipe
             else
             {
                 // Create empty ingredient
                 currentIngredient = new RecipeIngredient();
                 currentIngredient.name = datas[RECIPE_INGREDIENT_NAME];
                 currentIngredient.quantity = int.Parse(datas[RECIPE_INGREDIENT_QUANTITY]);
-                currentIngredient.cookType = CookingEnumsExtension.ToCookType(datas[RECIPE_INGREDIENT_COOK_TYPE]);
+                currentIngredient.ripeByBroil = float.Parse(datas[RECIPE_INGREDIENT_RIPE_BY_BROIL]);
+                currentIngredient.ripeByBoil = float.Parse(datas[RECIPE_INGREDIENT_RIPE_BY_BOIL]);
+                currentIngredient.ripeByGrill = float.Parse(datas[RECIPE_INGREDIENT_RIPE_BY_GRILL]);
                 currentIngredient.ripeState = CookingEnumsExtension.ToRipeState(datas[RECIPE_INGREDIENT_RIPE_STATE]);
-                currentIngredient.targetVolume = float.Parse(datas[RECIPE_INGREDIENT_TARGET_VOLUME]);
+                currentIngredient.sliceVolume = float.Parse(datas[RECIPE_INGREDIENT_SLICE_VOLUME]);
+                currentIngredient.sliceCount = int.Parse(datas[RECIPE_INGREDIENT_SLICE_COUNT]);
 
                 // Add ingredient to list
                 currentRecipe.ingredientList.Add(currentIngredient);

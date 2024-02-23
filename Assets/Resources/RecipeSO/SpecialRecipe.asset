@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1b73051fe8852454695b2ee40a9f40e2, type: 3}
   m_Name: SpecialRecipe
   m_EditorClassIdentifier: 
+  id: 0
   image: {fileID: 0}
   description: "1. \uC2A4\uD398~\uC15C\uD55C \uC870\uB9AC\uACFC\uC815 \uD558\uB098\n2.
     \uC870\uB9AC\uACFC\uC815 \uB458"
@@ -21,6 +22,9 @@ MonoBehaviour:
   ingredientList:
   - name: Beef
     quantity: 1
-    cookType: 1
+    ripeByBroil: 100
+    ripeByBoil: 0
+    ripeByGrill: 0
     ripeState: 1
-    targetVolume: 1
+    sliceVolume: 1
+    sliceCount: 3

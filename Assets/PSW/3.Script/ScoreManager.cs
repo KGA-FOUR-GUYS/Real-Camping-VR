@@ -41,7 +41,7 @@ public class ScoreManager : MonoBehaviour
             for (int j = 0; j < Ingredients[i].transform.childCount; j++)
             {
                 var Volnume_Datas = Ingredients[i].GetComponentsInChildren<MeshCalculator>();
-                if (Volnume_Datas[j].Volume <= currentRecipe.ingredientList[Matching_Name(Ingredients[i].gameObject)].targetVolume)
+                if (Volnume_Datas[j].Volume <= currentRecipe.ingredientList[Matching_Name(Ingredients[i].gameObject)].sliceVolume)
                 {
                     Correct_Cutting++;
                 }                
