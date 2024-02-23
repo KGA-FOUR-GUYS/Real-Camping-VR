@@ -5,6 +5,8 @@ using UnityEngine.XR.Interaction.Toolkit;
 
 public class ObjectSpawner : XRGrabInteractable
 {
+    public Transform objectPool;
+
     [SerializeField] GameObject prefab = default;
     private Vector3 attachOffset = Vector3.zero;
     public int SpawnPooling = 0;
@@ -13,7 +15,7 @@ public class ObjectSpawner : XRGrabInteractable
     protected override void Awake()
     {
         base.Awake();
-        prefabPool = new GameObjectPool(() => CreatePrefab(), SpawnPooling);
+        ResetObject();
     }
 
     protected override void OnSelectEntered(SelectEnterEventArgs args)
@@ -46,7 +48,8 @@ public class ObjectSpawner : XRGrabInteractable
             return null;
         }
 
-        GameObject newPrefab = Instantiate(prefab, transform.position, transform.rotation, transform);
+        GameObject newPrefab = Instantiate(prefab, transform.position, transform.rotation, objectPool);
+        newPrefab.GetComponent<SpawnObject>().spawner = this;
         newPrefab.SetActive(false);
         return newPrefab;
     }
@@ -60,7 +63,21 @@ public class ObjectSpawner : XRGrabInteractable
     }
     public void ResetObject()
     {
-        
+        DestroyAllChildren();
+        CreateAsset();
+    }
+    private void DestroyAllChildren()
+    {
+        Cooking.IngredientManager[] ingredients = objectPool.transform.GetComponentsInChildren<Cooking.IngredientManager>(true);
+
+        foreach (Cooking.IngredientManager ingredient in ingredients)
+        {
+            Destroy(ingredient.gameObject);
+        }
+    }
+    private void CreateAsset()
+    {
+        prefabPool = new GameObjectPool(() => CreatePrefab(), SpawnPooling);
     }
 }
 

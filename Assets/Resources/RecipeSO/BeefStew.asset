@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1b73051fe8852454695b2ee40a9f40e2, type: 3}
   m_Name: BeefStew
   m_EditorClassIdentifier: 
+  id: 0
   image: {fileID: 21300000, guid: 9f5a1f0ac2ebd9c43bd1c4132cb6f947, type: 3}
   description: "1. \uC18C\uACE0\uAE30\uB97C \uAE4D\uB69D\uC370\uAE30 \uD558\uC138\uC694\n2.
     \uC57C\uCC44\uB97C \uBCF6\uC73C\uC138\uC694\n3. \uACE0\uAE30\uB3C4 \uBCF6\uC73C\uC138\uC694\n4.
@@ -24,11 +25,17 @@ MonoBehaviour:
   ingredientList:
   - name: Beef
     quantity: 1
-    cookType: 1
+    ripeByBroil: 40
+    ripeByBoil: 60
+    ripeByGrill: 0
     ripeState: 1
-    targetVolume: 1
+    sliceVolume: 1
+    sliceCount: 8
   - name: Carrot
     quantity: 2
-    cookType: 3
+    ripeByBroil: 20
+    ripeByBoil: 40
+    ripeByGrill: 40
     ripeState: 2
-    targetVolume: 1
+    sliceVolume: 1
+    sliceCount: 5

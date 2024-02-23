@@ -31,17 +31,23 @@ namespace Cooking
     {
         public string name;
         public int quantity;
-        public CookType cookType;
+        public float ripeByBroil;
+        public float ripeByBoil;
+        public float ripeByGrill;
         public RipeState ripeState;
-        public float targetVolume;
+        public float sliceVolume;
+        public float sliceCount;
 
-        public RecipeIngredient(string name, int quantity, CookType cookType, RipeState ripeState, float targetVolume)
+        public RecipeIngredient(string name, int quantity, float ripeByBroil, float ripeByBoil, float ripeByGrill, RipeState ripeState, float targetVolume, int targetCount)
         {
             this.name = name;
             this.quantity = quantity;
-            this.cookType = cookType;
+            this.ripeByBroil = ripeByBroil;
+            this.ripeByBoil = ripeByBoil;
+            this.ripeByGrill = ripeByGrill;
             this.ripeState = ripeState;
-            this.targetVolume = targetVolume;
+            this.sliceVolume = targetVolume;
+            this.sliceCount = targetCount;
         }
     }
 }
