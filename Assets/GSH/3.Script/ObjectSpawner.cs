@@ -13,7 +13,7 @@ public class ObjectSpawner : XRGrabInteractable
     protected override void Awake()
     {
         base.Awake();
-        prefabPool = new GameObjectPool(() => CreatePrefab(), SpawnPooling);
+        ResetObject();
     }
 
     protected override void OnSelectEntered(SelectEnterEventArgs args)
@@ -60,7 +60,21 @@ public class ObjectSpawner : XRGrabInteractable
     }
     public void ResetObject()
     {
-        
+        DestroyAllChildren();
+        CreateAsset();
+    }
+    private void DestroyAllChildren()
+    {
+        Cooking.IngredientManager[] ingredients = GetComponentsInChildren<Cooking.IngredientManager>(true);
+
+        foreach (Cooking.IngredientManager ingredient in ingredients)
+        {
+            Destroy(ingredient.gameObject);
+        }
+    }
+    private void CreateAsset()
+    {
+        prefabPool = new GameObjectPool(() => CreatePrefab(), SpawnPooling);
     }
 }
 
