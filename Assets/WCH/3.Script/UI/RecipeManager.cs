@@ -204,6 +204,8 @@ public class RecipeManager : MonoBehaviour
         cookingImgObj = Instantiate(recipe_UI.instantiateObj);
         cookingImgObj.transform.parent = instantiateParent;
         cookingImgObj.transform.position = recipe_UI.instantiateObj.transform.position;
+        cookingImgObj.transform.localRotation = Quaternion.Euler(Vector3.zero);
+
         cookingImgObj.transform.localScale = recipe_UI.instantiateObj.transform.localScale;
         cookingImgObj.AddComponent<CanvasGroup>().ignoreParentGroups = true;
     }
