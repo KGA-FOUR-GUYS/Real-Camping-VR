@@ -60,10 +60,12 @@ public class CookingProcess_Controller : MonoBehaviour
         { 
             currentIndex++;
             FocusContent(scrollRect.content.childCount, currentIndex);
+            SoundManager.instance.PlayCookingSFX(0);
         }
         else if (currentIndex == scrollRect.content.childCount - 1)
         {
             RecipeManager.instance.ProcessChange(RecipeProcess.Result);
+            SoundManager.instance.PlayCookingSFX(0);
         }
     }
     public void MinusBtn()
@@ -72,6 +74,7 @@ public class CookingProcess_Controller : MonoBehaviour
         {
             currentIndex--;
             FocusContent(scrollRect.content.childCount, currentIndex);
+            SoundManager.instance.PlayCookingSFX(0);
         }
     }
 

@@ -12,6 +12,7 @@ public class SoundManager : MonoBehaviour
     private AudioSource[] audioSources;
 
     public AudioClip[] SFX;
+    public AudioClip[] Cooking_SFX;
 
     private void Awake()
     {
@@ -36,6 +37,19 @@ public class SoundManager : MonoBehaviour
         }
 
         audioSources[count].clip = SFX[index];
+
+        audioSources[count].Play();
+
+        count++;
+    }
+    public void PlayCookingSFX(int index)
+    {
+        if (count >= audioSources.Length)
+        {
+            count = 0;
+        }
+
+        audioSources[count].clip = Cooking_SFX[index];
 
         audioSources[count].Play();
 
