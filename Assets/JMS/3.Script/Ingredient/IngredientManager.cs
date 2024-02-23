@@ -102,8 +102,15 @@ namespace Cooking
         private void OnTriggerEnter(Collider other)
         {
             var otherObj = other.gameObject;
-            if (!IsCookable(otherObj, out CookerManager manager)) return;
 
+            // 접시 안에 들어간 경우
+            if (otherObj.TryGetComponent(out DishManager dishManager))
+            {
+                transform.SetParent(otherObj.transform);
+            }
+            
+            // 요리 시작한 경우
+            if (!IsCookable(otherObj, out CookerManager manager)) return;
             if (manager is BoilManager)
             {
                 CookType = CookType.Boil;
@@ -148,8 +155,15 @@ namespace Cooking
         private void OnTriggerExit(Collider other)
         {
             var otherObj = other.gameObject;
-            if (!IsCookable(otherObj, out _)) return;
 
+            // 접시 안에서 나온 경우
+            if (otherObj.TryGetComponent(out DishManager dishManager))
+            {
+                transform.SetParent(null);
+            }
+
+            // 요리 중단된 경우
+            if (!IsCookable(otherObj, out _)) return;
             CookType = CookType.None;
         }
 

@@ -32,6 +32,7 @@ public class XRCookingToolManager : MonoBehaviour
     public GameObject physicalTool;
     public Transform primaryAttachPoint;
     public float maxSpeed = 30f;
+    [Range(0f, 1f)] public float connectedBodyMassScale = 1f;
 
     private Transform _virtualToolTransform;
 
@@ -205,12 +206,14 @@ public class XRCookingToolManager : MonoBehaviour
         _primaryColliderLocalRotation = grabCollider.transform.localRotation;
         grabCollider.transform.SetParent(primaryAttachPoint);
         grabCollider.transform.rotation = primaryAttachPoint.rotation;
-        //grabCollider.transform.position = primaryAttachPoint.position;
+        // grabCollider.transform.position = primaryAttachPoint.position;
+        // grabCollider의 localPosition을 attachPoint의 회전에 맞게 변환해주어 적용하면 완벽한 위치에 grabCollider를 둘 수 있다...
 
         // Hand를 기준으로 Physical Tool을 FixedJoint로 연결
         Rigidbody bodyToConnect = isLeftHand ? _leftHandPhysicalRigidbody : _rightHandPhysicalRigidbody;
         _primaryJointToHand = _physicalToolRigidbody.gameObject.AddComponent<FixedJoint>();
         _primaryJointToHand.connectedBody = bodyToConnect;
+        _primaryJointToHand.connectedMassScale = connectedBodyMassScale;
 
         string context = isLeftHand ? "Left Hand" : "Right Hand";
         Debug.Log($"Primary Hand Grabbed: {context}");

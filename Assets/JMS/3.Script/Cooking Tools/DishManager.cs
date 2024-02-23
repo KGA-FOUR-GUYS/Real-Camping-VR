@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Cooking;
 
+[RequireComponent(typeof(SphereCollider))]
 public class DishManager : MonoBehaviour
 {
     [Header("Collect ingredients")]
@@ -13,15 +14,53 @@ public class DishManager : MonoBehaviour
     public float randomRange = .5f;
     public AnimationCurve positionOverTime;
     public float collectInterval = .1f;
+    public float parentingDelay = .5f;
+
+    [Header("Toggle Area")]
+    [Range(2f, 10f)] public float timeToDisable = 3f;
+    private SphereCollider dishAreaCollider;
 
     private void Start()
     {
+        TryGetComponent(out dishAreaCollider);
+
         StartCoroutine(CollectIngredients(target));
+    }
+
+    private void Update()
+    {
+        var isUpward = Vector3.Dot(transform.up, Vector3.up) > 0;
+
+        // 담을 수 있는 상황이면
+        if (_currentCheckFlipedTime != null && isUpward)
+        {
+            StopCoroutine(_currentCheckFlipedTime);
+            _currentCheckFlipedTime = null;
+            dishAreaCollider.enabled = true;
+        }
+        // 담을 수 없는 상황이면
+        if (_currentCheckFlipedTime == null && !isUpward)
+        {
+            _currentCheckFlipedTime = CheckFlipedTime();
+            StartCoroutine(_currentCheckFlipedTime);
+        }
+    }
+
+    private IEnumerator _currentCheckFlipedTime = null;
+    private IEnumerator CheckFlipedTime()
+    {
+        float elapsedTime = 0f;
+        while (elapsedTime < timeToDisable)
+        {
+            elapsedTime += Time.deltaTime;
+            yield return null;
+        }
+        dishAreaCollider.enabled = false;
     }
 
     private IEnumerator CollectIngredients(IngredientSO targetSO)
     {
-        yield return new WaitForSeconds(5f);
+        yield return new WaitForSeconds(1f);
 
         var ingredients = FindObjectsOfType<IngredientManager>();
         var targets = new List<IngredientManager>();
