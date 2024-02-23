@@ -206,8 +206,7 @@ public class XRCookingToolManager : MonoBehaviour
         _primaryColliderLocalRotation = grabCollider.transform.localRotation;
         grabCollider.transform.SetParent(primaryAttachPoint);
         grabCollider.transform.rotation = primaryAttachPoint.rotation;
-        // grabCollider.transform.position = primaryAttachPoint.position;
-        // grabCollider의 localPosition을 attachPoint의 회전에 맞게 변환해주어 적용하면 완벽한 위치에 grabCollider를 둘 수 있다...
+        grabCollider.transform.localPosition = ConvertLocalPosition();
 
         // Hand를 기준으로 Physical Tool을 FixedJoint로 연결
         Rigidbody bodyToConnect = isLeftHand ? _leftHandPhysicalRigidbody : _rightHandPhysicalRigidbody;
@@ -217,6 +216,58 @@ public class XRCookingToolManager : MonoBehaviour
 
         string context = isLeftHand ? "Left Hand" : "Right Hand";
         Debug.Log($"Primary Hand Grabbed: {context}");
+    }
+
+    private Vector3 ConvertLocalPosition()
+	{
+        var localPosition = _primaryColliderLocalPosition - primaryAttachPoint.localPosition;
+        var eulerAngle = _primaryColliderLocalRotation.eulerAngles;
+
+        /// x축으로 90회전하면 아래와 같이 축이 변화한다
+        ///     x = x
+        ///     y = z = Cos(90x) * x + Sin(90x) * z
+        ///     z = -y = Cos(90x) * x + Sin(-90x) * y
+        /// 
+        /// y축으로 90회전하면 아래와 같이 축이 변화한다
+        ///     x = z = Cos(90y) * y + Sin(90y) * z
+        ///     y = y
+        ///     z = -x = Sin(-90y) * x + Sin(90y) * y
+        ///
+        /// z축으로 90회전하면 아래와 같이 축이 변화한다
+        ///     x = y = Sin(90z) * y + Cos(90z) * z
+        ///     y = -x = Sin(-90z) * x + Cos(90z) * z
+        ///     z = z
+        ///     
+        /// 위 식을 정리하면 아래와 같다    
+        /// 	x = Cos(90y) * y + Sin(90y) * z
+        ///     x = Sin(90z) * y + Cos(90z) * z
+        ///
+        ///     y = Cos(90x) * x + Sin(90x) * z
+        ///     y = Sin(-90z) * x + Cos(90z) * z
+        ///
+        ///     z = Cos(90x) * x + Sin(-90x) * y
+        ///     z = Sin(-90y) * x + Sin(90y) * y
+
+        float x, y, z;
+        x = y = z = 0;
+
+        if (Mathf.Abs(eulerAngle.x) > 0) // x축 회전
+        {
+            y += Mathf.Cos(eulerAngle.x * Mathf.Deg2Rad) * localPosition.x + Mathf.Sin(eulerAngle.x * Mathf.Deg2Rad) * localPosition.z;
+            z += Mathf.Cos(eulerAngle.x * Mathf.Deg2Rad) * localPosition.x + Mathf.Sin(-eulerAngle.x * Mathf.Deg2Rad) * localPosition.y;
+        }
+        if (Mathf.Abs(eulerAngle.y) > 0) // y축 회전
+		{
+            x += Mathf.Cos(eulerAngle.y * Mathf.Deg2Rad) * localPosition.y + Mathf.Sin(eulerAngle.y * Mathf.Deg2Rad) * localPosition.z;
+            z += Mathf.Sin(-eulerAngle.y * Mathf.Deg2Rad) * localPosition.x + Mathf.Sin(eulerAngle.y * Mathf.Deg2Rad) * localPosition.y;
+        }
+        if (Mathf.Abs(eulerAngle.z) > 0) // z축 회전
+		{
+            x += Mathf.Sin(eulerAngle.z * Mathf.Deg2Rad) * localPosition.y + Mathf.Cos(eulerAngle.z * Mathf.Deg2Rad) * localPosition.z;
+            y += Mathf.Sin(-eulerAngle.z * Mathf.Deg2Rad) * localPosition.x + Mathf.Cos(eulerAngle.z * Mathf.Deg2Rad) * localPosition.z;
+        }
+
+        return new Vector3(x, y, z);
     }
 
     private void DetachPrimaryPointFromHand(SelectExitEventArgs e)
