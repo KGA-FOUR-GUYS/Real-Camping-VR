@@ -23,6 +23,7 @@ public class Recipe_UI : MonoBehaviour
         RecipeManager.instance.recipe_UI = this;
         RecipeManager.instance.currentSO = currentRecipeSO;
         RecipeManager.instance.ProcessChange(RecipeProcess.DetailRecipe, myText.text);
+        SoundManager.instance.PlayCookingSFX(0);
     }
 
 
