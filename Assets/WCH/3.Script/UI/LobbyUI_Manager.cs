@@ -50,6 +50,7 @@ public class LobbyUI_Manager : MonoBehaviour
     private void Start()
     {
         ChangeActive(home_Rect);
+
         originCB = home_Btn.colors;
 
         SelectedCB = originCB;
@@ -58,6 +59,7 @@ public class LobbyUI_Manager : MonoBehaviour
         SelectedCB.selectedColor = normalColor;
         SelectedCB.pressedColor = pressedColor;
 
+        ChangeBtnColor(home_Btn);
     }
 
     private IEnumerator MaskSizeChange(RectTransform rect, float time)
@@ -114,9 +116,7 @@ public class LobbyUI_Manager : MonoBehaviour
         }
         ChangeActive(home_Rect);
         ChangeBtnColor(home_Btn);
-        Debug.Log("Home");
         StartCoroutine(MaskSizeChange(maskRect, moveTime));
-        //StartCoroutine(ScaleChange(home_Rect, moveTime));
     }
     public void MapBtn()
     {
@@ -126,7 +126,6 @@ public class LobbyUI_Manager : MonoBehaviour
         }
         ChangeActive(map_Rect);
         ChangeBtnColor(map_Btn);
-        Debug.Log("Map");
         StartCoroutine(MaskSizeChange(maskRect, moveTime));
         StartCoroutine(MoveDetail(false, moveTime));
         map_Img_Rect.localPosition = Vector3.zero;
@@ -139,7 +138,6 @@ public class LobbyUI_Manager : MonoBehaviour
         }
         ChangeActive(collection_Rect);
         ChangeBtnColor(collection_Btn);
-        Debug.Log("Collection");
         StartCoroutine(MaskSizeChange(maskRect, moveTime));
     }
     public void SettingBtn()
@@ -150,7 +148,6 @@ public class LobbyUI_Manager : MonoBehaviour
         }
         ChangeActive(setting_Rect);
         ChangeBtnColor(setting_Btn);
-        Debug.Log("Setting");
         StartCoroutine(MaskSizeChange(maskRect, moveTime));
     }
 

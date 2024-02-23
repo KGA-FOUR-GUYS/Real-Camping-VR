@@ -338,6 +338,7 @@ public class RecipeManager : MonoBehaviour
     public void ExitBtn()
     {
         ProcessChange(RecipeProcess.SelectRecipe);
+        CookingProcessTopSpace.transform.position = targetVector_CP;
         cookingImgObj = null;
     }
 
