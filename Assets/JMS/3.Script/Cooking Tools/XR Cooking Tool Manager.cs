@@ -239,32 +239,36 @@ public class XRCookingToolManager : MonoBehaviour
         ///     z = z
         ///     
         /// 위 식을 정리하면 아래와 같다    
-        /// 	x = Cos(90y) * y + Sin(90y) * z
-        ///     x = Sin(90z) * y + Cos(90z) * z
-        ///
         ///     y = Cos(90x) * x + Sin(90x) * z
-        ///     y = Sin(-90z) * x + Cos(90z) * z
-        ///
         ///     z = Cos(90x) * x + Sin(-90x) * y
+        ///     
+        /// 	x = Cos(90y) * y + Sin(90y) * z
         ///     z = Sin(-90y) * x + Sin(90y) * y
+        /// 	
+        ///     x = Sin(90z) * y + Cos(90z) * z
+        ///     y = Sin(-90z) * x + Cos(90z) * z
 
         float x, y, z;
         x = y = z = 0;
+        
+        float thetaX = eulerAngle.x * Mathf.Deg2Rad;
+        float thetaY = eulerAngle.y * Mathf.Deg2Rad;
+        float thetaZ = eulerAngle.z * Mathf.Deg2Rad;
 
         if (Mathf.Abs(eulerAngle.x) > 0) // x축 회전
         {
-            y += Mathf.Cos(eulerAngle.x * Mathf.Deg2Rad) * localPosition.x + Mathf.Sin(eulerAngle.x * Mathf.Deg2Rad) * localPosition.z;
-            z += Mathf.Cos(eulerAngle.x * Mathf.Deg2Rad) * localPosition.x + Mathf.Sin(-eulerAngle.x * Mathf.Deg2Rad) * localPosition.y;
+            y += Mathf.Cos(thetaX) * localPosition.x + Mathf.Sin(thetaX) * localPosition.z;
+            z += Mathf.Cos(thetaX) * localPosition.x + Mathf.Sin(-thetaX) * localPosition.y;
         }
         if (Mathf.Abs(eulerAngle.y) > 0) // y축 회전
 		{
-            x += Mathf.Cos(eulerAngle.y * Mathf.Deg2Rad) * localPosition.y + Mathf.Sin(eulerAngle.y * Mathf.Deg2Rad) * localPosition.z;
-            z += Mathf.Sin(-eulerAngle.y * Mathf.Deg2Rad) * localPosition.x + Mathf.Sin(eulerAngle.y * Mathf.Deg2Rad) * localPosition.y;
+            x += Mathf.Cos(thetaY) * localPosition.y + Mathf.Sin(thetaY) * localPosition.z;
+            z += Mathf.Sin(-thetaY) * localPosition.x + Mathf.Sin(thetaY) * localPosition.y;
         }
         if (Mathf.Abs(eulerAngle.z) > 0) // z축 회전
 		{
-            x += Mathf.Sin(eulerAngle.z * Mathf.Deg2Rad) * localPosition.y + Mathf.Cos(eulerAngle.z * Mathf.Deg2Rad) * localPosition.z;
-            y += Mathf.Sin(-eulerAngle.z * Mathf.Deg2Rad) * localPosition.x + Mathf.Cos(eulerAngle.z * Mathf.Deg2Rad) * localPosition.z;
+            x += Mathf.Sin(thetaZ) * localPosition.y + Mathf.Cos(thetaZ) * localPosition.z;
+            y += Mathf.Sin(-thetaZ) * localPosition.x + Mathf.Cos(thetaZ) * localPosition.z;
         }
 
         return new Vector3(x, y, z);
