@@ -862,6 +862,8 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 536870912
   delayToggleLayerAfterExit: 1
+  leftHandRotationOffset: {x: 0, y: 0, z: 0}
+  rightHandRotationOffset: {x: 0, y: 0, z: 0}
   isVirtualHandVisible: 0
   virtualTool: {fileID: 1145182270}
   grabCollider: {fileID: 2014976266}
@@ -1267,7 +1269,7 @@ Transform:
   m_GameObject: {fileID: 106919387}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -1.18, y: 0, z: 0}
+  m_LocalPosition: {x: -1.18, y: -0.4, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1618,6 +1620,8 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 536870912
   delayToggleLayerAfterExit: 1
+  leftHandRotationOffset: {x: 0, y: 0, z: 0}
+  rightHandRotationOffset: {x: 0, y: 0, z: 0}
   isVirtualHandVisible: 0
   virtualTool: {fileID: 919223499}
   grabCollider: {fileID: 608827673}
@@ -4472,7 +4476,7 @@ GameObject:
   - component: {fileID: 510416813}
   - component: {fileID: 510416812}
   m_Layer: 0
-  m_Name: Physical (Grab Guidance)
+  m_Name: Tablet Physical (Grab Guidance)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -5597,7 +5601,7 @@ Transform:
   m_GameObject: {fileID: 607489122}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -1.18, y: 0, z: 0}
+  m_LocalPosition: {x: -1.18, y: -0.4, z: 0}
   m_LocalScale: {x: 0.5, y: 0.5, z: 0.5}
   m_ConstrainProportionsScale: 1
   m_Children: []
@@ -7310,7 +7314,7 @@ Transform:
   m_GameObject: {fileID: 824832479}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -1.18, y: 0, z: 0}
+  m_LocalPosition: {x: -1.18, y: -0.4, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -7835,7 +7839,7 @@ GameObject:
   - component: {fileID: 894614274}
   - component: {fileID: 894614273}
   m_Layer: 0
-  m_Name: Virtual (Direct Grab)
+  m_Name: Tablet Virtual (Direct Grab)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -7937,34 +7941,10 @@ MonoBehaviour:
       m_Calls: []
   m_SelectEntered:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 1772639939}
-        m_TargetAssemblyTypeName: XRCookingToolManager, Assembly-CSharp
-        m_MethodName: OnGrabEntered
-        m_Mode: 0
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
   m_SelectExited:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 1772639939}
-        m_TargetAssemblyTypeName: XRCookingToolManager, Assembly-CSharp
-        m_MethodName: OnGrabExited
-        m_Mode: 0
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
   m_FirstFocusEntered:
     m_PersistentCalls:
       m_Calls: []
@@ -8336,34 +8316,10 @@ MonoBehaviour:
       m_Calls: []
   m_SelectEntered:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 144195384}
-        m_TargetAssemblyTypeName: XRCookingToolManager, Assembly-CSharp
-        m_MethodName: OnGrabEntered
-        m_Mode: 0
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
   m_SelectExited:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 144195384}
-        m_TargetAssemblyTypeName: XRCookingToolManager, Assembly-CSharp
-        m_MethodName: OnGrabExited
-        m_Mode: 0
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
   m_FirstFocusEntered:
     m_PersistentCalls:
       m_Calls: []
@@ -9685,34 +9641,10 @@ MonoBehaviour:
       m_Calls: []
   m_SelectEntered:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 45662577}
-        m_TargetAssemblyTypeName: XRCookingToolManager, Assembly-CSharp
-        m_MethodName: OnGrabEntered
-        m_Mode: 0
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
   m_SelectExited:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 45662577}
-        m_TargetAssemblyTypeName: XRCookingToolManager, Assembly-CSharp
-        m_MethodName: OnGrabExited
-        m_Mode: 0
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
   m_FirstFocusEntered:
     m_PersistentCalls:
       m_Calls: []
@@ -14082,7 +14014,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1772639937}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4b687884ce7380e49b4d4b097561a886, type: 3}
+  m_Script: {fileID: 11500000, guid: 81ce03f480b9839478f1699cf7e27679, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   isPrimaryGrabbed: 0
@@ -14092,6 +14024,8 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 536870912
   delayToggleLayerAfterExit: 1
+  leftHandRotationOffset: {x: 0, y: 0, z: 0}
+  rightHandRotationOffset: {x: 0, y: 0, z: 0}
   isVirtualHandVisible: 0
   virtualTool: {fileID: 894614271}
   grabCollider: {fileID: 607489124}
@@ -14100,7 +14034,7 @@ MonoBehaviour:
   physicalTool: {fileID: 510416807}
   primaryAttachPoint: {fileID: 106919388}
   maxSpeed: 30
-  connectedBodyMassScale: 0.1
+  connectedBodyMassScale: 1
 --- !u!1 &1797659036
 GameObject:
   m_ObjectHideFlags: 0
@@ -18315,6 +18249,8 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 536870912
   delayToggleLayerAfterExit: 1
+  leftHandRotationOffset: {x: 0, y: 0, z: 0}
+  rightHandRotationOffset: {x: 0, y: 0, z: 0}
   isVirtualHandVisible: 0
   virtualTool: {fileID: 7450240357374032614}
   grabCollider: {fileID: 4116153952939795663}
@@ -25684,34 +25620,10 @@ MonoBehaviour:
       m_Calls: []
   m_SelectEntered:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 6927257725982119422}
-        m_TargetAssemblyTypeName: XRCookingToolManager, Assembly-CSharp
-        m_MethodName: OnGrabEntered
-        m_Mode: 0
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
   m_SelectExited:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 6927257725982119422}
-        m_TargetAssemblyTypeName: XRCookingToolManager, Assembly-CSharp
-        m_MethodName: OnGrabExited
-        m_Mode: 0
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
   m_FirstFocusEntered:
     m_PersistentCalls:
       m_Calls: []
@@ -28848,34 +28760,10 @@ MonoBehaviour:
       m_Calls: []
   m_SelectEntered:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 118282481294034876}
-        m_TargetAssemblyTypeName: XRCookingToolManager, Assembly-CSharp
-        m_MethodName: OnGrabEntered
-        m_Mode: 0
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
   m_SelectExited:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 118282481294034876}
-        m_TargetAssemblyTypeName: XRCookingToolManager, Assembly-CSharp
-        m_MethodName: OnGrabExited
-        m_Mode: 0
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
   m_FirstFocusEntered:
     m_PersistentCalls:
       m_Calls: []
@@ -32393,6 +32281,8 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 536870912
   delayToggleLayerAfterExit: 1
+  leftHandRotationOffset: {x: 0, y: 0, z: 0}
+  rightHandRotationOffset: {x: 0, y: 0, z: 0}
   isVirtualHandVisible: 0
   virtualTool: {fileID: 6641137461535256825}
   grabCollider: {fileID: 5268170070890615692}
@@ -35289,6 +35179,8 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 536870912
   delayToggleLayerAfterExit: 1
+  leftHandRotationOffset: {x: 0, y: 0, z: 180}
+  rightHandRotationOffset: {x: 0, y: 0, z: 0}
   isVirtualHandVisible: 0
   virtualTool: {fileID: 4623560798405045476}
   grabCollider: {fileID: 4520320486375182438}
@@ -36160,34 +36052,10 @@ MonoBehaviour:
       m_Calls: []
   m_SelectEntered:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 3378969502266848643}
-        m_TargetAssemblyTypeName: XRCookingToolManager, Assembly-CSharp
-        m_MethodName: OnGrabEntered
-        m_Mode: 0
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
   m_SelectExited:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 3378969502266848643}
-        m_TargetAssemblyTypeName: XRCookingToolManager, Assembly-CSharp
-        m_MethodName: OnGrabExited
-        m_Mode: 0
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
   m_FirstFocusEntered:
     m_PersistentCalls:
       m_Calls: []
@@ -37113,6 +36981,8 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 536870912
   delayToggleLayerAfterExit: 1
+  leftHandRotationOffset: {x: 0, y: -90, z: 0}
+  rightHandRotationOffset: {x: 0, y: 90, z: 0}
   isVirtualHandVisible: 0
   virtualTool: {fileID: 3629517088340447524}
   grabCollider: {fileID: 3134942042437145336}
@@ -55209,6 +55079,8 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 536870912
   delayToggleLayerAfterExit: 1
+  leftHandRotationOffset: {x: 0, y: 0, z: 180}
+  rightHandRotationOffset: {x: 0, y: 0, z: 0}
   isVirtualHandVisible: 0
   virtualTool: {fileID: 6310188836424573967}
   grabCollider: {fileID: 5431185683154962355}
@@ -62538,34 +62410,10 @@ MonoBehaviour:
       m_Calls: []
   m_SelectEntered:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 3821681204922754470}
-        m_TargetAssemblyTypeName: XRCookingToolManager, Assembly-CSharp
-        m_MethodName: OnGrabEntered
-        m_Mode: 0
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
   m_SelectExited:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 3821681204922754470}
-        m_TargetAssemblyTypeName: XRCookingToolManager, Assembly-CSharp
-        m_MethodName: OnGrabExited
-        m_Mode: 0
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
   m_FirstFocusEntered:
     m_PersistentCalls:
       m_Calls: []
@@ -66223,34 +66071,10 @@ MonoBehaviour:
       m_Calls: []
   m_SelectEntered:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 4226532318873611539}
-        m_TargetAssemblyTypeName: XRCookingToolManager, Assembly-CSharp
-        m_MethodName: OnGrabEntered
-        m_Mode: 0
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
   m_SelectExited:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 4226532318873611539}
-        m_TargetAssemblyTypeName: XRCookingToolManager, Assembly-CSharp
-        m_MethodName: OnGrabExited
-        m_Mode: 0
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
   m_FirstFocusEntered:
     m_PersistentCalls:
       m_Calls: []
