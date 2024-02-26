@@ -34,26 +34,24 @@ public class XRObjectManagerBase : MonoBehaviour
 	[Tooltip("오른손으로 잡는 경우, 보정할 회전값")]
 	public Vector3 rightHandRotationOffset = Vector3.zero;
 
-	[Header("Virtual Tool")]
+	[Header("Virtual Object")]
 	public bool isVirtualHandVisible = false;
 	public GameObject virtualObject;
-	public Collider grabCollider;
 	public Renderer virtualObjectRenderer;
+	public Collider grabCollider;
 	[Range(.1f, 10f)] public float distanceThreshold = .1f;
 
-	[Header("Physical Tool")]
+	[Header("Physical Object")]
 	public GameObject physicalObject;
+	public Renderer physicalObjectRenderer;
 	public Transform primaryAttachPoint;
 	public float maxSpeed = 30f;
 	[Range(0f, 1f)] public float connectedBodyMassScale = 1f;
 
 	private Transform _virtualObjectTransform;
-
 	private Transform _physicalObjectTransform;
 	private Rigidbody _physicalObjectRigidbody;
-
 	private LayerMask _initialLayer;
-
 	private Transform _leftHandPhysicalTransform;
 	private Rigidbody _leftHandPhysicalRigidbody;
 	private Transform _rightHandPhysicalTransform;
@@ -66,15 +64,7 @@ public class XRObjectManagerBase : MonoBehaviour
 			grabInteractable.selectEntered.AddListener(OnGrabEntered);
 			grabInteractable.selectExited.AddListener(OnGrabExited);
 		}
-		else
-		{
-			Assert.IsNotNull(grabInteractable, $"Can not find XRGrabInteractable component in virtualTool of {gameObject.name}.");
-			Debug.LogError($"Can not find XRGrabInteractable component in virtualTool of {gameObject.name}.");
-		}
-	}
 
-	protected virtual void Start()
-	{
 		_virtualObjectTransform = virtualObject.transform;
 
 		_physicalObjectTransform = physicalObject.transform;
@@ -86,6 +76,18 @@ public class XRObjectManagerBase : MonoBehaviour
 		_leftHandPhysicalRigidbody = _leftHandPhysicalTransform.GetComponent<Rigidbody>();
 		_rightHandPhysicalTransform = GameObject.FindGameObjectWithTag("RightHandPhysical").transform;
 		_rightHandPhysicalRigidbody = _rightHandPhysicalTransform.GetComponent<Rigidbody>();
+
+		Assert.IsNotNull(grabInteractable, $"[{gameObject.name}] Can't find XRGrabInteractable component in virtual object");
+		Assert.IsNotNull(virtualObject, $"[{gameObject.name}] Can't find virtual object");
+		Assert.IsNotNull(virtualObjectRenderer, $"[{gameObject.name}] Can't find MeshRenderer component in virtual object");
+		Assert.IsNotNull(physicalObject, $"[{gameObject.name}] Can't find physical object");
+		Assert.IsNotNull(physicalObjectRenderer, $"[{gameObject.name}] Can't find MeshRenderer component in physical object");
+		Assert.IsNotNull(_physicalObjectRigidbody, $"[{gameObject.name}] Can't find Rigidbody component in physical object");
+	}
+
+	protected virtual void Start()
+	{
+		virtualObjectRenderer.enabled = isVirtualHandVisible;
 	}
 
 	protected virtual void FixedUpdate()
@@ -277,7 +279,7 @@ public class XRObjectManagerBase : MonoBehaviour
 		_primaryJointToHand.connectedMassScale = connectedBodyMassScale;
 
 		string context = isLeftHand ? "Left Hand" : "Right Hand";
-		Debug.Log($"Primary Hand Grabbed: {transform.gameObject.name} / {context}");
+		Debug.Log($"[{transform.gameObject.name}] Secondary hand grabbed {context}");
 	}
 
 	private Vector3 ConvertLocalPosition(Quaternion rotation)
@@ -353,25 +355,20 @@ public class XRObjectManagerBase : MonoBehaviour
 
 		bool isLeftHand = e.interactorObject.transform.gameObject.CompareTag("LeftHandInteractor");
 		string context = isLeftHand ? "Left Hand" : "Right Hand";
-		Debug.Log($"Primary Hand Released: {transform.gameObject.name} / {context}");
+		Debug.Log($"[{transform.gameObject.name}] Primary hand released {context}");
 	}
 
 	private void AttachSecondaryPointToHand(SelectEnterEventArgs e)
 	{
 		bool isLeftHand = e.interactorObject.transform.gameObject.CompareTag("LeftHandInteractor");
 		string context = isLeftHand ? "Left Hand" : "Right Hand";
-		Debug.Log($"Secondary Hand Grabbed: {transform.gameObject.name} / {context}");
+		Debug.Log($"[{transform.gameObject.name}] Secondary hand grabbed {context}");
 	}
 
 	private void DetachSecondaryPointFromHand(SelectExitEventArgs e)
 	{
 		bool isLeftHand = e.interactorObject.transform.gameObject.CompareTag("LeftHandInteractor");
 		string context = isLeftHand ? "Left Hand" : "Right Hand";
-		Debug.Log($"Secondary Hand Released: {transform.gameObject.name} / {context}");
-	}
-
-    public void ChangeVirtualRenderer(Renderer renderer)
-    {
-		virtualObjectRenderer = renderer;
+		Debug.Log($"[{transform.gameObject.name}] Secondary hand released {context}");
 	}
 }

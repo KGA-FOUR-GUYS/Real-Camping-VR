@@ -143,7 +143,7 @@ public class ScoreManager : MonoBehaviour
             float Grill_sum = 0;
             int Except_Child = 0;
 
-            IngredientManager[] Ripe_Data = Ingredient_Spawner_Arr[i].objectPool.GetComponentsInChildren<IngredientManager>(false);
+            IngredientDataManager[] Ripe_Data = Ingredient_Spawner_Arr[i].objectPool.GetComponentsInChildren<IngredientDataManager>(false);
             int List_Num = (int)Matching_Name(Ingredient_Spawner_Arr[i]);
             var Target_Ripe = currentRecipe.ingredientList[List_Num].ripeState;
             var Target_Boil = currentRecipe.ingredientList[List_Num].ripeByBoil;

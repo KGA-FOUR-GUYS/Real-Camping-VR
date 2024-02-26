@@ -8,8 +8,8 @@ using UnityEngine.Assertions;
 
 public class XRIngredientObjectManager : XRObjectManagerBase
 {
+	[Header("Slice")]
 	public bool isSlicable = true;
-
 	public Transform objectPool;
     [NonSerialized] public MeshCalculator meshCalculator = null;
     [NonSerialized] public SpawnObject spawnObject = null;
@@ -28,10 +28,7 @@ public class XRIngredientObjectManager : XRObjectManagerBase
 	protected override void Start()
 	{
 		base.Start();
-
-		
-
-		// 여기서 MeshCalculator로 isSlicable 여부를 확인하는 것이 바람직함
+		meshCalculator.CheckVolume();
 	}
 
 	protected override void FixedUpdate()
