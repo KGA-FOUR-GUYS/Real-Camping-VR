@@ -5,6 +5,9 @@ using UnityEngine.XR.Interaction.Toolkit;
 
 public class XRUIToolManager : XRCookingToolManager
 {
+	public GameObject leftUIPen;
+	public GameObject rightUIPen;
+
 	protected override void Awake()
 	{
 		base.Awake();
@@ -13,6 +16,9 @@ public class XRUIToolManager : XRCookingToolManager
 	protected override void Start()
 	{
 		base.Start();
+
+		leftUIPen.SetActive(false);
+		rightUIPen.SetActive(false);
 	}
 
 	protected override void FixedUpdate()
@@ -29,11 +35,31 @@ public class XRUIToolManager : XRCookingToolManager
 	public override void OnGrabEntered(SelectEnterEventArgs e)
 	{
 		base.OnGrabEntered(e);
+
+		bool isLeftHand = e.interactorObject.transform.gameObject.CompareTag("LeftHandInteractor");
+        if (isLeftHand)
+        {
+			rightUIPen.SetActive(true);
+        }
+        else
+        {
+			leftUIPen.SetActive(true);
+		}
 	}
 
 	// XR Grab Interactable Events
 	public override void OnGrabExited(SelectExitEventArgs e)
 	{
 		base.OnGrabExited(e);
+
+		bool isLeftHand = e.interactorObject.transform.gameObject.CompareTag("LeftHandInteractor");
+		if (isLeftHand)
+		{
+			rightUIPen.SetActive(false);
+		}
+		else
+		{
+			leftUIPen.SetActive(false);
+		}
 	}
 }
