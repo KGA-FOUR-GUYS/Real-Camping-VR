@@ -96,7 +96,7 @@ public class ScoreManager : MonoBehaviour
     {
         for (int i = 0; i < currentRecipe.ingredientList.Count; i++)
         {
-            var Ingredient_name = spawner.prefab.GetComponent<IngredientManager>().data.name;
+            var Ingredient_name = spawner.prefab.GetComponent<IngredientDataManager>().data.name;
             if (Ingredient_name.Equals($"{currentRecipe.ingredientList[i].name}"))
             {
                 Name_Num = i;
@@ -128,7 +128,7 @@ public class ScoreManager : MonoBehaviour
             float Broil_sum = 0;
             float Grill_sum = 0;
             int Except_Child = 0;
-            IngredientManager[] Ripe_Data = Ingredient_Spawner_Arr[i].objectPool.GetComponentsInChildren<IngredientManager>(false);
+            IngredientDataManager[] Ripe_Data = Ingredient_Spawner_Arr[i].objectPool.GetComponentsInChildren<IngredientDataManager>(false);
             var Target_Ripe = currentRecipe.ingredientList[(int)Matching_Name(Ingredient_Spawner_Arr[i])].ripeState;
             var Target_Boil = currentRecipe.ingredientList[(int)Matching_Name(Ingredient_Spawner_Arr[i])].ripeByBoil;
             var Target_Broil = currentRecipe.ingredientList[(int)Matching_Name(Ingredient_Spawner_Arr[i])].ripeByBroil;
@@ -160,9 +160,9 @@ public class ScoreManager : MonoBehaviour
                         break;
                 }
                 //익힘 비율 계산해서 총합에 넣어줌
-                Boil_sum += Mathf.Round(Ripe_Data[j].m_ripeByBoil / Ripe_Data[j].Ripe * 100f);
-                Broil_sum += Mathf.Round(Ripe_Data[j].m_ripeByBroil / Ripe_Data[j].Ripe * 100f);
-                Grill_sum += Mathf.Round(Ripe_Data[j].m_ripeByGrill / Ripe_Data[j].Ripe * 100f);
+                Boil_sum += Mathf.Round(Ripe_Data[j]._ripeByBoil / Ripe_Data[j].Ripe * 100f);
+                Broil_sum += Mathf.Round(Ripe_Data[j]._ripeByBroil / Ripe_Data[j].Ripe * 100f);
+                Grill_sum += Mathf.Round(Ripe_Data[j]._ripeByGrill / Ripe_Data[j].Ripe * 100f);
             }
             //총 점수 및 재료별 익힘 정도 계산
             float i_Ripe_score = Mathf.Floor(Ripe_sum * 20f / (Ingredient_Spawner_Arr[i].objectPool.childCount-Except_Child));

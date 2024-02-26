@@ -36,21 +36,21 @@ public class XRObjectManagerBase : MonoBehaviour
 
 	[Header("Virtual Tool")]
 	public bool isVirtualHandVisible = false;
-	public GameObject virtualTool;
+	public GameObject virtualObject;
 	public Collider grabCollider;
-	public Renderer virtualToolRenderer;
+	public Renderer virtualObjectRenderer;
 	[Range(.1f, 10f)] public float distanceThreshold = .1f;
 
 	[Header("Physical Tool")]
-	public GameObject physicalTool;
+	public GameObject physicalObject;
 	public Transform primaryAttachPoint;
 	public float maxSpeed = 30f;
 	[Range(0f, 1f)] public float connectedBodyMassScale = 1f;
 
-	private Transform _virtualToolTransform;
+	private Transform _virtualObjectTransform;
 
-	private Transform _physicalToolTransform;
-	private Rigidbody _physicalToolRigidbody;
+	private Transform _physicalObjectTransform;
+	private Rigidbody _physicalObjectRigidbody;
 
 	private LayerMask _initialLayer;
 
@@ -61,7 +61,7 @@ public class XRObjectManagerBase : MonoBehaviour
 
 	protected virtual void Awake()
 	{
-		if (virtualTool.transform.TryGetComponent(out XRGrabInteractable grabInteractable))
+		if (virtualObject.transform.TryGetComponent(out XRGrabInteractable grabInteractable))
 		{
 			grabInteractable.selectEntered.AddListener(OnGrabEntered);
 			grabInteractable.selectExited.AddListener(OnGrabExited);
@@ -75,12 +75,12 @@ public class XRObjectManagerBase : MonoBehaviour
 
 	protected virtual void Start()
 	{
-		_virtualToolTransform = virtualTool.transform;
+		_virtualObjectTransform = virtualObject.transform;
 
-		_physicalToolTransform = physicalTool.transform;
-		_physicalToolRigidbody = physicalTool.GetComponent<Rigidbody>();
+		_physicalObjectTransform = physicalObject.transform;
+		_physicalObjectRigidbody = physicalObject.GetComponent<Rigidbody>();
 
-		_initialLayer = _physicalToolTransform.gameObject.layer;
+		_initialLayer = _physicalObjectTransform.gameObject.layer;
 
 		_leftHandPhysicalTransform = GameObject.FindGameObjectWithTag("LeftHandPhysical").transform;
 		_leftHandPhysicalRigidbody = _leftHandPhysicalTransform.GetComponent<Rigidbody>();
@@ -113,10 +113,10 @@ public class XRObjectManagerBase : MonoBehaviour
 	/// </summary>
 	private void ToggleVirtualToolRenderer()
 	{
-		float distance = Vector3.Distance(_virtualToolTransform.position, _physicalToolTransform.position);
+		float distance = Vector3.Distance(_virtualObjectTransform.position, _physicalObjectTransform.position);
 		bool isFar = distance >= distanceThreshold;
 
-		virtualToolRenderer.enabled = isVirtualHandVisible && isFar;
+		virtualObjectRenderer.enabled = isVirtualHandVisible && isFar;
 	}
 
 	/// <summary>
@@ -124,8 +124,8 @@ public class XRObjectManagerBase : MonoBehaviour
 	/// </summary>
 	private void MatchVirtualToolToPhysicalTool()
 	{
-		_virtualToolTransform.rotation = _physicalToolTransform.rotation;
-		_virtualToolTransform.position = _physicalToolTransform.position;
+		_virtualObjectTransform.rotation = _physicalObjectTransform.rotation;
+		_virtualObjectTransform.position = _physicalObjectTransform.position;
 	}
 
 	/// <summary>
@@ -142,12 +142,12 @@ public class XRObjectManagerBase : MonoBehaviour
 	/// </summary>
 	private void UpdatePhysicalToolRotation()
 	{
-		Quaternion rotationDiff = _virtualToolTransform.rotation * Quaternion.Inverse(_physicalToolTransform.rotation);
+		Quaternion rotationDiff = _virtualObjectTransform.rotation * Quaternion.Inverse(_physicalObjectTransform.rotation);
 		rotationDiff.ToAngleAxis(out float angleInDegree, out Vector3 rotationAxis);
 
 		Vector3 rotationDiffInDegree = angleInDegree * rotationAxis;
 
-		_physicalToolRigidbody.angularVelocity = (rotationDiffInDegree * Mathf.Deg2Rad) / Time.fixedDeltaTime;
+		_physicalObjectRigidbody.angularVelocity = (rotationDiffInDegree * Mathf.Deg2Rad) / Time.fixedDeltaTime;
 	}
 
 	/// <summary>
@@ -155,15 +155,14 @@ public class XRObjectManagerBase : MonoBehaviour
 	/// </summary>
 	private void UpdatePhysicalToolPosition()
 	{
-		
-		var desiredVelocity = (_virtualToolTransform.position - _physicalToolTransform.position) / Time.fixedDeltaTime;
+		var desiredVelocity = (_virtualObjectTransform.position - _physicalObjectTransform.position) / Time.fixedDeltaTime;
 		if (desiredVelocity.magnitude > maxSpeed)
 		{
 			var ratio = maxSpeed / desiredVelocity.magnitude;
 			desiredVelocity = new Vector3(desiredVelocity.x * ratio, desiredVelocity.y * ratio, desiredVelocity.z * ratio);
 		}
 
-		_physicalToolRigidbody.velocity = desiredVelocity;
+		_physicalObjectRigidbody.velocity = desiredVelocity;
 	}
 
 	private IXRSelectInteractor _primaryInteractor = null;
@@ -180,7 +179,7 @@ public class XRObjectManagerBase : MonoBehaviour
 		{
 			_primaryInteractor = e.interactorObject;
 			isPrimaryGrabbed = true;
-			TogglePhysicalToolLayer();
+			TogglePhysicalObjectLayer();
 			AttachPrimaryPointToHand(e);
 		}
 		// Secondary Grab Entered
@@ -200,7 +199,7 @@ public class XRObjectManagerBase : MonoBehaviour
 		{
 			_primaryInteractor = null;
 			isPrimaryGrabbed = false;
-			Invoke(nameof(TogglePhysicalToolLayer), delayToggleLayerAfterExit);
+			Invoke(nameof(TogglePhysicalObjectLayer), delayToggleLayerAfterExit);
 			DetachPrimaryPointFromHand(e);
 		}
 		// Secondary Grab Exited
@@ -212,9 +211,15 @@ public class XRObjectManagerBase : MonoBehaviour
 		}
 	}
 
-	private void TogglePhysicalToolLayer()
+	/// <summary>
+	/// Change collision layer of physical object <br/>
+	/// <br/>
+	/// grabbed layer : OnSelectEntered with primaryHand <br/>
+	/// initial layer : OnSelectExited with primaryHand
+	/// </summary>
+	private void TogglePhysicalObjectLayer()
 	{
-		int currentLayerValue = _physicalToolTransform.gameObject.layer;
+		int currentLayerValue = _physicalObjectTransform.gameObject.layer;
 
 		LayerMask targetLayerMask = isPrimaryGrabbed ? grabbedLayer : _initialLayer;
 		int targetLayerValue = targetLayerMask == 0
@@ -225,10 +230,10 @@ public class XRObjectManagerBase : MonoBehaviour
 
 		if (currentLayerValue == targetLayerValue) return;
 
-		_physicalToolTransform.gameObject.layer = targetLayerValue;
+		_physicalObjectTransform.gameObject.layer = targetLayerValue;
 
 		// Change layer of children
-		var colliders = _physicalToolTransform.GetComponentsInChildren<Collider>();
+		var colliders = _physicalObjectTransform.GetComponentsInChildren<Collider>();
 		foreach (var collider in colliders)
 		{
 			// 미리 지정해준 Layer가 있다면 유지 (i.e - Grab Guidance)
@@ -240,6 +245,10 @@ public class XRObjectManagerBase : MonoBehaviour
 	private Vector3 _primaryColliderLocalPosition;
 	private Quaternion _primaryColliderLocalRotation;
 	private FixedJoint _primaryJointToHand;
+	/// <summary>
+	/// Match rotation, position and create fixed joint to attach physical object to physical hand
+	/// </summary>
+	/// <param name="e"></param>
 	private void AttachPrimaryPointToHand(SelectEnterEventArgs e)
 	{
 		bool isLeftHand = e.interactorObject.transform.gameObject.CompareTag("LeftHandInteractor");
@@ -248,11 +257,11 @@ public class XRObjectManagerBase : MonoBehaviour
 		Transform handAttachPoint = hand.GetChild(0);
 
 		// Physical Tool 보정
-		Quaternion rotationOffset = Quaternion.Inverse(_physicalToolTransform.rotation) * primaryAttachPoint.rotation;
-		_physicalToolTransform.rotation = handAttachPoint.rotation * Quaternion.Inverse(rotationOffset);
-		_physicalToolTransform.localRotation *= isLeftHand ? Quaternion.Euler(leftHandRotationOffset) : Quaternion.Euler(rightHandRotationOffset);
-		Vector3 positionOffset = _physicalToolTransform.position - primaryAttachPoint.position;
-		_physicalToolTransform.position = handAttachPoint.position + positionOffset;
+		Quaternion rotationOffset = Quaternion.Inverse(_physicalObjectTransform.rotation) * primaryAttachPoint.rotation;
+		_physicalObjectTransform.rotation = handAttachPoint.rotation * Quaternion.Inverse(rotationOffset);
+		_physicalObjectTransform.localRotation *= isLeftHand ? Quaternion.Euler(leftHandRotationOffset) : Quaternion.Euler(rightHandRotationOffset);
+		Vector3 positionOffset = _physicalObjectTransform.position - primaryAttachPoint.position;
+		_physicalObjectTransform.position = handAttachPoint.position + positionOffset;
 
 		// Priamry Grab collider 보정
 		_primaryColliderLocalPosition = grabCollider.transform.localPosition;
@@ -263,7 +272,7 @@ public class XRObjectManagerBase : MonoBehaviour
 
 		// Hand를 기준으로 Physical Tool을 FixedJoint로 연결
 		Rigidbody bodyToConnect = isLeftHand ? _leftHandPhysicalRigidbody : _rightHandPhysicalRigidbody;
-		_primaryJointToHand = _physicalToolRigidbody.gameObject.AddComponent<FixedJoint>();
+		_primaryJointToHand = _physicalObjectRigidbody.gameObject.AddComponent<FixedJoint>();
 		_primaryJointToHand.connectedBody = bodyToConnect;
 		_primaryJointToHand.connectedMassScale = connectedBodyMassScale;
 
@@ -329,12 +338,16 @@ public class XRObjectManagerBase : MonoBehaviour
 		return new Vector3(x, y, z);
 	}
 
+	/// <summary>
+	/// Remove fixed joint that attach physical object to physical hand
+	/// </summary>
+	/// <param name="e"></param>
 	private void DetachPrimaryPointFromHand(SelectExitEventArgs e)
 	{
 		Destroy(_primaryJointToHand);
 
 		// Primary Grab collider 원복
-		grabCollider.transform.SetParent(_virtualToolTransform);
+		grabCollider.transform.SetParent(_virtualObjectTransform);
 		grabCollider.transform.localPosition = _primaryColliderLocalPosition;
 		grabCollider.transform.localRotation = _primaryColliderLocalRotation;
 
@@ -342,7 +355,6 @@ public class XRObjectManagerBase : MonoBehaviour
 		string context = isLeftHand ? "Left Hand" : "Right Hand";
 		Debug.Log($"Primary Hand Released: {transform.gameObject.name} / {context}");
 	}
-
 
 	private void AttachSecondaryPointToHand(SelectEnterEventArgs e)
 	{
@@ -358,4 +370,8 @@ public class XRObjectManagerBase : MonoBehaviour
 		Debug.Log($"Secondary Hand Released: {transform.gameObject.name} / {context}");
 	}
 
+    public void ChangeVirtualRenderer(Renderer renderer)
+    {
+		virtualObjectRenderer = renderer;
+	}
 }

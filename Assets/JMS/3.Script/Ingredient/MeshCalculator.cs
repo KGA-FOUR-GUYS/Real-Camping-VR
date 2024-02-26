@@ -9,19 +9,20 @@ namespace Cooking
         [field: SerializeField] public float Volume { get; private set; } = -1.0f;
         [Tooltip("Resource intensive, recommended to set false")]
         public bool isUpdating = false;
+        public MeshFilter meshFilter;
 
         private Mesh _mesh;
         private Vector3 _lastLocalScale;
 
         private void Awake()
         {
-            _mesh = GetComponent<MeshFilter>().sharedMesh;
+            _mesh = meshFilter.sharedMesh;
             _lastLocalScale = transform.localScale;
         }
 
         private void Start()
         {
-            Volume = VolumeOfMesh(_mesh, _lastLocalScale);
+            CheckVolume();
         }
 
         private void Update()
@@ -30,24 +31,14 @@ namespace Cooking
             if (transform.localScale == _lastLocalScale) return;
 
             _lastLocalScale = transform.localScale;
+            CheckVolume();
+        }
+
+        public void CheckVolume()
+        {
             Volume = VolumeOfMesh(_mesh, _lastLocalScale);
         }
 
-        public float SignedVolumeOfTriangle(Vector3 p1, Vector3 p2, Vector3 p3, Vector3 localScale)
-        {
-            var xScale = localScale.x;
-            var yScale = localScale.y;
-            var zScale = localScale.z;
-
-            float v321 = p3.x * xScale * p2.y * yScale * p1.z * zScale;
-            float v231 = p2.x * xScale * p3.y * yScale * p1.z * zScale;
-            float v312 = p3.x * xScale * p1.y * yScale * p2.z * zScale;
-            float v132 = p1.x * xScale * p3.y * yScale * p2.z * zScale;
-            float v213 = p2.x * xScale * p1.y * yScale * p3.z * zScale;
-            float v123 = p1.x * xScale * p2.y * yScale * p3.z * zScale;
-
-            return (1.0f / 6.0f) * (-v321 + v231 + v312 - v132 - v213 + v123);
-        }
         public float VolumeOfMesh(Mesh mesh, Vector3 localScale)
         {
             if (mesh == null)
@@ -69,6 +60,21 @@ namespace Cooking
                 volume += SignedVolumeOfTriangle(p1, p2, p3, localScale);
             }
             return Mathf.Abs(volume);
+        }
+        public float SignedVolumeOfTriangle(Vector3 p1, Vector3 p2, Vector3 p3, Vector3 localScale)
+        {
+            var xScale = localScale.x;
+            var yScale = localScale.y;
+            var zScale = localScale.z;
+
+            float v321 = p3.x * xScale * p2.y * yScale * p1.z * zScale;
+            float v231 = p2.x * xScale * p3.y * yScale * p1.z * zScale;
+            float v312 = p3.x * xScale * p1.y * yScale * p2.z * zScale;
+            float v132 = p1.x * xScale * p3.y * yScale * p2.z * zScale;
+            float v213 = p2.x * xScale * p1.y * yScale * p3.z * zScale;
+            float v123 = p1.x * xScale * p2.y * yScale * p3.z * zScale;
+
+            return (1.0f / 6.0f) * (-v321 + v231 + v312 - v132 - v213 + v123);
         }
     }
 }

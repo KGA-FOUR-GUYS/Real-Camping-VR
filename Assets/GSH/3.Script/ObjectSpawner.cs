@@ -50,7 +50,9 @@ public class ObjectSpawner : XRGrabInteractable
         }
 
         GameObject newPrefab = Instantiate(prefab, transform.position, transform.rotation, objectPool);
-        newPrefab.GetComponent<SpawnObject>().spawner = this;
+        var ingredientManager = newPrefab.GetComponent<XRIngredientObjectManager>();
+        ingredientManager.objectPool = objectPool;
+        ingredientManager.virtualObject.GetComponent<SpawnObject>().spawner = this;
         newPrefab.SetActive(false);
         return newPrefab;
     }
