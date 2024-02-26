@@ -134,19 +134,15 @@ public class RecipeManager : MonoBehaviour
         }
     }
 
-    private void ActiveToggle(GameObject origin)
-    {
-        currentCanvas.SetActive(false);
-        currentCanvas = origin;
-        currentCanvas.SetActive(true);
-    }
     public void StartCookBtn()
     {
         ProcessChange(RecipeProcess.CookingProcess);
+        SoundManager.instance.PlayCookingSFX(0);
     }
     public void StopCookBtn()
     {
         ProcessChange(RecipeProcess.DetailRecipe);
+        SoundManager.instance.PlayCookingSFX(2);
     }
 
     public void BackBtn()
@@ -159,6 +155,7 @@ public class RecipeManager : MonoBehaviour
         {
             recipe_UI = null;
             ProcessChange(RecipeProcess.SelectRecipe);
+            SoundManager.instance.PlayCookingSFX(0);
         }
     }
 
@@ -342,6 +339,7 @@ public class RecipeManager : MonoBehaviour
         ProcessChange(RecipeProcess.SelectRecipe);
         CookingProcessTopSpace.transform.position = targetVector_CP;
         cookingImgObj = null;
+        SoundManager.instance.PlayCookingSFX(1);
     }
 
     //-----------------------------Result---------------------------------

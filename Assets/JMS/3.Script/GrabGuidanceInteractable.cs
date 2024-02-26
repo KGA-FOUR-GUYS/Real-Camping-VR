@@ -7,6 +7,7 @@ using UnityEngine.XR.Interaction.Toolkit;
 [RequireComponent(typeof(Outline))]
 public class GrabGuidanceInteractable : XRSimpleInteractable
 {
+    [Space(20)]
     [Header("Highlight Trajectory")]
     public float maxOffsetY = 1f;
     [Range(3, 50)] public int vertexCount = 20;
@@ -65,7 +66,8 @@ public class GrabGuidanceInteractable : XRSimpleInteractable
     {
         base.OnHoverExited(args);
 
-        HighlightContour(false);
+        if (_currentInteractor == null)
+            HighlightContour(false);
     }
     
     protected override void OnSelectEntered(SelectEnterEventArgs args)
@@ -84,9 +86,6 @@ public class GrabGuidanceInteractable : XRSimpleInteractable
         // Start Render Trajectory
         var handTransform = _currentInteractor.transform;
         HighlightTrajectory(true, handTransform);
-
-        // Stop Highlight Contour
-        HighlightContour(false);
     }
     protected override void OnSelectExited(SelectExitEventArgs args)
     {
@@ -143,7 +142,7 @@ public class GrabGuidanceInteractable : XRSimpleInteractable
 
             var startPos = transform.position;
             var endPos = handTransform.position;
-            var midPos = new Vector3((startPos.x + endPos.x) / 2, endPos.y + maxOffsetY, (startPos.z + endPos.z) / 2);
+            var midPos = new Vector3((startPos.x + endPos.x) / 2, startPos.y + maxOffsetY, (startPos.z + endPos.z) / 2);
             DrawBezierCurve3(startPos, midPos, endPos);
         }
     }
@@ -238,6 +237,7 @@ public class GrabGuidanceInteractable : XRSimpleInteractable
     private void PullObjectAlongTrajectory()
     {
         StopDrawTrajectory();
+        HighlightContour(false);
 
         // Prevent redundant execution
         if (_currentPullObject != null)
@@ -256,7 +256,7 @@ public class GrabGuidanceInteractable : XRSimpleInteractable
         Vector3 endPos = _currentInteractor.transform.position;
         Vector3 midPos = new Vector3(
             (startPos.x + endPos.x) / 2,
-            endPos.y + maxOffsetY,
+            startPos.y + maxOffsetY,
             (startPos.z + endPos.z) / 2);
 
         // isKinematic = true, 경로를 이동하며 발생하는 문제를 해결

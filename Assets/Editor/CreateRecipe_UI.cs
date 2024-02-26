@@ -42,5 +42,7 @@ public class CreateRecipe_UI
             recipeGO.name = recipe_UI.currentRecipeSO.name;
         }
 
+        Debug.Log("Create Complete");
+
     }
 }
