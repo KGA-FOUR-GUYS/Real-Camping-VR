@@ -24,9 +24,9 @@ namespace Cooking
         [field: SerializeField] public RipeState RipeState { get; private set; } = RipeState.Raw;
 
         [Header("Cook History")]
-        [SerializeField] private float m_ripeByBoil = 0f;
-        [SerializeField] private float m_ripeByBroil = 0f;
-        [SerializeField] private float m_ripeByGrill = 0f;
+        [SerializeField] public float m_ripeByBoil = 0f;
+        [SerializeField] public float m_ripeByBroil = 0f;
+        [SerializeField] public float m_ripeByGrill = 0f;
         public float RateOfBoil => Ripe == 0 ? 0f : m_ripeByBoil / Ripe * 100f;
         public float RateOfBroil => Ripe == 0 ? 0f : m_ripeByBroil / Ripe * 100f;
         public float RateOfGrill => Ripe == 0 ? 0f : m_ripeByGrill / Ripe * 100f;
