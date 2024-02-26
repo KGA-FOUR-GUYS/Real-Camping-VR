@@ -7,7 +7,7 @@ public class ObjectSpawner : XRGrabInteractable
 {
     public Transform objectPool;
 
-    [SerializeField] GameObject prefab = default;
+    public GameObject prefab = default;
     private Vector3 attachOffset = Vector3.zero;
     public int SpawnPooling = 0;
     public GameObjectPool prefabPool { get; private set; }
