@@ -44669,6 +44669,8 @@ GameObject:
   m_Component:
   - component: {fileID: 1413455280873671}
   - component: {fileID: 4890686322560933182}
+  - component: {fileID: 5405233554265049367}
+  - component: {fileID: 5405233554265049366}
   m_Layer: 5
   m_Name: Tablet_UI(RecipeManager.cs)
   m_TagString: Untagged
@@ -44676,6 +44678,35 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
+--- !u!114 &5405233554265049366
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5405233554265049365}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d46058a3def6b0e48a9140da1fc55b91, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  frameInterval: 3
+  maxalphaDistance: 10
+  disappearDistance: 20
+  maxalphaAngle: 75
+  disappearAngle: 90
+--- !u!225 &5405233554265049367
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5405233554265049365}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
 --- !u!1 &5406144747475424055
 GameObject:
   m_ObjectHideFlags: 0

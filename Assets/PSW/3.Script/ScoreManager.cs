@@ -19,7 +19,6 @@ public class ScoreManager : MonoBehaviour
     [SerializeField] List<float> Ripe_Grill = new List<float>();//����
     [SerializeField] float Total_Ripe_Score;
     [SerializeField] float Total_Score = 0f;
-    int? Name_Num = null;
 
     //싱글톤
     public static ScoreManager Instance;
@@ -60,7 +59,8 @@ public class ScoreManager : MonoBehaviour
         {
             int Correct_Volume = 0;
             MeshCalculator[] ingredients_volume = Ingredient_Spawner_Arr[i].objectPool.GetComponentsInChildren<MeshCalculator>(false);
-            var Target_Volume = currentRecipe.ingredientList[(int)Matching_Name(Ingredient_Spawner_Arr[i])].sliceVolume;
+            int List_Num = (int)Matching_Name(Ingredient_Spawner_Arr[i]);
+            var Target_Volume = currentRecipe.ingredientList[List_Num].sliceVolume;
             for (int j = 0; j < ingredients_volume.Length; j++)
             {
                 if (ingredients_volume[j].Volume <= Target_Volume)
@@ -68,9 +68,10 @@ public class ScoreManager : MonoBehaviour
                     Correct_Volume++;
                 }
             }
-            float i_cut_score = Mathf.Floor(Correct_Volume / Ingredient_Spawner_Arr[i].objectPool.childCount * 100);
+            int piece_count = Active_ChildCount(Ingredient_Spawner_Arr[i].objectPool);
+            float i_cut_score = Mathf.Floor(Correct_Volume * 100 / piece_count);
 
-            if (Ingredient_Spawner_Arr[i].objectPool.childCount == currentRecipe.ingredientList[(int)Matching_Name(Ingredient_Spawner_Arr[i])].sliceCount)
+            if (piece_count == currentRecipe.ingredientList[List_Num].sliceCount * currentRecipe.ingredientList[List_Num].quantity)
             {
                 Cut_pieces.Add(true);
             }
@@ -79,6 +80,10 @@ public class ScoreManager : MonoBehaviour
                 Cut_pieces.Add(false);
                 i_cut_score -= 5f;
             }
+            if (i_cut_score < 0)
+            {
+                i_cut_score = 0;
+            }
             Cut_Scores.Add(i_cut_score);
         }
         foreach (var scores in Cut_Scores)
@@ -86,14 +91,11 @@ public class ScoreManager : MonoBehaviour
             Total_Cut_Score += scores;
         }
         Total_Cut_Score = Mathf.Floor(Total_Cut_Score / Ingredient_Spawner_Arr.Length);
-        if (Total_Cut_Score < 0)
-        {
-            Total_Cut_Score = 0;
-        }
     }
 
     private int? Matching_Name(ObjectSpawner spawner)
     {
+        int? Name_Num = null;
         for (int i = 0; i < currentRecipe.ingredientList.Count; i++)
         {
             var Ingredient_name = spawner.prefab.GetComponent<IngredientDataManager>().data.name;
@@ -105,10 +107,22 @@ public class ScoreManager : MonoBehaviour
             else
             {
                 Name_Num = null;
-                Debug.Log($"{Ingredient_name}가(이) 레시피에 없습니다");
             }
         }
         return Name_Num;
+    }
+
+    private int Active_ChildCount(Transform objectPool)
+    {
+        int activeChildCount = 0;
+        for (int i = 0; i < objectPool.childCount; i++)
+        {
+            if (objectPool.GetChild(i).gameObject.activeSelf)
+            {
+                activeChildCount++;
+            }
+        }
+        return activeChildCount;
     }
 
     private void Save_Ingredients_Name()
@@ -128,11 +142,14 @@ public class ScoreManager : MonoBehaviour
             float Broil_sum = 0;
             float Grill_sum = 0;
             int Except_Child = 0;
-            IngredientDataManager[] Ripe_Data = Ingredient_Spawner_Arr[i].objectPool.GetComponentsInChildren<IngredientDataManager>(false);
-            var Target_Ripe = currentRecipe.ingredientList[(int)Matching_Name(Ingredient_Spawner_Arr[i])].ripeState;
-            var Target_Boil = currentRecipe.ingredientList[(int)Matching_Name(Ingredient_Spawner_Arr[i])].ripeByBoil;
-            var Target_Broil = currentRecipe.ingredientList[(int)Matching_Name(Ingredient_Spawner_Arr[i])].ripeByBroil;
-            var Target_Grill = currentRecipe.ingredientList[(int)Matching_Name(Ingredient_Spawner_Arr[i])].ripeByGrill;
+
+            IngredientManager[] Ripe_Data = Ingredient_Spawner_Arr[i].objectPool.GetComponentsInChildren<IngredientManager>(false);
+            int List_Num = (int)Matching_Name(Ingredient_Spawner_Arr[i]);
+            var Target_Ripe = currentRecipe.ingredientList[List_Num].ripeState;
+            var Target_Boil = currentRecipe.ingredientList[List_Num].ripeByBoil;
+            var Target_Broil = currentRecipe.ingredientList[List_Num].ripeByBroil;
+            var Target_Grill = currentRecipe.ingredientList[List_Num].ripeByGrill;
+
             for (int j = 0; j < Ripe_Data.Length; j++)
             {
                 if (Ripe_Data[j].RipeState == RipeState.None || Ripe_Data[j].RipeState == RipeState.Raw)
@@ -165,10 +182,12 @@ public class ScoreManager : MonoBehaviour
                 Grill_sum += Mathf.Round(Ripe_Data[j]._ripeByGrill / Ripe_Data[j].Ripe * 100f);
             }
             //총 점수 및 재료별 익힘 정도 계산
-            float i_Ripe_score = Mathf.Floor(Ripe_sum * 20f / (Ingredient_Spawner_Arr[i].objectPool.childCount-Except_Child));
-            float i_Boil_score = Mathf.Round(Boil_sum / (Ingredient_Spawner_Arr[i].objectPool.childCount - Except_Child) * 100);
-            float i_Broil_score = Mathf.Round(Broil_sum / (Ingredient_Spawner_Arr[i].objectPool.childCount - Except_Child) * 100);
-            float i_Grill_score = Mathf.Round(Grill_sum / (Ingredient_Spawner_Arr[i].objectPool.childCount - Except_Child) * 100);
+            int piece_count = Active_ChildCount(Ingredient_Spawner_Arr[i].objectPool);
+            piece_count -= Except_Child;
+            float i_Ripe_score = Mathf.Floor(Ripe_sum * 20f / piece_count);
+            float i_Boil_score = Mathf.Round(Boil_sum * 100 / piece_count);
+            float i_Broil_score = Mathf.Round(Broil_sum * 100 / piece_count);
+            float i_Grill_score = Mathf.Round(Grill_sum * 100 / piece_count);
 
             //익힘 비율 틀리면 감점
             if (i_Boil_score < (Target_Boil - Error_Range) || i_Boil_score > (Target_Boil + Error_Range))
@@ -220,7 +239,6 @@ public class ScoreManager : MonoBehaviour
         {
             Debug.Log($"익히기{Ingredients_Name[i]} : {Ripe_Scores[i]}점 / Boil : {Ripe_Boil[i]} / Broil : {Ripe_Broil[i]} / Grill : {Ripe_Grill[i]}");
         }
-
     }
 
 
