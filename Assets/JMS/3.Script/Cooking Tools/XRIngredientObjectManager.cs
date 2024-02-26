@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.XR.Interaction.Toolkit;
 
-public class XRUIToolManager : XRCookingToolManager
+public class XRIngredientObjectManager : XRCookingToolObjectManager
 {
-	public GameObject leftUIPen;
-	public GameObject rightUIPen;
+	//meshcal = hit.collider.gameObject.GetComponent<MeshCalculator>();
+	//spawnobject = hit.collider.gameObject.GetComponent<SpawnObject>();
 
 	protected override void Awake()
 	{
@@ -16,9 +16,6 @@ public class XRUIToolManager : XRCookingToolManager
 	protected override void Start()
 	{
 		base.Start();
-
-		leftUIPen.SetActive(false);
-		rightUIPen.SetActive(false);
 	}
 
 	protected override void FixedUpdate()
@@ -35,31 +32,11 @@ public class XRUIToolManager : XRCookingToolManager
 	public override void OnGrabEntered(SelectEnterEventArgs e)
 	{
 		base.OnGrabEntered(e);
-
-		bool isLeftHand = e.interactorObject.transform.gameObject.CompareTag("LeftHandInteractor");
-        if (isLeftHand)
-        {
-			rightUIPen.SetActive(true);
-        }
-        else
-        {
-			leftUIPen.SetActive(true);
-		}
 	}
 
 	// XR Grab Interactable Events
 	public override void OnGrabExited(SelectExitEventArgs e)
 	{
 		base.OnGrabExited(e);
-
-		bool isLeftHand = e.interactorObject.transform.gameObject.CompareTag("LeftHandInteractor");
-		if (isLeftHand)
-		{
-			rightUIPen.SetActive(false);
-		}
-		else
-		{
-			leftUIPen.SetActive(false);
-		}
 	}
 }
