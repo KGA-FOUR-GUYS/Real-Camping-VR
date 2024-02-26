@@ -5,6 +5,7 @@ using UnityEngine.XR.Interaction.Toolkit;
 
 public class ObjectSpawner : XRGrabInteractable
 {
+    [Space(20)]
     public Transform objectPool;
 
     public GameObject prefab = default;
@@ -68,9 +69,9 @@ public class ObjectSpawner : XRGrabInteractable
     }
     private void DestroyAllChildren()
     {
-        Cooking.IngredientManager[] ingredients = objectPool.transform.GetComponentsInChildren<Cooking.IngredientManager>(true);
+        Cooking.IngredientDataManager[] ingredients = objectPool.transform.GetComponentsInChildren<Cooking.IngredientDataManager>(true);
 
-        foreach (Cooking.IngredientManager ingredient in ingredients)
+        foreach (Cooking.IngredientDataManager ingredient in ingredients)
         {
             Destroy(ingredient.gameObject);
         }

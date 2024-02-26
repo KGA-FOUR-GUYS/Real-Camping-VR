@@ -1,13 +1,12 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Assertions;
 
 namespace Cooking
 {
-    [RequireComponent(typeof(Renderer))]
     [RequireComponent(typeof(MeshCalculator))]
-    [RequireComponent(typeof(Rigidbody))]
-    public class IngredientManager : MonoBehaviour
+    public class IngredientDataManager : MonoBehaviour
     {
         [field: SerializeField] public float Ripe { get; private set; } = 0f;
         private float m_volumeWeight = 1f;
@@ -31,15 +30,19 @@ namespace Cooking
         public float RateOfBroil => Ripe == 0 ? 0f : m_ripeByBroil / Ripe * 100f;
         public float RateOfGrill => Ripe == 0 ? 0f : m_ripeByGrill / Ripe * 100f;
 
-        private Renderer m_renderer;
         private MeshCalculator m_meshCalculator;
-        private Rigidbody m_rigidbody;
+
+        [Header("Object")]
+        public Renderer m_renderer;
+        public Rigidbody m_rigidbody;
 
         private void Awake()
         {
-            TryGetComponent(out m_renderer);
             TryGetComponent(out m_meshCalculator);
-            TryGetComponent(out m_rigidbody);
+            
+            Assert.IsNotNull(m_meshCalculator, $"Can not find MeshCalculator component in {gameObject.name}");
+            Assert.IsNotNull(m_renderer, $"Can not find Renderer component for {gameObject.name}");
+            Assert.IsNotNull(m_rigidbody, $"Can not find Rigidbody component for {gameObject.name}");
         }
 
         private void Start()

@@ -26,7 +26,7 @@ public class GrabGuidanceInteractable : XRSimpleInteractable
 
     private LineRenderer m_lineRenderer;
     private Outline m_outline;
-    private XRCookingToolManager m_cookingToolManager;
+    private XRCookingToolObjectManager m_cookingToolManager;
 
     private Rigidbody m_toolRigidbody;
 

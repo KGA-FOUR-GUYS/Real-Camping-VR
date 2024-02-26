@@ -54,7 +54,6 @@ public class RecipeManager : MonoBehaviour
         if (instance == null)
         {
             instance = this;
-            DontDestroyOnLoad(gameObject);
 
             currentProcess = RecipeProcess.SelectRecipe;
             currentCanvas = RecipeSelectCanvas;

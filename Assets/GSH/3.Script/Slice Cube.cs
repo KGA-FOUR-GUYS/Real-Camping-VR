@@ -27,10 +27,9 @@ public class SliceCube : MonoBehaviour
     public float SliceCoolTime = 0;
     public Vector3 EdgeSide;
     private SpawnObject spawnobject;
-    private IngredientManager ingredient;
+    private IngredientDataManager ingredient;
     private void FixedUpdate()
     {
-
         bool hasHit = Physics.Linecast(startSlicePoint.position, endSlicePoint.position, out RaycastHit hit, sliceableLayer);
         //if (CheckAngle())
         //{
@@ -57,7 +56,7 @@ public class SliceCube : MonoBehaviour
 
         SlicedHull hull = target.Slice(endSlicePoint.position, planeNormal);
         CrossMaterial = target.GetComponent<MeshRenderer>().material;
-        ingredient = target.GetComponent<IngredientManager>();
+        ingredient = target.GetComponent<IngredientDataManager>();
         if (hull != null)
         {
             StartCoroutine(SliceCoolTime_Co(SliceCoolTime));
@@ -84,8 +83,8 @@ public class SliceCube : MonoBehaviour
         slicedObject.AddComponent<MeshCalculator>();
         SpawnObject ObjectGrabInteractable = slicedObject.AddComponent<SpawnObject>();
         ObjectGrabInteractable.interactionLayers = 1 << InteractionLayerMask.NameToLayer("DirectGrab");
-        IngredientManager originIngredient = Target.GetComponent<IngredientManager>();
-        IngredientManager copiedIngredient = CopyComponent(originIngredient, slicedObject);
+        IngredientDataManager originIngredient = Target.GetComponent<IngredientDataManager>();
+        IngredientDataManager copiedIngredient = CopyComponent(originIngredient, slicedObject);
         copiedIngredient.isWhole = false;
         slicedObject.transform.parent = parent;
         collider.convex = true;
