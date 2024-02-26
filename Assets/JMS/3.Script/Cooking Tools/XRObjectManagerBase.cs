@@ -5,10 +5,18 @@ using UnityEngine;
 using UnityEngine.Assertions;
 using UnityEngine.XR.Interaction.Toolkit;
 
+
+/// <summary>
+/// 자연스러운 Physical interaction을 위한 XR Object를 구성하기 위해 사용되며 <br/>
+/// Virtual/Physical이 서로 position과 rotation을 추적하는 방식으로 동작합니다 <br/>
+/// <br/>
+/// OnSelectEntered : Physical Object -> Virtual Object <br/>
+/// OnSelectExited : Virtual Object -> Physical Object 
+/// </summary>
 [Serializable]
-public class XRCookingToolManager : MonoBehaviour
+public class XRObjectManagerBase : MonoBehaviour
 {
-	public enum CookingToolType
+	public enum XRObjectType
 	{
 		OneHand = 1,
 		TwoHand = 2,
@@ -18,7 +26,7 @@ public class XRCookingToolManager : MonoBehaviour
 	public bool isSecondaryGrabbed = false;
 
 	[Header("Primary Grabbed Option")]
-	public CookingToolType toolType = CookingToolType.OneHand;
+	public XRObjectType xrObjectType = XRObjectType.OneHand;
 	public LayerMask grabbedLayer;
 	[Range(.1f, 3f)] public float delayToggleLayerAfterExit = 1f;
 	[Tooltip("왼손으로 잡는 경우, 보정할 회전값")]
@@ -100,6 +108,9 @@ public class XRCookingToolManager : MonoBehaviour
 		ToggleVirtualToolRenderer();
 	}
 
+	/// <summary>
+	/// Show virtual object if it's too far from physical object
+	/// </summary>
 	private void ToggleVirtualToolRenderer()
 	{
 		float distance = Vector3.Distance(_virtualToolTransform.position, _physicalToolTransform.position);
@@ -108,21 +119,29 @@ public class XRCookingToolManager : MonoBehaviour
 		virtualToolRenderer.enabled = isVirtualHandVisible && isFar;
 	}
 
+	/// <summary>
+	/// Match rotation and position (Virtual Object -> Physical Object)
+	/// </summary>
 	private void MatchVirtualToolToPhysicalTool()
 	{
 		_virtualToolTransform.rotation = _physicalToolTransform.rotation;
 		_virtualToolTransform.position = _physicalToolTransform.position;
 	}
 
+	/// <summary>
+	/// Match rotation and position (Physical Object -> Virtual Object)
+	/// </summary>
 	private void MatchPhysicalToolToVirtualTool()
 	{
 		UpdatePhysicalToolRotation();
 		UpdatePhysicalToolPosition();
 	}
 
+	/// <summary>
+	/// Try to match rotation with rigidbody angularVelocity
+	/// </summary>
 	private void UpdatePhysicalToolRotation()
 	{
-		// Try to match rotation (physical -> virtual)
 		Quaternion rotationDiff = _virtualToolTransform.rotation * Quaternion.Inverse(_physicalToolTransform.rotation);
 		rotationDiff.ToAngleAxis(out float angleInDegree, out Vector3 rotationAxis);
 
@@ -131,9 +150,12 @@ public class XRCookingToolManager : MonoBehaviour
 		_physicalToolRigidbody.angularVelocity = (rotationDiffInDegree * Mathf.Deg2Rad) / Time.fixedDeltaTime;
 	}
 
+	/// <summary>
+	/// Try to match position with rigidbody velocity
+	/// </summary>
 	private void UpdatePhysicalToolPosition()
 	{
-		// Try to match position (physical -> virtual)
+		
 		var desiredVelocity = (_virtualToolTransform.position - _physicalToolTransform.position) / Time.fixedDeltaTime;
 		if (desiredVelocity.magnitude > maxSpeed)
 		{
@@ -335,4 +357,5 @@ public class XRCookingToolManager : MonoBehaviour
 		string context = isLeftHand ? "Left Hand" : "Right Hand";
 		Debug.Log($"Secondary Hand Released: {transform.gameObject.name} / {context}");
 	}
+
 }

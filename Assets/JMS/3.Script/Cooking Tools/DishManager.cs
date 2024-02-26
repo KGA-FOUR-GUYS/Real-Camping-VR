@@ -62,8 +62,8 @@ public class DishManager : MonoBehaviour
     {
         yield return new WaitForSeconds(1f);
 
-        var ingredients = FindObjectsOfType<IngredientManager>();
-        var targets = new List<IngredientManager>();
+        var ingredients = FindObjectsOfType<IngredientDataManager>();
+        var targets = new List<IngredientDataManager>();
         foreach (var ingredient in ingredients)
         {
             if (ingredient.data != null && ingredient.data.Equals(targetSO))
