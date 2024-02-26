@@ -8,7 +8,7 @@ public class ScoreManager : MonoBehaviour
 {
     [SerializeField] RecipeSO currentRecipe;
     [SerializeField] int Error_Range = 5;
-    [SerializeField] List<GameObject> Ingredient_Spawner_List = new List<GameObject>();
+    [SerializeField] ObjectSpawner[] Ingredient_Spawner_Arr;
     [SerializeField] List<string> Ingredients_Name = new List<string>();
     [SerializeField] List<float> Cut_Scores = new List<float>();
     [SerializeField] List<bool> Cut_pieces = new List<bool>();
@@ -40,11 +40,8 @@ public class ScoreManager : MonoBehaviour
         //레시피 받아오는건 나중에 수정해줘
         currentRecipe = Resources.Load<RecipeSO>("RecipeSO/BeefStew");
 
-        //재료의 이름이 포함된 스포너 받아와!
-        foreach (var ingredientList in currentRecipe.ingredientList)
-        {
-            FindObjectsWithName(ingredientList.name);
-        }
+        //재료 스포너 찾아서 배열로!
+        Ingredient_Spawner_Arr = FindObjectsOfType<ObjectSpawner>();
     }
 
     private void Update()
@@ -55,28 +52,15 @@ public class ScoreManager : MonoBehaviour
         }
     }
 
-    private void FindObjectsWithName(string name)
-    {
-        GameObject[] allObjects = GameObject.FindObjectsOfType<GameObject>();
-
-        foreach (GameObject obj in allObjects)
-        {
-            if (obj.name.Contains(name))
-            {
-                Ingredient_Spawner_List.Add(obj);
-            }
-        }
-    }
-
 
     public void Cut_Judge()
     {
         //i번째 재료의 자식들(자른거 또는 통짜)의 부피가 타겟 볼륨인지 확인하여 점수판정
-        for (int i = 0; i < Ingredient_Spawner_List.Count; i++)
+        for (int i = 0; i < Ingredient_Spawner_Arr.Length; i++)
         {
             int Correct_Volume = 0;
-            MeshCalculator[] ingredients_volume = Ingredient_Spawner_List[i].GetComponentsInChildren<MeshCalculator>(false);
-            var Target_Volume = currentRecipe.ingredientList[(int)Matching_Name(Ingredient_Spawner_List[i])].sliceVolume;
+            MeshCalculator[] ingredients_volume = Ingredient_Spawner_Arr[i].objectPool.GetComponentsInChildren<MeshCalculator>(false);
+            var Target_Volume = currentRecipe.ingredientList[(int)Matching_Name(Ingredient_Spawner_Arr[i])].sliceVolume;
             for (int j = 0; j < ingredients_volume.Length; j++)
             {
                 if (ingredients_volume[j].Volume <= Target_Volume)
@@ -84,9 +68,9 @@ public class ScoreManager : MonoBehaviour
                     Correct_Volume++;
                 }
             }
-            float i_cut_score = Mathf.Floor(Correct_Volume / Ingredient_Spawner_List[i].transform.childCount * 100);
+            float i_cut_score = Mathf.Floor(Correct_Volume / Ingredient_Spawner_Arr[i].objectPool.childCount * 100);
 
-            if (Ingredient_Spawner_List[i].transform.childCount == currentRecipe.ingredientList[(int)Matching_Name(Ingredient_Spawner_List[i])].sliceCount)
+            if (Ingredient_Spawner_Arr[i].objectPool.childCount == currentRecipe.ingredientList[(int)Matching_Name(Ingredient_Spawner_Arr[i])].sliceCount)
             {
                 Cut_pieces.Add(true);
             }
@@ -101,17 +85,27 @@ public class ScoreManager : MonoBehaviour
         {
             Total_Cut_Score += scores;
         }
-        Total_Cut_Score = Mathf.Floor(Total_Cut_Score / Ingredient_Spawner_List.Count);
+        Total_Cut_Score = Mathf.Floor(Total_Cut_Score / Ingredient_Spawner_Arr.Length);
+        if (Total_Cut_Score < 0)
+        {
+            Total_Cut_Score = 0;
+        }
     }
 
-    private int? Matching_Name(GameObject Obj)
+    private int? Matching_Name(ObjectSpawner spawner)
     {
         for (int i = 0; i < currentRecipe.ingredientList.Count; i++)
         {
-            if (Obj.name.Contains($"{currentRecipe.ingredientList[i].name}"))
+            var Ingredient_name = spawner.prefab.GetComponent<IngredientManager>().data.name;
+            if (Ingredient_name.Equals($"{currentRecipe.ingredientList[i].name}"))
             {
                 Name_Num = i;
                 break;
+            }
+            else
+            {
+                Name_Num = null;
+                Debug.Log($"{Ingredient_name}가(이) 레시피에 없습니다");
             }
         }
         return Name_Num;
@@ -119,30 +113,32 @@ public class ScoreManager : MonoBehaviour
 
     private void Save_Ingredients_Name()
     {
-        for (int i = 0; i < Ingredient_Spawner_List.Count; i++)
+        for (int i = 0; i < Ingredient_Spawner_Arr.Length; i++)
         {
-            Ingredients_Name.Add(currentRecipe.ingredientList[(int)Matching_Name(Ingredient_Spawner_List[i])].name);
+            Ingredients_Name.Add(currentRecipe.ingredientList[(int)Matching_Name(Ingredient_Spawner_Arr[i])].name);
         }
     }
 
     public void Ripe_Judge()
     {
-        for (int i = 0; i < Ingredient_Spawner_List.Count; i++)
+        for (int i = 0; i < Ingredient_Spawner_Arr.Length; i++)
         {
             float Ripe_sum = 0;
             float Boil_sum = 0;
             float Broil_sum = 0;
             float Grill_sum = 0;
-            IngredientManager[] Ripe_Data = Ingredient_Spawner_List[i].GetComponentsInChildren<IngredientManager>(false);
-            var Target_Ripe = currentRecipe.ingredientList[(int)Matching_Name(Ingredient_Spawner_List[i])].ripeState;
-            var Target_Boil = currentRecipe.ingredientList[(int)Matching_Name(Ingredient_Spawner_List[i])].ripeByBoil;
-            var Target_Broil = currentRecipe.ingredientList[(int)Matching_Name(Ingredient_Spawner_List[i])].ripeByBroil;
-            var Target_Grill = currentRecipe.ingredientList[(int)Matching_Name(Ingredient_Spawner_List[i])].ripeByGrill;
+            int Except_Child = 0;
+            IngredientManager[] Ripe_Data = Ingredient_Spawner_Arr[i].objectPool.GetComponentsInChildren<IngredientManager>(false);
+            var Target_Ripe = currentRecipe.ingredientList[(int)Matching_Name(Ingredient_Spawner_Arr[i])].ripeState;
+            var Target_Boil = currentRecipe.ingredientList[(int)Matching_Name(Ingredient_Spawner_Arr[i])].ripeByBoil;
+            var Target_Broil = currentRecipe.ingredientList[(int)Matching_Name(Ingredient_Spawner_Arr[i])].ripeByBroil;
+            var Target_Grill = currentRecipe.ingredientList[(int)Matching_Name(Ingredient_Spawner_Arr[i])].ripeByGrill;
             for (int j = 0; j < Ripe_Data.Length; j++)
             {
                 if (Ripe_Data[j].RipeState == RipeState.None || Ripe_Data[j].RipeState == RipeState.Raw)
                 {
-                    Ripe_Scores.Add(999f);
+                    Ripe_Scores.Add(0f);
+                    Except_Child++;
                     break;
                 }
                 switch (Mathf.Abs(Ripe_Data[j].RipeState - Target_Ripe))
@@ -169,10 +165,10 @@ public class ScoreManager : MonoBehaviour
                 Grill_sum += Mathf.Round(Ripe_Data[j].m_ripeByGrill / Ripe_Data[j].Ripe * 100f);
             }
             //총 점수 및 재료별 익힘 정도 계산
-            float i_Ripe_score = Mathf.Floor(Ripe_sum * 20f / Ingredient_Spawner_List[i].transform.childCount);
-            float i_Boil_score = Mathf.Round(Boil_sum / Ingredient_Spawner_List[i].transform.childCount * 100);
-            float i_Broil_score = Mathf.Round(Broil_sum / Ingredient_Spawner_List[i].transform.childCount * 100);
-            float i_Grill_score = Mathf.Round(Grill_sum / Ingredient_Spawner_List[i].transform.childCount * 100);
+            float i_Ripe_score = Mathf.Floor(Ripe_sum * 20f / (Ingredient_Spawner_Arr[i].objectPool.childCount-Except_Child));
+            float i_Boil_score = Mathf.Round(Boil_sum / (Ingredient_Spawner_Arr[i].objectPool.childCount - Except_Child) * 100);
+            float i_Broil_score = Mathf.Round(Broil_sum / (Ingredient_Spawner_Arr[i].objectPool.childCount - Except_Child) * 100);
+            float i_Grill_score = Mathf.Round(Grill_sum / (Ingredient_Spawner_Arr[i].objectPool.childCount - Except_Child) * 100);
 
             //익힘 비율 틀리면 감점
             if (i_Boil_score < (Target_Boil - Error_Range) || i_Boil_score > (Target_Boil + Error_Range))
@@ -187,6 +183,10 @@ public class ScoreManager : MonoBehaviour
             {
                 i_Ripe_score -= 5f;
             }
+            if (i_Ripe_score < 0)
+            {
+                i_Ripe_score = 0;
+            }
 
             //점수 저장
             Ripe_Scores.Add(i_Ripe_score);
@@ -198,7 +198,7 @@ public class ScoreManager : MonoBehaviour
         {
             Total_Ripe_Score += scores;
         }
-        Total_Ripe_Score = Mathf.Floor(Total_Ripe_Score / Ingredient_Spawner_List.Count);
+        Total_Ripe_Score = Mathf.Floor(Total_Ripe_Score / Ingredient_Spawner_Arr.Length);
     }
 
     public void Total_Score_Judge()

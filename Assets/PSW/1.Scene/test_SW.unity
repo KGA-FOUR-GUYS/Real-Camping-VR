@@ -855,7 +855,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2125380153041246837, guid: 545b5f08284d8f94b8634b40d976e8b6, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0
+      value: -1.62
       objectReference: {fileID: 0}
     - target: {fileID: 2125380153041246837, guid: 545b5f08284d8f94b8634b40d976e8b6, type: 3}
       propertyPath: m_LocalPosition.y
@@ -1123,6 +1123,10 @@ PrefabInstance:
       value: Cook Ingredients
       objectReference: {fileID: 0}
     - target: {fileID: 5203237095092363316, guid: 4283812ac3f23d849b89e12bb7e579d6, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 1.56
+      objectReference: {fileID: 0}
+    - target: {fileID: 5203237095092363316, guid: 4283812ac3f23d849b89e12bb7e579d6, type: 3}
       propertyPath: m_LocalPosition.z
       value: 0
       objectReference: {fileID: 0}
@@ -1194,10 +1198,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   currentRecipe: {fileID: 0}
+  Error_Range: 5
   Ingredient_Spawner_List: []
-  Ingredients: []
-  Cut_Score: 0
-  Ripe_Score: 0
+  Ingredients_Name: []
+  Cut_Scores: []
+  Cut_pieces: 
+  Total_Cut_Score: 0
+  Ripe_Scores: []
+  Ripe_Boil: []
+  Ripe_Broil: []
+  Ripe_Grill: []
+  Total_Ripe_Score: 0
+  Total_Score: 0
 --- !u!1 &2010298753
 GameObject:
   m_ObjectHideFlags: 0
