@@ -152,54 +152,27 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cc27293b2a53d9746bfd814d288b53bb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  RecipeData:
-  - Id: 0
-    Recipename: BeefStew
-    Processdata:
-    - _process: 0
-      Spawnerdata:
-        Spawnerprefabs:
-        - {fileID: 7821318909985231270, guid: de8895624e9807d49a41361f728e4ddd, type: 3}
-        - {fileID: 6317911269359260660, guid: 07583ef479a79bf4abfc806a8b3037bf, type: 3}
-        - {fileID: 5619295571049655805, guid: eae6bd3661f689545bd130f88a213cdc, type: 3}
-        Utensildata:
-        - utensil: {fileID: 1940091405026312402, guid: cf73ba66e08aaf44396b6a4488b0c49a, type: 3}
-          utensiltransform: {fileID: 646651649}
-    - _process: 1
-      Spawnerdata:
-        Spawnerprefabs:
-        - {fileID: 5619295571049655805, guid: eae6bd3661f689545bd130f88a213cdc, type: 3}
-        - {fileID: 6317911269359260660, guid: 07583ef479a79bf4abfc806a8b3037bf, type: 3}
-        - {fileID: 6317911269359260660, guid: 07583ef479a79bf4abfc806a8b3037bf, type: 3}
-        Utensildata:
-        - utensil: {fileID: 1940091405026312402, guid: cf73ba66e08aaf44396b6a4488b0c49a, type: 3}
-          utensiltransform: {fileID: 1229694489}
-  - Id: 1
-    Recipename: BeefStewSecond
-    Processdata:
-    - _process: 0
-      Spawnerdata:
-        Spawnerprefabs:
-        - {fileID: 5619295571049655805, guid: eae6bd3661f689545bd130f88a213cdc, type: 3}
-        - {fileID: 7821318909985231270, guid: de8895624e9807d49a41361f728e4ddd, type: 3}
-        - {fileID: 6317911269359260660, guid: 07583ef479a79bf4abfc806a8b3037bf, type: 3}
-        Utensildata:
-        - utensil: {fileID: 1940091405026312402, guid: cf73ba66e08aaf44396b6a4488b0c49a, type: 3}
-          utensiltransform: {fileID: 1229694489}
-    - _process: 1
-      Spawnerdata:
-        Spawnerprefabs:
-        - {fileID: 6317911269359260660, guid: 07583ef479a79bf4abfc806a8b3037bf, type: 3}
-        - {fileID: 7821318909985231270, guid: de8895624e9807d49a41361f728e4ddd, type: 3}
-        - {fileID: 6317911269359260660, guid: 07583ef479a79bf4abfc806a8b3037bf, type: 3}
-        Utensildata:
-        - utensil: {fileID: 1940091405026312402, guid: cf73ba66e08aaf44396b6a4488b0c49a, type: 3}
-          utensiltransform: {fileID: 1229694489}
-  spawnerTransforms:
+  currentRecipe: {fileID: 11400000, guid: 4abef69debc603b409ba5edd4fd92736, type: 2}
+  spawnerData:
+  - name: Beef
+    Spawnerprefabs: {fileID: 8804355054040462805, guid: 6c64a3c7c6b8d5649afb4a497ffdb424, type: 3}
+  - name: Carrot
+    Spawnerprefabs: {fileID: 7622840004114935694, guid: 562ea21a05a9f2748a6e0f36966d74d4, type: 3}
+  Knife:
+    ToolPrefab: {fileID: 7622840004114935694, guid: 562ea21a05a9f2748a6e0f36966d74d4, type: 3}
+    ToolTransform: {fileID: 646651649}
+  Pot:
+    ToolPrefab: {fileID: 2151449930766842563, guid: f36392441aa645b459eb1f15fae25ce7, type: 3}
+    ToolTransform: {fileID: 1211886953}
+  Grill:
+    ToolPrefab: {fileID: 0}
+    ToolTransform: {fileID: 0}
+  spawnerTransform:
   - {fileID: 9221418113667700977}
   - {fileID: 1803407452}
   - {fileID: 622952298}
-  CurrentRecipeId: 0
+  progressIngrediant: []
+  SpawnerList: []
 --- !u!4 &3004287
 Transform:
   m_ObjectHideFlags: 0
@@ -7925,6 +7898,37 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1337703741}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1211886952
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1211886953}
+  m_Layer: 0
+  m_Name: PotTransform
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1211886953
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1211886952}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0.31144303, y: -0.3114431, z: -0.6348253, w: 0.63482547}
+  m_LocalPosition: {x: -27.02, y: 3.984, z: -12.47}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1229694488
 GameObject:
@@ -68866,4 +68870,5 @@ SceneRoots:
   - {fileID: 1803407452}
   - {fileID: 622952298}
   - {fileID: 646651649}
+  - {fileID: 1211886953}
   - {fileID: 1229694489}
