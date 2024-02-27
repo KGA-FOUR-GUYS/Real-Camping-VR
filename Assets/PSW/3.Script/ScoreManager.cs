@@ -6,7 +6,7 @@ using Cooking;
 
 public class ScoreManager : MonoBehaviour
 {
-    [SerializeField] RecipeSO currentRecipe;
+    [SerializeField] public RecipeSO currentRecipe;
     [SerializeField] int Error_Range = 5;
     [SerializeField] ObjectSpawner[] Ingredient_Spawner_Arr;
     [SerializeField] List<string> Ingredients_Name = new List<string>();
@@ -36,11 +36,8 @@ public class ScoreManager : MonoBehaviour
 
     private void Start()
     {
-        //레시피 받아오는건 나중에 수정해줘
-        currentRecipe = Resources.Load<RecipeSO>("RecipeSO/BeefStew");
-
         //재료 스포너 찾아서 배열로!
-        Ingredient_Spawner_Arr = FindObjectsOfType<ObjectSpawner>();
+        //Ingredient_Spawner_Arr = FindObjectsOfType<ObjectSpawner>();
     }
 
     private void Update()
@@ -51,6 +48,10 @@ public class ScoreManager : MonoBehaviour
         }
     }
 
+    public void Select_Recipe(RecipeSO select_Recipe)
+    {
+        currentRecipe = select_Recipe;
+    }
 
     public void Cut_Judge()
     {
@@ -222,6 +223,13 @@ public class ScoreManager : MonoBehaviour
 
     public void Total_Score_Judge()
     {
+        if (currentRecipe == null)
+        {
+            Debug.Log("선택된 레시피가 없으요");
+            return;
+        }
+
+        Ingredient_Spawner_Arr = FindObjectsOfType<ObjectSpawner>();
         Save_Ingredients_Name();
         Cut_Judge();
         Ripe_Judge();

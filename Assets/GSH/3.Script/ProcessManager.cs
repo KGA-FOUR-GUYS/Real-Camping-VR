@@ -114,6 +114,7 @@ public class ProcessManager : MonoBehaviour
         currentRecipe = recipe;
         progressIngrediant.Clear();
         progressIngrediant = recipe.ingredientList;
+        ScoreManager.Instance.Select_Recipe(currentRecipe);
     }
     public void SliceProcess()
     {
