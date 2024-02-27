@@ -3,43 +3,31 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [System.Serializable]
-public class RecipeData
+public struct SpawnerData
 {
-    public int Id;
-    public string Recipename;
-    public ProcessData[] Processdata;
+    public string name;
+    public GameObject Spawnerprefabs;
 }
 
 [System.Serializable]
-public class ProcessData
+public struct ToolsData
 {
-    public CookingProcess _process;
-    public SpawnerData Spawnerdata;
-}
-
-[System.Serializable]
-public class SpawnerData
-{
-    public GameObject[] Spawnerprefabs;
-    public UtensilData[] Utensildata;
-}
-[System.Serializable]
-public class UtensilData
-{
-    public GameObject utensil;
-    public Transform utensiltransform;
+    public GameObject ToolPrefab;
+    public Transform ToolTransform;
 }
 
 public enum CookingProcess
 {
-    Cut,
+    Slice,
     Boil,
-    Fry
+    Broil,
+    Grill,
 }
 
 public class ProcessManager : MonoBehaviour
 {
     public static ProcessManager instance = null;
+    public RecipeSO currentRecipe;
 
     private void Awake()
     {
@@ -54,51 +42,56 @@ public class ProcessManager : MonoBehaviour
         }
     }
 
-    [Header("Process")]
-    //public CookingProcess cookingProcess;
-    [SerializeField]private RecipeData[] RecipeData;
+    [Header("SpawnerPrefab")]
+    [SerializeField]private SpawnerData[] spawnerData;
 
-    [Header("Transform")]
-    public Transform[] spawnerTransforms;
+    [Header("Tools")]
+    [SerializeField] public ToolsData Knife;
+    [SerializeField] public ToolsData Pot;
+    [SerializeField] public ToolsData Grill;
 
+    [Header("SpawnerTransform")]
+    [SerializeField] private Transform[] spawnerTransform;
+
+    [SerializeField] List<Cooking.RecipeIngredient> progressIngrediant = new List<Cooking.RecipeIngredient>();
+    [SerializeField] List<GameObject> SpawnerList = new List<GameObject>();
+    private void Start()
+    {
+        progressIngrediant = currentRecipe.ingredientList;
+    }
     private List<GameObject> instantiatedPrefabs = new List<GameObject>();
-    public int CurrentRecipeId = 0;
     private void Update()
     {
         if (Input.GetKeyDown(KeyCode.F))
         {
-            Process(CookingProcess.Boil);
+            Process(CookingProcess.Slice);
         }
-        if (Input.GetKeyDown(KeyCode.D))
-        {
-            Process(CookingProcess.Cut);
-        }
-        if (Input.GetKeyDown(KeyCode.A))
-        {
-            ChangeRecipe(0);
-        }
-        if (Input.GetKeyDown(KeyCode.S))
-        {
-            ChangeRecipe(1);
-        }
+        //if (Input.GetKeyDown(KeyCode.D))
+        //{
+        //    Process(CookingProcess.Cut);
+        //}
+        //if (Input.GetKeyDown(KeyCode.A))
+        //{
+        //    ChangeRecipe(0);
+        //}
+        //if (Input.GetKeyDown(KeyCode.S))
+        //{
+        //    ChangeRecipe(1);
+        //}
     }
     private void Process(CookingProcess processIndex)
     {
-        DestroyInstantiatedPrefabs();
-        int recipeid = RecipeData[CurrentRecipeId].Id;
-        int idx = (int)processIndex;
-        for (int j = 0; j < RecipeData[recipeid].Processdata[idx].Spawnerdata.Utensildata.Length; j++)
+        switch (processIndex)
         {
-            InstantiateAndAddToQueue(RecipeData[recipeid].Processdata[idx].Spawnerdata.Utensildata[j].utensil
-                                    , RecipeData[recipeid].Processdata[idx].Spawnerdata.Utensildata[j].utensiltransform.position
-                                    , RecipeData[recipeid].Processdata[idx].Spawnerdata.Utensildata[j].utensiltransform.rotation);
+            case CookingProcess.Slice:
+                SliceProcess();
+                return;            
+            case CookingProcess.Boil:
+                BoilProcess();
+                return;
+
         }
-        for (int i = 0; i < RecipeData[recipeid].Processdata[idx].Spawnerdata.Spawnerprefabs.Length && i < spawnerTransforms.Length; i++)
-        {
-            InstantiateAndAddToQueue(RecipeData[recipeid].Processdata[idx].Spawnerdata.Spawnerprefabs[i]
-                                    , spawnerTransforms[i].position
-                                    , spawnerTransforms[i].rotation);
-        }
+
     }
 
     private void InstantiateAndAddToQueue(GameObject prefab, Vector3 position, Quaternion rotation)
@@ -115,8 +108,45 @@ public class ProcessManager : MonoBehaviour
         }
         instantiatedPrefabs.Clear();
     }
-    public void ChangeRecipe(int recipeID)
+
+    public void SelectRecipe(RecipeSO recipe)
     {
-        CurrentRecipeId = recipeID;
+        currentRecipe = recipe;
+        progressIngrediant.Clear();
+        progressIngrediant = recipe.ingredientList;
+    }
+    public void SliceProcess()
+    {
+        for(int i = 0; i<progressIngrediant.Count; i++)
+        {
+            if(progressIngrediant[i].sliceCount > 0)
+            {
+                SpawnerList.Add(CompareNameCheck(progressIngrediant[i].name));
+            }
+        }
+        for(int i = 0;i<SpawnerList.Count && i < spawnerTransform.Length; i++)
+        {
+            Instantiate(SpawnerList[i], spawnerTransform[i].transform.position, spawnerTransform[i].rotation);
+        }
+        CutToolSpawn();
+    }
+    public void CutToolSpawn()
+    {
+        Instantiate(Knife.ToolPrefab, Knife.ToolTransform.position, Knife.ToolTransform.rotation);
+    }
+    public void BoilProcess()
+    {
+        Instantiate(Knife.ToolPrefab, Knife.ToolTransform.position, Knife.ToolTransform.rotation);
+    }
+    private GameObject CompareNameCheck(string name)
+    {
+        for(int i=0; i < spawnerData.Length;i++)
+        {
+            if(spawnerData[i].name == name)
+            {
+                return spawnerData[i].Spawnerprefabs;
+            }
+        }
+        return null;
     }
 }
