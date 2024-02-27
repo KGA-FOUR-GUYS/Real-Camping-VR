@@ -6,19 +6,19 @@ using UnityEngine;
 public class CenterOfMass : MonoBehaviour
 {
     public Transform centerOfGravity;
-    private Rigidbody m_rigidbody;
+    private Rigidbody _rigidbody;
 
     private void Awake()
     {
-        TryGetComponent(out m_rigidbody);
+        TryGetComponent(out _rigidbody);
     }
 
     private void Start()
     {
         if (centerOfGravity)
         {
-            m_rigidbody.automaticCenterOfMass = false;
-            m_rigidbody.centerOfMass = centerOfGravity.localPosition;
+            _rigidbody.automaticCenterOfMass = false;
+            _rigidbody.centerOfMass = centerOfGravity.localPosition;
         }
     }
 }

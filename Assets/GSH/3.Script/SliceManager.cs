@@ -22,10 +22,10 @@ public class SliceManager : MonoBehaviour
 
     private Material _crossMaterial;
     [Header("Parameter")]
-    public float CutForce = 5f;
     public bool IsSliceable = true;
-    public int RaycastCount;
     public float SliceCoolTime = 0;
+    public float CutForce = 5f;
+    public int RaycastCount;
     public Vector3 EdgeSide;
 
     private XRIngredientObjectManager _ingredientObjectManager;
@@ -58,7 +58,8 @@ public class SliceManager : MonoBehaviour
     {
         for (int i = 0; i < CheckPoints.Count - 1; i++)
         {
-            if (Physics.Linecast(CheckPoints[i].position, CheckPoints[i + 1].position , out RaycastHit hit)
+            if (IsSliceable
+                && Physics.Linecast(CheckPoints[i].position, CheckPoints[i + 1].position , out RaycastHit hit)
                 && hit.transform.parent.gameObject.TryGetComponent(out _ingredientObjectManager)    // XRIngredientObjectManager - 재료인지
                 && _ingredientObjectManager.meshCalculator.Volume > minVolume                       // Volume - 최소 부피보다 큰지
 				&& !_ingredientObjectManager.isPrimaryGrabbed)                                      // Grabbed - 잡지 않은 상태인지)
@@ -97,6 +98,12 @@ public class SliceManager : MonoBehaviour
 			GameObject lowerModel = CopyGameObject(modelObj);
 			SetupComponents(upperModel, upperHull);
 			SetupComponents(lowerModel, lowerHull);
+
+            // Set position and rotation
+            var position = modelObj.transform.position;
+            var rotation = modelObj.transform.rotation;
+            upperModel.transform.SetPositionAndRotation(position, rotation);
+            lowerModel.transform.SetPositionAndRotation(position, rotation);
 
             // Put in object pool
             var objectPool = _ingredientObjectManager.GetComponent<XRIngredientObjectManager>().objectPool;
@@ -145,9 +152,25 @@ public class SliceManager : MonoBehaviour
         GameObject physicalRendererObj = ingredientManager.physicalObjectRenderer.gameObject;
         CopyMeshFilter(slicedHull.GetComponent<MeshFilter>(), physicalRendererObj.GetComponent<MeshFilter>());
         CopyMeshRenderer(slicedHull.GetComponent<MeshRenderer>(), physicalRendererObj.GetComponent<MeshRenderer>());
+        // Remove centor of mass
+        Destroy(physicalObj.GetComponent<CenterOfMass>());
+        physicalObj.GetComponent<Rigidbody>().automaticCenterOfMass = true;
+
         // Remove Convex MeshCollider
-        Destroy(physicalRendererObj.GetComponent<ComplexCollider>());
-        // Add Convex MeshCollider
+        var colliders = physicalRendererObj.GetComponentsInChildren<MeshCollider>();
+        if (colliders != null)
+        {
+            for (int i = 0; i < colliders.Length; i++)
+            {
+                Destroy(colliders[i]);
+            }
+        }
+        if (physicalRendererObj.TryGetComponent(out ComplexCollider complexCollider))
+        {
+            Destroy(complexCollider);
+        }
+
+        // Add new convex MeshCollider
         var meshCollider = physicalRendererObj.AddComponent<MeshCollider>();
         meshCollider.convex = true;
 
