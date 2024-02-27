@@ -86,9 +86,7 @@ public class ProcessManager : MonoBehaviour
             case CookingProcess.Boil:
                 BoilToolSpawn();
                 return;
-
         }
-
     }
 
     private void InstantiateAndAddToQueue(GameObject prefab, Vector3 position, Quaternion rotation)
@@ -111,7 +109,6 @@ public class ProcessManager : MonoBehaviour
         currentRecipe = recipe;
         progressIngrediant.Clear();
         progressIngrediant = recipe.ingredientList;
-        ScoreManager.Instance.Select_Recipe(currentRecipe);
     }
     public void SliceProcess()
     {

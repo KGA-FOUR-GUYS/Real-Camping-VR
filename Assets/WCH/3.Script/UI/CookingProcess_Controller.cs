@@ -147,6 +147,7 @@ public class CookingProcess_Controller : MonoBehaviour
         CookingProcess CP = contentRect.GetChild(currentIndex).GetComponent<Process_UI>().currentProcess;
         Debug.Log(CP);
 
+        ScoreManager.Instance.Select_Recipe(RecipeManager.instance.currentSO);
         ProcessManager.instance.SelectRecipe(RecipeManager.instance.currentSO);
         ProcessManager.instance.Process(CP);
     }
