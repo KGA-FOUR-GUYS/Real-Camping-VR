@@ -98,7 +98,12 @@ public class SliceManager : MonoBehaviour
 			SetupComponents(upperModel, upperHull);
 			SetupComponents(lowerModel, lowerHull);
 
-			IngredientDataManager ingredientDataManager = _ingredientObjectManager.virtualObject.GetComponent<IngredientDataManager>();
+            // Put in object pool
+            var objectPool = _ingredientObjectManager.GetComponent<XRIngredientObjectManager>().objectPool;
+            upperModel.transform.SetParent(objectPool);
+            lowerModel.transform.SetParent(objectPool);
+
+            IngredientDataManager ingredientDataManager = _ingredientObjectManager.virtualObject.GetComponent<IngredientDataManager>();
 			// New object?
 			if (ingredientDataManager.isWhole)
 			{
@@ -120,24 +125,26 @@ public class SliceManager : MonoBehaviour
         return Instantiate(origin);
     }
 
-    public void SetupComponents(GameObject modelObj, GameObject slicedObj)
+    public void SetupComponents(GameObject modelObj, GameObject slicedHull)
     {
         var ingredientManager = modelObj.GetComponent<XRIngredientObjectManager>();
 
         // Set Virtual Object
         GameObject virtualObj = ingredientManager.virtualObject.gameObject;
         GameObject virtualRendererObj = ingredientManager.virtualObjectRenderer.gameObject;
-        CopyMeshFilter(slicedObj.GetComponent<MeshFilter>(), virtualRendererObj.GetComponent<MeshFilter>());
-        CopyMeshRenderer(slicedObj.GetComponent<MeshRenderer>(), virtualRendererObj.GetComponent<MeshRenderer>());
+        CopyMeshFilter(slicedHull.GetComponent<MeshFilter>(), virtualRendererObj.GetComponent<MeshFilter>());
+        CopyMeshRenderer(slicedHull.GetComponent<MeshRenderer>(), virtualRendererObj.GetComponent<MeshRenderer>());
         // Set Ingredient data
         virtualObj.GetComponent<MeshCalculator>().CheckVolume();
         virtualObj.GetComponent<IngredientDataManager>().isWhole = false;
+        // Remove Trigger Collider
+        Destroy(ingredientManager.grabCollider);
 
         // Set Physical Object
         GameObject physicalObj = ingredientManager.physicalObject.gameObject;
         GameObject physicalRendererObj = ingredientManager.physicalObjectRenderer.gameObject;
-        CopyMeshFilter(slicedObj.GetComponent<MeshFilter>(), physicalRendererObj.GetComponent<MeshFilter>());
-        CopyMeshRenderer(slicedObj.GetComponent<MeshRenderer>(), physicalRendererObj.GetComponent<MeshRenderer>());
+        CopyMeshFilter(slicedHull.GetComponent<MeshFilter>(), physicalRendererObj.GetComponent<MeshFilter>());
+        CopyMeshRenderer(slicedHull.GetComponent<MeshRenderer>(), physicalRendererObj.GetComponent<MeshRenderer>());
         // Remove Convex MeshCollider
         Destroy(physicalRendererObj.GetComponent<ComplexCollider>());
         // Add Convex MeshCollider
@@ -145,7 +152,7 @@ public class SliceManager : MonoBehaviour
         meshCollider.convex = true;
 
         // Destory meshObj
-        Destroy(slicedObj);
+        Destroy(slicedHull);
         physicalObj.GetComponent<Rigidbody>().AddExplosionForce(CutForce, physicalObj.transform.position, 1);
     }
 

@@ -44,6 +44,8 @@ public class XRIngredientObjectManager : XRObjectManagerBase
 	// XR Grab Interactable Events
 	public override void OnGrabEntered(SelectEnterEventArgs e)
 	{
+		if (grabCollider == null) return;
+
 		base.OnGrabEntered(e);
 	}
 
