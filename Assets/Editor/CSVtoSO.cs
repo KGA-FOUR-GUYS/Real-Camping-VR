@@ -88,6 +88,13 @@ public class CSVtoSO
                     AssetDatabase.Refresh();
 
                     Debug.Log($"Recipe created at '{recipeSOPath}'");
+
+                    var recipeSO = Resources.Load<RecipeSO>($"{recipeSOPath}/{currentRecipe.name}.asset");
+                    if (recipeSO != null)
+                    {
+                        ReplacePropertiesReferencing(recipeSO);
+                    }
+
                     return;
                 }
 
@@ -163,7 +170,7 @@ public class CSVtoSO
         return !EditorApplication.isPlayingOrWillChangePlaymode;
     }
 
-    // Colume Index (0 ~ N)
+    // Colume Index (0 ~ 7) - Ingredient
     private const int INGREDIENT_NAME = 0;
     private const int INGREDIENT_DESCRIPTION = 1;
     private const int INGREDIENT_RIPE_FOR_UNDERCOOK = 2;
@@ -195,6 +202,14 @@ public class CSVtoSO
                 AssetDatabase.Refresh();
 
                 Debug.Log($"Ingredient created at '{ingredientSOPath}'");
+
+                var ingredientSO = Resources.Load<IngredientSO>($"{ingredientSOPath}/{currentIngredient.name}.asset");
+
+                if (ingredientSO != null)
+                {
+                    ReplacePropertiesReferencing(ingredientSO);
+                }
+
                 return;
             }
 
@@ -223,12 +238,59 @@ public class CSVtoSO
     private static bool TryCreateScripatbleObject(ScriptableObject so)
     {
         if (so is IngredientSO)
+        {
             AssetDatabase.CreateAsset(so, $"{ingredientSOPath}/{so.name}.asset");
+        }
         else if (so is RecipeSO)
+        {
             AssetDatabase.CreateAsset(so, $"{recipeSOPath}/{so.name}.asset");
-        else
+        }
+        else // Undefined scriptable object
+        {
             return false;
+        }
 
         return true;
+    }
+
+    /// <summary>
+    /// Scriptable Object 간의 Reference를 재설정
+    /// </summary>
+    /// <param name="so">새로 생성한 Scriptable Object</param>
+    private static void ReplacePropertiesReferencing(ScriptableObject so)
+    {
+        // Check all GameObjects in scene
+        GameObject[] allObjects = Object.FindObjectsOfType<GameObject>(true);
+        foreach (GameObject obj in allObjects)
+        {
+            // Check all components in each GameObject
+            Component[] components = obj.GetComponents<Component>();
+            foreach (Component comp in components)
+            {
+                if (comp == null) continue;
+
+                // Check all properties in component
+                SerializedObject serializedObj = new SerializedObject(comp);            // Convert Component -> SerializedObject
+                SerializedProperty prop = serializedObj.GetIterator();
+                if (prop == null) continue;
+
+                while (prop.Next(true))
+                {
+                    if (prop.propertyType != SerializedPropertyType.ObjectReference)    // Reference type only
+                    {
+                        continue;
+                    }
+
+                    if (prop.objectReferenceValue.GetType() == so.GetType())            // Same type
+                    {
+                        // Replace reference
+                        prop.objectReferenceValue = so;
+                        Debug.Log("Replaced RecipeSO reference in GameObject: " + obj.name + ", Component: " + comp.GetType().Name);
+                    }
+                }
+
+                serializedObj.ApplyModifiedProperties();
+            }
+        }
     }
 }
