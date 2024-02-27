@@ -152,26 +152,54 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cc27293b2a53d9746bfd814d288b53bb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  cookingProcess: 0
-  spawnerData:
-  - spawnerPrefabs:
-    - {fileID: 7821318909985231270, guid: de8895624e9807d49a41361f728e4ddd, type: 3}
-    - {fileID: 5619295571049655805, guid: eae6bd3661f689545bd130f88a213cdc, type: 3}
-    - {fileID: 6317911269359260660, guid: 07583ef479a79bf4abfc806a8b3037bf, type: 3}
-    utensilData:
-    - utensil: {fileID: 1940091405026312402, guid: cf73ba66e08aaf44396b6a4488b0c49a, type: 3}
-      utensiltransform: {fileID: 646651649}
-  - spawnerPrefabs:
-    - {fileID: 7821318909985231270, guid: de8895624e9807d49a41361f728e4ddd, type: 3}
-    - {fileID: 6317911269359260660, guid: 07583ef479a79bf4abfc806a8b3037bf, type: 3}
-    - {fileID: 5619295571049655805, guid: eae6bd3661f689545bd130f88a213cdc, type: 3}
-    utensilData:
-    - utensil: {fileID: 1940091405026312402, guid: cf73ba66e08aaf44396b6a4488b0c49a, type: 3}
-      utensiltransform: {fileID: 1229694489}
+  RecipeData:
+  - Id: 0
+    Recipename: BeefStew
+    Processdata:
+    - _process: 0
+      Spawnerdata:
+        Spawnerprefabs:
+        - {fileID: 7821318909985231270, guid: de8895624e9807d49a41361f728e4ddd, type: 3}
+        - {fileID: 6317911269359260660, guid: 07583ef479a79bf4abfc806a8b3037bf, type: 3}
+        - {fileID: 5619295571049655805, guid: eae6bd3661f689545bd130f88a213cdc, type: 3}
+        Utensildata:
+        - utensil: {fileID: 1940091405026312402, guid: cf73ba66e08aaf44396b6a4488b0c49a, type: 3}
+          utensiltransform: {fileID: 646651649}
+    - _process: 1
+      Spawnerdata:
+        Spawnerprefabs:
+        - {fileID: 5619295571049655805, guid: eae6bd3661f689545bd130f88a213cdc, type: 3}
+        - {fileID: 6317911269359260660, guid: 07583ef479a79bf4abfc806a8b3037bf, type: 3}
+        - {fileID: 6317911269359260660, guid: 07583ef479a79bf4abfc806a8b3037bf, type: 3}
+        Utensildata:
+        - utensil: {fileID: 1940091405026312402, guid: cf73ba66e08aaf44396b6a4488b0c49a, type: 3}
+          utensiltransform: {fileID: 1229694489}
+  - Id: 1
+    Recipename: BeefStewSecond
+    Processdata:
+    - _process: 0
+      Spawnerdata:
+        Spawnerprefabs:
+        - {fileID: 5619295571049655805, guid: eae6bd3661f689545bd130f88a213cdc, type: 3}
+        - {fileID: 7821318909985231270, guid: de8895624e9807d49a41361f728e4ddd, type: 3}
+        - {fileID: 6317911269359260660, guid: 07583ef479a79bf4abfc806a8b3037bf, type: 3}
+        Utensildata:
+        - utensil: {fileID: 1940091405026312402, guid: cf73ba66e08aaf44396b6a4488b0c49a, type: 3}
+          utensiltransform: {fileID: 1229694489}
+    - _process: 1
+      Spawnerdata:
+        Spawnerprefabs:
+        - {fileID: 6317911269359260660, guid: 07583ef479a79bf4abfc806a8b3037bf, type: 3}
+        - {fileID: 7821318909985231270, guid: de8895624e9807d49a41361f728e4ddd, type: 3}
+        - {fileID: 6317911269359260660, guid: 07583ef479a79bf4abfc806a8b3037bf, type: 3}
+        Utensildata:
+        - utensil: {fileID: 1940091405026312402, guid: cf73ba66e08aaf44396b6a4488b0c49a, type: 3}
+          utensiltransform: {fileID: 1229694489}
   spawnerTransforms:
   - {fileID: 9221418113667700977}
   - {fileID: 1803407452}
   - {fileID: 622952298}
+  CurrentRecipeId: 0
 --- !u!4 &3004287
 Transform:
   m_ObjectHideFlags: 0
@@ -364,7 +392,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!54 &25436421
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -427,6 +455,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   <Volume>k__BackingField: -1
   isUpdating: 0
+  meshFilter: {fileID: 0}
 --- !u!114 &25436424
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -444,9 +473,11 @@ MonoBehaviour:
   isWhole: 1
   <CookType>k__BackingField: 0
   <RipeState>k__BackingField: 1
-  m_ripeByBoil: 0
-  m_ripeByBroil: 0
-  m_ripeByGrill: 0
+  _ripeByBoil: 0
+  _ripeByBroil: 0
+  _ripeByGrill: 0
+  _renderer: {fileID: 0}
+  _rigidbody: {fileID: 0}
 --- !u!23 &25436425
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -846,7 +877,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   isPrimaryGrabbed: 0
   isSecondaryGrabbed: 0
-  toolType: 1
+  xrObjectType: 1
   grabbedLayer:
     serializedVersion: 2
     m_Bits: 536870912
@@ -984,7 +1015,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!54 &74036017
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -1047,6 +1078,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   <Volume>k__BackingField: -1
   isUpdating: 0
+  meshFilter: {fileID: 0}
 --- !u!114 &74036020
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1064,9 +1096,11 @@ MonoBehaviour:
   isWhole: 1
   <CookType>k__BackingField: 0
   <RipeState>k__BackingField: 1
-  m_ripeByBoil: 0
-  m_ripeByBroil: 0
-  m_ripeByGrill: 0
+  _ripeByBoil: 0
+  _ripeByBroil: 0
+  _ripeByGrill: 0
+  _renderer: {fileID: 0}
+  _rigidbody: {fileID: 0}
 --- !u!23 &74036021
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -1344,7 +1378,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   isPrimaryGrabbed: 0
   isSecondaryGrabbed: 0
-  toolType: 2
+  xrObjectType: 1
   grabbedLayer:
     serializedVersion: 2
     m_Bits: 536870912
@@ -3536,7 +3570,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!54 &580099687
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -3599,6 +3633,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   <Volume>k__BackingField: -1
   isUpdating: 0
+  meshFilter: {fileID: 0}
 --- !u!114 &580099690
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3616,9 +3651,11 @@ MonoBehaviour:
   isWhole: 1
   <CookType>k__BackingField: 0
   <RipeState>k__BackingField: 1
-  m_ripeByBoil: 0
-  m_ripeByBroil: 0
-  m_ripeByGrill: 0
+  _ripeByBoil: 0
+  _ripeByBroil: 0
+  _ripeByGrill: 0
+  _renderer: {fileID: 0}
+  _rigidbody: {fileID: 0}
 --- !u!23 &580099691
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -3705,7 +3742,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!54 &592800358
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -3768,6 +3805,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   <Volume>k__BackingField: -1
   isUpdating: 0
+  meshFilter: {fileID: 0}
 --- !u!114 &592800361
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3785,9 +3823,11 @@ MonoBehaviour:
   isWhole: 1
   <CookType>k__BackingField: 0
   <RipeState>k__BackingField: 1
-  m_ripeByBoil: 0
-  m_ripeByBroil: 0
-  m_ripeByGrill: 0
+  _ripeByBoil: 0
+  _ripeByBroil: 0
+  _ripeByGrill: 0
+  _renderer: {fileID: 0}
+  _rigidbody: {fileID: 0}
 --- !u!23 &592800362
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -4570,7 +4610,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!54 &646622093
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -4633,6 +4673,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   <Volume>k__BackingField: -1
   isUpdating: 0
+  meshFilter: {fileID: 0}
 --- !u!114 &646622096
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4650,9 +4691,11 @@ MonoBehaviour:
   isWhole: 1
   <CookType>k__BackingField: 0
   <RipeState>k__BackingField: 1
-  m_ripeByBoil: 0
-  m_ripeByBroil: 0
-  m_ripeByGrill: 0
+  _ripeByBoil: 0
+  _ripeByBroil: 0
+  _ripeByGrill: 0
+  _renderer: {fileID: 0}
+  _rigidbody: {fileID: 0}
 --- !u!23 &646622097
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -4834,7 +4877,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!54 &659059734
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -4897,6 +4940,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   <Volume>k__BackingField: -1
   isUpdating: 0
+  meshFilter: {fileID: 0}
 --- !u!114 &659059737
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4914,9 +4958,11 @@ MonoBehaviour:
   isWhole: 1
   <CookType>k__BackingField: 0
   <RipeState>k__BackingField: 1
-  m_ripeByBoil: 0
-  m_ripeByBroil: 0
-  m_ripeByGrill: 0
+  _ripeByBoil: 0
+  _ripeByBroil: 0
+  _ripeByGrill: 0
+  _renderer: {fileID: 0}
+  _rigidbody: {fileID: 0}
 --- !u!23 &659059738
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -6846,7 +6892,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!54 &959998391
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -6909,6 +6955,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   <Volume>k__BackingField: -1
   isUpdating: 0
+  meshFilter: {fileID: 0}
 --- !u!114 &959998394
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6926,9 +6973,11 @@ MonoBehaviour:
   isWhole: 1
   <CookType>k__BackingField: 0
   <RipeState>k__BackingField: 1
-  m_ripeByBoil: 0
-  m_ripeByBroil: 0
-  m_ripeByGrill: 0
+  _ripeByBoil: 0
+  _ripeByBroil: 0
+  _ripeByGrill: 0
+  _renderer: {fileID: 0}
+  _rigidbody: {fileID: 0}
 --- !u!23 &959998395
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -7277,7 +7326,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!54 &1107724038
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -7340,6 +7389,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   <Volume>k__BackingField: -1
   isUpdating: 0
+  meshFilter: {fileID: 0}
 --- !u!114 &1107724041
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7357,9 +7407,11 @@ MonoBehaviour:
   isWhole: 1
   <CookType>k__BackingField: 0
   <RipeState>k__BackingField: 1
-  m_ripeByBoil: 0
-  m_ripeByBroil: 0
-  m_ripeByGrill: 0
+  _ripeByBoil: 0
+  _ripeByBroil: 0
+  _ripeByGrill: 0
+  _renderer: {fileID: 0}
+  _rigidbody: {fileID: 0}
 --- !u!23 &1107724042
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -9146,7 +9198,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!54 &1528611029
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -9209,6 +9261,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   <Volume>k__BackingField: -1
   isUpdating: 0
+  meshFilter: {fileID: 0}
 --- !u!114 &1528611032
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -9226,9 +9279,11 @@ MonoBehaviour:
   isWhole: 1
   <CookType>k__BackingField: 0
   <RipeState>k__BackingField: 1
-  m_ripeByBoil: 0
-  m_ripeByBroil: 0
-  m_ripeByGrill: 0
+  _ripeByBoil: 0
+  _ripeByBroil: 0
+  _ripeByGrill: 0
+  _renderer: {fileID: 0}
+  _rigidbody: {fileID: 0}
 --- !u!23 &1528611033
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -9834,7 +9889,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!54 &1627236521
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -9897,6 +9952,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   <Volume>k__BackingField: -1
   isUpdating: 0
+  meshFilter: {fileID: 0}
 --- !u!114 &1627236524
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -9914,9 +9970,11 @@ MonoBehaviour:
   isWhole: 1
   <CookType>k__BackingField: 0
   <RipeState>k__BackingField: 1
-  m_ripeByBoil: 0
-  m_ripeByBroil: 0
-  m_ripeByGrill: 0
+  _ripeByBoil: 0
+  _ripeByBroil: 0
+  _ripeByGrill: 0
+  _renderer: {fileID: 0}
+  _rigidbody: {fileID: 0}
 --- !u!23 &1627236525
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -10223,7 +10281,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   isPrimaryGrabbed: 0
   isSecondaryGrabbed: 0
-  toolType: 1
+  xrObjectType: 1
   grabbedLayer:
     serializedVersion: 2
     m_Bits: 536870912
@@ -10926,7 +10984,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!54 &1943392567
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -10989,6 +11047,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   <Volume>k__BackingField: -1
   isUpdating: 0
+  meshFilter: {fileID: 0}
 --- !u!114 &1943392570
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -11006,9 +11065,11 @@ MonoBehaviour:
   isWhole: 1
   <CookType>k__BackingField: 0
   <RipeState>k__BackingField: 1
-  m_ripeByBoil: 0
-  m_ripeByBroil: 0
-  m_ripeByGrill: 0
+  _ripeByBoil: 0
+  _ripeByBroil: 0
+  _ripeByGrill: 0
+  _renderer: {fileID: 0}
+  _rigidbody: {fileID: 0}
 --- !u!23 &1943392571
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -11209,7 +11270,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!54 &2001510559
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -11272,6 +11333,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   <Volume>k__BackingField: -1
   isUpdating: 0
+  meshFilter: {fileID: 0}
 --- !u!114 &2001510562
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -11289,9 +11351,11 @@ MonoBehaviour:
   isWhole: 1
   <CookType>k__BackingField: 0
   <RipeState>k__BackingField: 1
-  m_ripeByBoil: 0
-  m_ripeByBroil: 0
-  m_ripeByGrill: 0
+  _ripeByBoil: 0
+  _ripeByBroil: 0
+  _ripeByGrill: 0
+  _renderer: {fileID: 0}
+  _rigidbody: {fileID: 0}
 --- !u!23 &2001510563
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -12771,7 +12835,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!54 &2051527774
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -12834,6 +12898,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   <Volume>k__BackingField: -1
   isUpdating: 0
+  meshFilter: {fileID: 0}
 --- !u!114 &2051527777
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -12851,9 +12916,11 @@ MonoBehaviour:
   isWhole: 1
   <CookType>k__BackingField: 0
   <RipeState>k__BackingField: 1
-  m_ripeByBoil: 0
-  m_ripeByBroil: 0
-  m_ripeByGrill: 0
+  _ripeByBoil: 0
+  _ripeByBroil: 0
+  _ripeByGrill: 0
+  _renderer: {fileID: 0}
+  _rigidbody: {fileID: 0}
 --- !u!23 &2051527778
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -12971,7 +13038,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!54 &2064351755
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -13034,6 +13101,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   <Volume>k__BackingField: -1
   isUpdating: 0
+  meshFilter: {fileID: 0}
 --- !u!114 &2064351758
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -13051,9 +13119,11 @@ MonoBehaviour:
   isWhole: 1
   <CookType>k__BackingField: 0
   <RipeState>k__BackingField: 1
-  m_ripeByBoil: 0
-  m_ripeByBroil: 0
-  m_ripeByGrill: 0
+  _ripeByBoil: 0
+  _ripeByBroil: 0
+  _ripeByGrill: 0
+  _renderer: {fileID: 0}
+  _rigidbody: {fileID: 0}
 --- !u!23 &2064351759
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -13670,7 +13740,7 @@ MeshCollider:
   m_LayerOverridePriority: 0
   m_IsTrigger: 0
   m_ProvidesContacts: 0
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 5
   m_Convex: 1
   m_CookingOptions: 30
@@ -14436,7 +14506,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!1 &256962943614678174
 GameObject:
   m_ObjectHideFlags: 0
@@ -14692,7 +14762,7 @@ MeshCollider:
   m_LayerOverridePriority: 0
   m_IsTrigger: 0
   m_ProvidesContacts: 0
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 5
   m_Convex: 1
   m_CookingOptions: 30
@@ -14876,7 +14946,7 @@ MeshCollider:
   m_LayerOverridePriority: 0
   m_IsTrigger: 0
   m_ProvidesContacts: 0
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 5
   m_Convex: 1
   m_CookingOptions: 30
@@ -14917,7 +14987,7 @@ MeshCollider:
   m_LayerOverridePriority: 0
   m_IsTrigger: 0
   m_ProvidesContacts: 0
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 5
   m_Convex: 1
   m_CookingOptions: 30
@@ -15189,7 +15259,7 @@ MeshCollider:
   m_LayerOverridePriority: 0
   m_IsTrigger: 0
   m_ProvidesContacts: 0
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 5
   m_Convex: 1
   m_CookingOptions: 30
@@ -16387,7 +16457,7 @@ MeshCollider:
   m_LayerOverridePriority: 0
   m_IsTrigger: 0
   m_ProvidesContacts: 0
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 5
   m_Convex: 1
   m_CookingOptions: 30
@@ -17516,7 +17586,7 @@ MeshCollider:
   m_LayerOverridePriority: 0
   m_IsTrigger: 0
   m_ProvidesContacts: 0
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 5
   m_Convex: 1
   m_CookingOptions: 30
@@ -17806,7 +17876,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!23 &933531702929828852
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -17994,7 +18064,7 @@ MeshCollider:
   m_LayerOverridePriority: 0
   m_IsTrigger: 0
   m_ProvidesContacts: 0
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 5
   m_Convex: 1
   m_CookingOptions: 30
@@ -18247,7 +18317,7 @@ MeshCollider:
   m_LayerOverridePriority: 0
   m_IsTrigger: 0
   m_ProvidesContacts: 0
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 5
   m_Convex: 1
   m_CookingOptions: 30
@@ -19018,7 +19088,7 @@ MeshCollider:
   m_LayerOverridePriority: 0
   m_IsTrigger: 0
   m_ProvidesContacts: 0
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 5
   m_Convex: 1
   m_CookingOptions: 30
@@ -19167,9 +19237,11 @@ MonoBehaviour:
   isWhole: 1
   <CookType>k__BackingField: 0
   <RipeState>k__BackingField: 1
-  m_ripeByBoil: 0
-  m_ripeByBroil: 0
-  m_ripeByGrill: 0
+  _ripeByBoil: 0
+  _ripeByBroil: 0
+  _ripeByGrill: 0
+  _renderer: {fileID: 0}
+  _rigidbody: {fileID: 0}
 --- !u!64 &1328216960200134391
 MeshCollider:
   m_ObjectHideFlags: 2
@@ -19230,7 +19302,7 @@ MeshCollider:
   m_LayerOverridePriority: 0
   m_IsTrigger: 0
   m_ProvidesContacts: 0
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 5
   m_Convex: 1
   m_CookingOptions: 30
@@ -19842,7 +19914,7 @@ MeshCollider:
   m_LayerOverridePriority: 0
   m_IsTrigger: 0
   m_ProvidesContacts: 0
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 5
   m_Convex: 1
   m_CookingOptions: 30
@@ -19953,6 +20025,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   <Volume>k__BackingField: -1
   isUpdating: 0
+  meshFilter: {fileID: 0}
 --- !u!64 &1591631181677637170
 MeshCollider:
   m_ObjectHideFlags: 2
@@ -19970,7 +20043,7 @@ MeshCollider:
   m_LayerOverridePriority: 0
   m_IsTrigger: 0
   m_ProvidesContacts: 0
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 5
   m_Convex: 1
   m_CookingOptions: 30
@@ -20060,7 +20133,7 @@ MeshCollider:
   m_LayerOverridePriority: 0
   m_IsTrigger: 0
   m_ProvidesContacts: 0
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 5
   m_Convex: 1
   m_CookingOptions: 30
@@ -20090,7 +20163,7 @@ MeshCollider:
   m_LayerOverridePriority: 0
   m_IsTrigger: 0
   m_ProvidesContacts: 0
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 5
   m_Convex: 1
   m_CookingOptions: 30
@@ -20276,7 +20349,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!1 &1676241425779421366
 GameObject:
   m_ObjectHideFlags: 0
@@ -20520,6 +20593,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   <Volume>k__BackingField: -1
   isUpdating: 0
+  meshFilter: {fileID: 0}
 --- !u!1 &1724368484016811016
 GameObject:
   m_ObjectHideFlags: 0
@@ -22276,7 +22350,7 @@ MeshCollider:
   m_LayerOverridePriority: 0
   m_IsTrigger: 0
   m_ProvidesContacts: 0
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 5
   m_Convex: 1
   m_CookingOptions: 30
@@ -22295,6 +22369,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   <Volume>k__BackingField: -1
   isUpdating: 0
+  meshFilter: {fileID: 0}
 --- !u!222 &2113725728730295458
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -22434,7 +22509,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &2180084055757954870
 RectTransform:
   m_ObjectHideFlags: 0
@@ -23478,7 +23553,7 @@ MeshCollider:
   m_LayerOverridePriority: 0
   m_IsTrigger: 0
   m_ProvidesContacts: 0
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 5
   m_Convex: 1
   m_CookingOptions: 30
@@ -23768,7 +23843,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!1 &2487136521093552784
 GameObject:
   m_ObjectHideFlags: 0
@@ -24373,7 +24448,7 @@ MeshCollider:
   m_LayerOverridePriority: 0
   m_IsTrigger: 0
   m_ProvidesContacts: 0
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 5
   m_Convex: 1
   m_CookingOptions: 30
@@ -24463,9 +24538,11 @@ MonoBehaviour:
   isWhole: 1
   <CookType>k__BackingField: 0
   <RipeState>k__BackingField: 1
-  m_ripeByBoil: 0
-  m_ripeByBroil: 0
-  m_ripeByGrill: 0
+  _ripeByBoil: 0
+  _ripeByBroil: 0
+  _ripeByGrill: 0
+  _renderer: {fileID: 0}
+  _rigidbody: {fileID: 0}
 --- !u!1 &2643321013470862500
 GameObject:
   m_ObjectHideFlags: 0
@@ -25364,7 +25441,7 @@ MeshCollider:
   m_LayerOverridePriority: 0
   m_IsTrigger: 0
   m_ProvidesContacts: 0
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 5
   m_Convex: 1
   m_CookingOptions: 30
@@ -25820,7 +25897,7 @@ MeshCollider:
   m_LayerOverridePriority: 0
   m_IsTrigger: 0
   m_ProvidesContacts: 0
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 5
   m_Convex: 1
   m_CookingOptions: 30
@@ -26021,7 +26098,7 @@ MeshCollider:
   m_LayerOverridePriority: 0
   m_IsTrigger: 0
   m_ProvidesContacts: 0
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 5
   m_Convex: 1
   m_CookingOptions: 30
@@ -26187,7 +26264,7 @@ MeshCollider:
   m_LayerOverridePriority: 0
   m_IsTrigger: 0
   m_ProvidesContacts: 0
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 5
   m_Convex: 1
   m_CookingOptions: 30
@@ -26781,9 +26858,11 @@ MonoBehaviour:
   isWhole: 1
   <CookType>k__BackingField: 0
   <RipeState>k__BackingField: 1
-  m_ripeByBoil: 0
-  m_ripeByBroil: 0
-  m_ripeByGrill: 0
+  _ripeByBoil: 0
+  _ripeByBroil: 0
+  _ripeByGrill: 0
+  _renderer: {fileID: 0}
+  _rigidbody: {fileID: 0}
 --- !u!1 &3180735655386801798
 GameObject:
   m_ObjectHideFlags: 0
@@ -27200,7 +27279,7 @@ MeshCollider:
   m_LayerOverridePriority: 0
   m_IsTrigger: 0
   m_ProvidesContacts: 0
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 5
   m_Convex: 1
   m_CookingOptions: 30
@@ -27558,7 +27637,7 @@ MeshCollider:
   m_LayerOverridePriority: 0
   m_IsTrigger: 0
   m_ProvidesContacts: 0
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 5
   m_Convex: 1
   m_CookingOptions: 30
@@ -27777,7 +27856,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   isPrimaryGrabbed: 0
   isSecondaryGrabbed: 0
-  toolType: 1
+  xrObjectType: 1
   grabbedLayer:
     serializedVersion: 2
     m_Bits: 536870912
@@ -27861,7 +27940,7 @@ MeshCollider:
   m_LayerOverridePriority: 0
   m_IsTrigger: 0
   m_ProvidesContacts: 0
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 5
   m_Convex: 1
   m_CookingOptions: 30
@@ -28096,7 +28175,7 @@ MeshCollider:
   m_LayerOverridePriority: 0
   m_IsTrigger: 0
   m_ProvidesContacts: 0
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 5
   m_Convex: 1
   m_CookingOptions: 30
@@ -30640,7 +30719,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   isPrimaryGrabbed: 0
   isSecondaryGrabbed: 0
-  toolType: 1
+  xrObjectType: 1
   grabbedLayer:
     serializedVersion: 2
     m_Bits: 536870912
@@ -31940,7 +32019,7 @@ MeshCollider:
   m_LayerOverridePriority: 0
   m_IsTrigger: 0
   m_ProvidesContacts: 0
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 5
   m_Convex: 1
   m_CookingOptions: 30
@@ -32422,7 +32501,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   isPrimaryGrabbed: 0
   isSecondaryGrabbed: 0
-  toolType: 1
+  xrObjectType: 1
   grabbedLayer:
     serializedVersion: 2
     m_Bits: 536870912
@@ -33857,7 +33936,7 @@ MeshCollider:
   m_LayerOverridePriority: 0
   m_IsTrigger: 0
   m_ProvidesContacts: 0
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 5
   m_Convex: 1
   m_CookingOptions: 30
@@ -34006,7 +34085,7 @@ MeshCollider:
   m_LayerOverridePriority: 0
   m_IsTrigger: 0
   m_ProvidesContacts: 0
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 5
   m_Convex: 1
   m_CookingOptions: 30
@@ -34028,7 +34107,7 @@ MeshCollider:
   m_LayerOverridePriority: 0
   m_IsTrigger: 0
   m_ProvidesContacts: 0
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 5
   m_Convex: 1
   m_CookingOptions: 30
@@ -35376,7 +35455,7 @@ MeshCollider:
   m_LayerOverridePriority: 0
   m_IsTrigger: 0
   m_ProvidesContacts: 0
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 5
   m_Convex: 1
   m_CookingOptions: 30
@@ -35437,7 +35516,7 @@ MeshCollider:
   m_LayerOverridePriority: 0
   m_IsTrigger: 0
   m_ProvidesContacts: 0
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 5
   m_Convex: 1
   m_CookingOptions: 30
@@ -40393,7 +40472,7 @@ MeshCollider:
   m_LayerOverridePriority: 0
   m_IsTrigger: 0
   m_ProvidesContacts: 0
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 5
   m_Convex: 1
   m_CookingOptions: 30
@@ -41178,7 +41257,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!33 &5147534202346274126
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -41261,9 +41340,11 @@ MonoBehaviour:
   isWhole: 1
   <CookType>k__BackingField: 0
   <RipeState>k__BackingField: 1
-  m_ripeByBoil: 0
-  m_ripeByBroil: 0
-  m_ripeByGrill: 0
+  _ripeByBoil: 0
+  _ripeByBroil: 0
+  _ripeByGrill: 0
+  _renderer: {fileID: 0}
+  _rigidbody: {fileID: 0}
 --- !u!33 &5181124640735774871
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -41917,7 +41998,7 @@ MeshCollider:
   m_LayerOverridePriority: 0
   m_IsTrigger: 0
   m_ProvidesContacts: 0
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 5
   m_Convex: 1
   m_CookingOptions: 30
@@ -43904,7 +43985,7 @@ MeshCollider:
   m_LayerOverridePriority: 0
   m_IsTrigger: 0
   m_ProvidesContacts: 0
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 5
   m_Convex: 1
   m_CookingOptions: 30
@@ -44591,6 +44672,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   <Volume>k__BackingField: -1
   isUpdating: 0
+  meshFilter: {fileID: 0}
 --- !u!64 &5690741690315138459
 MeshCollider:
   m_ObjectHideFlags: 2
@@ -44738,6 +44820,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   <Volume>k__BackingField: -1
   isUpdating: 0
+  meshFilter: {fileID: 0}
 --- !u!222 &5713764260567125931
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -44931,7 +45014,7 @@ MeshCollider:
   m_LayerOverridePriority: 0
   m_IsTrigger: 0
   m_ProvidesContacts: 0
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 5
   m_Convex: 1
   m_CookingOptions: 30
@@ -45644,9 +45727,11 @@ MonoBehaviour:
   isWhole: 1
   <CookType>k__BackingField: 0
   <RipeState>k__BackingField: 1
-  m_ripeByBoil: 0
-  m_ripeByBroil: 0
-  m_ripeByGrill: 0
+  _ripeByBoil: 0
+  _ripeByBroil: 0
+  _ripeByGrill: 0
+  _renderer: {fileID: 0}
+  _rigidbody: {fileID: 0}
 --- !u!64 &6037150655486192988
 MeshCollider:
   m_ObjectHideFlags: 2
@@ -45664,7 +45749,7 @@ MeshCollider:
   m_LayerOverridePriority: 0
   m_IsTrigger: 0
   m_ProvidesContacts: 0
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 5
   m_Convex: 1
   m_CookingOptions: 30
@@ -46801,7 +46886,7 @@ MeshCollider:
   m_LayerOverridePriority: 0
   m_IsTrigger: 0
   m_ProvidesContacts: 0
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 5
   m_Convex: 1
   m_CookingOptions: 30
@@ -48669,9 +48754,11 @@ MonoBehaviour:
   isWhole: 1
   <CookType>k__BackingField: 0
   <RipeState>k__BackingField: 1
-  m_ripeByBoil: 0
-  m_ripeByBroil: 0
-  m_ripeByGrill: 0
+  _ripeByBoil: 0
+  _ripeByBroil: 0
+  _ripeByGrill: 0
+  _renderer: {fileID: 0}
+  _rigidbody: {fileID: 0}
 --- !u!222 &6521182939007099245
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -48762,6 +48849,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   <Volume>k__BackingField: -1
   isUpdating: 0
+  meshFilter: {fileID: 0}
 --- !u!1 &6573957310989225648
 GameObject:
   m_ObjectHideFlags: 0
@@ -48987,7 +49075,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &6618153191751472602
 Transform:
   m_ObjectHideFlags: 0
@@ -49779,9 +49867,11 @@ MonoBehaviour:
   isWhole: 1
   <CookType>k__BackingField: 0
   <RipeState>k__BackingField: 1
-  m_ripeByBoil: 0
-  m_ripeByBroil: 0
-  m_ripeByGrill: 0
+  _ripeByBoil: 0
+  _ripeByBroil: 0
+  _ripeByGrill: 0
+  _renderer: {fileID: 0}
+  _rigidbody: {fileID: 0}
 --- !u!4 &6776482107287731456
 Transform:
   m_ObjectHideFlags: 0
@@ -50481,7 +50571,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   isPrimaryGrabbed: 0
   isSecondaryGrabbed: 0
-  toolType: 1
+  xrObjectType: 1
   grabbedLayer:
     serializedVersion: 2
     m_Bits: 536870912
@@ -51083,7 +51173,7 @@ MeshCollider:
   m_LayerOverridePriority: 0
   m_IsTrigger: 0
   m_ProvidesContacts: 0
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 5
   m_Convex: 1
   m_CookingOptions: 30
@@ -52710,9 +52800,11 @@ MonoBehaviour:
   isWhole: 1
   <CookType>k__BackingField: 0
   <RipeState>k__BackingField: 1
-  m_ripeByBoil: 0
-  m_ripeByBroil: 0
-  m_ripeByGrill: 0
+  _ripeByBoil: 0
+  _ripeByBroil: 0
+  _ripeByGrill: 0
+  _renderer: {fileID: 0}
+  _rigidbody: {fileID: 0}
 --- !u!54 &7190943898316978568
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -55732,7 +55824,7 @@ MeshCollider:
   m_LayerOverridePriority: 0
   m_IsTrigger: 0
   m_ProvidesContacts: 0
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 5
   m_Convex: 1
   m_CookingOptions: 30
@@ -56172,6 +56264,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   <Volume>k__BackingField: -1
   isUpdating: 0
+  meshFilter: {fileID: 0}
 --- !u!4 &7373221264016799906
 Transform:
   m_ObjectHideFlags: 0
@@ -56201,6 +56294,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   <Volume>k__BackingField: -1
   isUpdating: 0
+  meshFilter: {fileID: 0}
 --- !u!64 &7381455168082750981
 MeshCollider:
   m_ObjectHideFlags: 2
@@ -56299,7 +56393,7 @@ MeshCollider:
   m_LayerOverridePriority: 0
   m_IsTrigger: 0
   m_ProvidesContacts: 0
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 5
   m_Convex: 1
   m_CookingOptions: 30
@@ -57031,7 +57125,7 @@ MeshCollider:
   m_LayerOverridePriority: 0
   m_IsTrigger: 0
   m_ProvidesContacts: 0
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 5
   m_Convex: 1
   m_CookingOptions: 30
@@ -57300,7 +57394,7 @@ MeshCollider:
   m_LayerOverridePriority: 0
   m_IsTrigger: 0
   m_ProvidesContacts: 0
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 5
   m_Convex: 1
   m_CookingOptions: 30
@@ -57322,7 +57416,7 @@ MeshCollider:
   m_LayerOverridePriority: 0
   m_IsTrigger: 0
   m_ProvidesContacts: 0
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 5
   m_Convex: 1
   m_CookingOptions: 30
@@ -57606,6 +57700,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   <Volume>k__BackingField: -1
   isUpdating: 0
+  meshFilter: {fileID: 0}
 --- !u!222 &7737654555090370641
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -57836,7 +57931,7 @@ MeshCollider:
   m_LayerOverridePriority: 0
   m_IsTrigger: 0
   m_ProvidesContacts: 0
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 5
   m_Convex: 1
   m_CookingOptions: 30
@@ -57899,7 +57994,7 @@ MeshCollider:
   m_LayerOverridePriority: 0
   m_IsTrigger: 0
   m_ProvidesContacts: 0
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 5
   m_Convex: 1
   m_CookingOptions: 30
@@ -59307,7 +59402,7 @@ MeshCollider:
   m_LayerOverridePriority: 0
   m_IsTrigger: 0
   m_ProvidesContacts: 0
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 5
   m_Convex: 1
   m_CookingOptions: 30
@@ -60646,7 +60741,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!64 &8296680380956171046
 MeshCollider:
   m_ObjectHideFlags: 2
@@ -60989,7 +61084,7 @@ MeshCollider:
   m_LayerOverridePriority: 0
   m_IsTrigger: 0
   m_ProvidesContacts: 0
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 5
   m_Convex: 1
   m_CookingOptions: 30
@@ -61011,7 +61106,7 @@ MeshCollider:
   m_LayerOverridePriority: 0
   m_IsTrigger: 0
   m_ProvidesContacts: 0
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 5
   m_Convex: 1
   m_CookingOptions: 30
@@ -61246,7 +61341,7 @@ MeshCollider:
   m_LayerOverridePriority: 0
   m_IsTrigger: 0
   m_ProvidesContacts: 0
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 5
   m_Convex: 1
   m_CookingOptions: 30
@@ -61857,9 +61952,11 @@ MonoBehaviour:
   isWhole: 1
   <CookType>k__BackingField: 0
   <RipeState>k__BackingField: 1
-  m_ripeByBoil: 0
-  m_ripeByBroil: 0
-  m_ripeByGrill: 0
+  _ripeByBoil: 0
+  _ripeByBroil: 0
+  _ripeByGrill: 0
+  _renderer: {fileID: 0}
+  _rigidbody: {fileID: 0}
 --- !u!33 &8553619476026973112
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -62097,7 +62194,7 @@ MeshCollider:
   m_LayerOverridePriority: 0
   m_IsTrigger: 0
   m_ProvidesContacts: 0
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 5
   m_Convex: 1
   m_CookingOptions: 30
@@ -62147,7 +62244,7 @@ MeshCollider:
   m_LayerOverridePriority: 0
   m_IsTrigger: 0
   m_ProvidesContacts: 0
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 5
   m_Convex: 1
   m_CookingOptions: 30
@@ -67669,7 +67766,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!1 &9102405621502985869
 GameObject:
   m_ObjectHideFlags: 0

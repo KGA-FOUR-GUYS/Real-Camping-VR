@@ -238,8 +238,7 @@ public class XRObjectManagerBase : MonoBehaviour
 		var colliders = _physicalObjectTransform.GetComponentsInChildren<Collider>();
 		foreach (var collider in colliders)
 		{
-			// 미리 지정해준 Layer가 있다면 유지 (i.e - Grab Guidance)
-			if (collider.gameObject.layer != LayerMask.NameToLayer("Default")) continue;
+			if (collider.gameObject.layer != LayerMask.NameToLayer("GrabGuidance")) continue;	// Grab Guidance는 유지
 			collider.gameObject.layer = targetLayerValue;
 		}
 	}
