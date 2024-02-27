@@ -1,5 +1,4 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -10,8 +9,12 @@ public class CookingProcess_Controller : MonoBehaviour
 
     private ScrollRect scrollRect;
 
-    private RectTransform viewportRect;
-    private RectTransform contentRect;
+    [SerializeField]private RectTransform viewportRect;
+    [SerializeField] private RectTransform contentRect;
+
+    [SerializeField] private GameObject ProcessUI_Prefab;
+
+
 
     public int currentIndex = 0;
     private void Awake()
@@ -22,6 +25,8 @@ public class CookingProcess_Controller : MonoBehaviour
     private void Start()
     {
         scrollRect = GetComponentInChildren<ScrollRect>();
+        viewportRect = scrollRect.viewport;
+        contentRect = scrollRect.content;
     }
 
 
@@ -60,6 +65,7 @@ public class CookingProcess_Controller : MonoBehaviour
         { 
             currentIndex++;
             FocusContent(scrollRect.content.childCount, currentIndex);
+            StartGSH_Process();
             SoundManager.instance.PlayCookingSFX(0);
         }
         else if (currentIndex == scrollRect.content.childCount - 1)
@@ -102,6 +108,46 @@ public class CookingProcess_Controller : MonoBehaviour
         yield break;
     }
 
+    public bool IsItValidSO()
+    {
+        for (int i = 0; i < contentRect.childCount; i++)
+        {
+            Destroy(contentRect.GetChild(i).gameObject);
+        }
 
+        if (RecipeManager.instance.currentSO.name == "BeefStew")
+        {
+            InstantiateProcess_UI(CookingProcess.Slice);
+            InstantiateProcess_UI(CookingProcess.Boil);
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
 
+    private void InstantiateProcess_UI(CookingProcess cookingProcess) //GSH Enum
+    {
+        GameObject Process_UI_GO = Instantiate(ProcessUI_Prefab, contentRect);
+        Process_UI process_UI = Process_UI_GO.GetComponent<Process_UI>();
+        process_UI.currentProcess = cookingProcess;
+        process_UI.SetInfo();
+    }
+
+    public void StartGSH_Process()
+    {
+        StartCoroutine(StartGSH_Process_Co());
+    }
+
+    private IEnumerator StartGSH_Process_Co()
+    {
+        yield return null;
+
+        CookingProcess CP = contentRect.GetChild(currentIndex).GetComponent<Process_UI>().currentProcess;
+        Debug.Log(CP);
+
+        ProcessManager.instance.SelectRecipe(RecipeManager.instance.currentSO);
+        ProcessManager.instance.Process(CP);
+    }
 }

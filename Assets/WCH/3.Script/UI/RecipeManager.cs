@@ -129,13 +129,19 @@ public class RecipeManager : MonoBehaviour
             currentCanvas = ResultCanvas;
             currentCanvas.GetComponent<CanvasGroup>().blocksRaycasts = true;
             StartCoroutine(CanvasAlphaChange(currentCanvas, canvasFadeSpeed, 0f, 1f));
-            cookingImgObj.transform.parent = ResultImgParent;
+            cookingImgObj.transform.SetParent(ResultImgParent);
         }
     }
 
     public void StartCookBtn()
     {
+        if (!CookingProcess_Controller.instance.IsItValidSO())
+        {
+            Debug.Log("It is Not Valid SO");
+            return;
+        }
         ProcessChange(RecipeProcess.CookingProcess);
+        CookingProcess_Controller.instance.StartGSH_Process();
         SoundManager.instance.PlayCookingSFX(0);
     }
     public void StopCookBtn()
@@ -198,7 +204,7 @@ public class RecipeManager : MonoBehaviour
         }
         
         cookingImgObj = Instantiate(recipe_UI.instantiateObj);
-        cookingImgObj.transform.parent = instantiateParent;
+        cookingImgObj.transform.SetParent(instantiateParent);
         cookingImgObj.transform.position = recipe_UI.instantiateObj.transform.position;
         cookingImgObj.transform.localRotation = Quaternion.Euler(Vector3.zero);
 

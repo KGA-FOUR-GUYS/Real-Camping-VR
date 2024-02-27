@@ -55,10 +55,7 @@ public class ProcessManager : MonoBehaviour
 
     [SerializeField] List<Cooking.RecipeIngredient> progressIngrediant = new List<Cooking.RecipeIngredient>();
     [SerializeField] List<GameObject> SpawnerList = new List<GameObject>();
-    private void Start()
-    {
-        progressIngrediant = currentRecipe.ingredientList;
-    }
+    
     private List<GameObject> instantiatedPrefabs = new List<GameObject>();
     private void Update()
     {
@@ -79,7 +76,7 @@ public class ProcessManager : MonoBehaviour
         //    ChangeRecipe(1);
         //}
     }
-    private void Process(CookingProcess processIndex)
+    public void Process(CookingProcess processIndex)
     {
         switch (processIndex)
         {
