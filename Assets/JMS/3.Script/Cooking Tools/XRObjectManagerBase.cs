@@ -278,7 +278,7 @@ public class XRObjectManagerBase : MonoBehaviour
 		_primaryJointToHand.connectedMassScale = connectedBodyMassScale;
 
 		string context = isLeftHand ? "Left Hand" : "Right Hand";
-		Debug.Log($"[{transform.gameObject.name}] Secondary hand grabbed {context}");
+		Debug.Log($"[{transform.gameObject.name}] Primary hand grabbed {context}");
 	}
 
 	private Vector3 ConvertLocalPosition(Quaternion rotation)
