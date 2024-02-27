@@ -3,10 +3,25 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [System.Serializable]
+public class RecipeData
+{
+    public int Id;
+    public string Recipename;
+    public ProcessData[] Processdata;
+}
+
+[System.Serializable]
+public class ProcessData
+{
+    public CookingProcess _process;
+    public SpawnerData Spawnerdata;
+}
+
+[System.Serializable]
 public class SpawnerData
 {
-    public GameObject[] spawnerPrefabs;
-    public UtensilData[] utensilData;
+    public GameObject[] Spawnerprefabs;
+    public UtensilData[] Utensildata;
 }
 [System.Serializable]
 public class UtensilData
@@ -24,32 +39,65 @@ public enum CookingProcess
 
 public class ProcessManager : MonoBehaviour
 {
+    public static ProcessManager instance = null;
+
+    private void Awake()
+    {
+        if(instance == null)
+        {
+            instance = this;
+            return;
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
+    }
+
     [Header("Process")]
-    public CookingProcess cookingProcess;
-    public SpawnerData[] spawnerData;
+    //public CookingProcess cookingProcess;
+    [SerializeField]private RecipeData[] RecipeData;
 
     [Header("Transform")]
     public Transform[] spawnerTransforms;
 
     private List<GameObject> instantiatedPrefabs = new List<GameObject>();
-
+    public int CurrentRecipeId = 0;
     private void Update()
     {
-        if(Input.GetKeyDown(KeyCode.F))
+        if (Input.GetKeyDown(KeyCode.F))
         {
-            Process((int)cookingProcess);
+            Process(CookingProcess.Boil);
+        }
+        if (Input.GetKeyDown(KeyCode.D))
+        {
+            Process(CookingProcess.Cut);
+        }
+        if (Input.GetKeyDown(KeyCode.A))
+        {
+            ChangeRecipe(0);
+        }
+        if (Input.GetKeyDown(KeyCode.S))
+        {
+            ChangeRecipe(1);
         }
     }
-    private void Process(int processIndex)
+    private void Process(CookingProcess processIndex)
     {
         DestroyInstantiatedPrefabs();
-        for (int j = 0; j < spawnerData[processIndex].utensilData.Length; j++)
+        int recipeid = RecipeData[CurrentRecipeId].Id;
+        int idx = (int)processIndex;
+        for (int j = 0; j < RecipeData[recipeid].Processdata[idx].Spawnerdata.Utensildata.Length; j++)
         {
-            InstantiateAndAddToQueue(spawnerData[processIndex].utensilData[j].utensil, spawnerData[processIndex].utensilData[j].utensiltransform.position, spawnerData[processIndex].utensilData[j].utensiltransform.rotation);
+            InstantiateAndAddToQueue(RecipeData[recipeid].Processdata[idx].Spawnerdata.Utensildata[j].utensil
+                                    , RecipeData[recipeid].Processdata[idx].Spawnerdata.Utensildata[j].utensiltransform.position
+                                    , RecipeData[recipeid].Processdata[idx].Spawnerdata.Utensildata[j].utensiltransform.rotation);
         }
-        for (int i = 0; i < spawnerData[processIndex].spawnerPrefabs.Length && i < spawnerTransforms.Length; i++)
+        for (int i = 0; i < RecipeData[recipeid].Processdata[idx].Spawnerdata.Spawnerprefabs.Length && i < spawnerTransforms.Length; i++)
         {
-            InstantiateAndAddToQueue(spawnerData[processIndex].spawnerPrefabs[i], spawnerTransforms[i].position, spawnerTransforms[i].rotation);
+            InstantiateAndAddToQueue(RecipeData[recipeid].Processdata[idx].Spawnerdata.Spawnerprefabs[i]
+                                    , spawnerTransforms[i].position
+                                    , spawnerTransforms[i].rotation);
         }
     }
 
@@ -66,5 +114,9 @@ public class ProcessManager : MonoBehaviour
             Destroy(prefabInstance);
         }
         instantiatedPrefabs.Clear();
+    }
+    public void ChangeRecipe(int recipeID)
+    {
+        CurrentRecipeId = recipeID;
     }
 }
