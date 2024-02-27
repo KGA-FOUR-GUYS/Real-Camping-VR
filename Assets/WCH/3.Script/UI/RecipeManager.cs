@@ -327,7 +327,6 @@ public class RecipeManager : MonoBehaviour
         }
 
         GameObject instantiateText = Instantiate(detailTextPrefab, detailTextParent);
-
         instantiateText.GetComponent<TextMeshProUGUI>().text = currentSO.description;
     }
 
