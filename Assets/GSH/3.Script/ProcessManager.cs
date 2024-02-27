@@ -66,10 +66,10 @@ public class ProcessManager : MonoBehaviour
         {
             Process(CookingProcess.Slice);
         }
-        //if (Input.GetKeyDown(KeyCode.D))
-        //{
-        //    Process(CookingProcess.Cut);
-        //}
+        if (Input.GetKeyDown(KeyCode.D))
+        {
+            Process(CookingProcess.Boil);
+        }
         //if (Input.GetKeyDown(KeyCode.A))
         //{
         //    ChangeRecipe(0);
@@ -87,7 +87,7 @@ public class ProcessManager : MonoBehaviour
                 SliceProcess();
                 return;            
             case CookingProcess.Boil:
-                BoilProcess();
+                BoilToolSpawn();
                 return;
 
         }
@@ -132,11 +132,11 @@ public class ProcessManager : MonoBehaviour
     }
     public void CutToolSpawn()
     {
-        Instantiate(Knife.ToolPrefab, Knife.ToolTransform.position, Knife.ToolTransform.rotation);
+        Instantiate(Knife.ToolPrefab, Knife.ToolTransform.position, Knife.ToolPrefab.transform.rotation);
     }
-    public void BoilProcess()
+    public void BoilToolSpawn()
     {
-        Instantiate(Knife.ToolPrefab, Knife.ToolTransform.position, Knife.ToolTransform.rotation);
+        Instantiate(Pot.ToolPrefab, Pot.ToolTransform.position, Pot.ToolPrefab.transform.rotation);
     }
     private GameObject CompareNameCheck(string name)
     {
