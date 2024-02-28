@@ -21,7 +21,7 @@ public enum CookingProcess
     Slice,
     Boil,
     Broil,
-    Grill,
+    Grill
 }
 
 public class ProcessManager : MonoBehaviour
@@ -57,27 +57,38 @@ public class ProcessManager : MonoBehaviour
     [SerializeField] List<GameObject> SpawnerList = new List<GameObject>();
     
     private List<GameObject> instantiatedPrefabs = new List<GameObject>();
-    private void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.F))
-        {
-            Process(CookingProcess.Slice);
-        }
-        if (Input.GetKeyDown(KeyCode.D))
-        {
-            Process(CookingProcess.Boil);
-        }
-        //if (Input.GetKeyDown(KeyCode.A))
-        //{
-        //    ChangeRecipe(0);
-        //}
-        //if (Input.GetKeyDown(KeyCode.S))
-        //{
-        //    ChangeRecipe(1);
-        //}
-    }
+
+    //private void Start()
+    //{
+    //    progressIngrediant = currentRecipe.ingredientList;
+    //}
+
+    //private void Update()
+    //{
+    //    //if (Input.GetKeyDown(KeyCode.F))
+    //    //{
+    //    //    Process(CookingProcess.Slice);
+    //    //}
+    //    //if (Input.GetKeyDown(KeyCode.D))
+    //    //{
+    //    //    Process(CookingProcess.Boil);
+    //    //}
+    //    //if(Input.GetKeyDown(KeyCode.A))
+    //    //{
+    //    //    DestroyInstantiatedPrefabs();
+    //    //}
+    //    ////if (Input.GetKeyDown(KeyCode.A))
+    //    ////{
+    //    ////    ChangeRecipe(0);
+    //    ////}
+    //    ////if (Input.GetKeyDown(KeyCode.S))
+    //    ////{
+    //    ////    ChangeRecipe(1);
+    //    ////}
+    //}
     public void Process(CookingProcess processIndex)
     {
+        SpawnerList.Clear();
         switch (processIndex)
         {
             case CookingProcess.Slice:
@@ -95,7 +106,7 @@ public class ProcessManager : MonoBehaviour
         instantiatedPrefabs.Add(instance);
     }
 
-    private void DestroyInstantiatedPrefabs()
+    public void DestroyInstantiatedPrefabs()
     {
         foreach (var prefabInstance in instantiatedPrefabs)
         {
@@ -107,12 +118,11 @@ public class ProcessManager : MonoBehaviour
     public void SelectRecipe(RecipeSO recipe)
     {
         currentRecipe = recipe;
-        progressIngrediant.Clear();
         progressIngrediant = recipe.ingredientList;
     }
     public void SliceProcess()
     {
-        for(int i = 0; i<progressIngrediant.Count; i++)
+        for (int i = 0; i<progressIngrediant.Count; i++)
         {
             if(progressIngrediant[i].sliceCount > 0)
             {
@@ -121,17 +131,17 @@ public class ProcessManager : MonoBehaviour
         }
         for(int i = 0;i<SpawnerList.Count && i < spawnerTransform.Length; i++)
         {
-            Instantiate(SpawnerList[i], spawnerTransform[i].transform.position, spawnerTransform[i].rotation);
+            InstantiateAndAddToQueue(SpawnerList[i], spawnerTransform[i].transform.position, spawnerTransform[i].rotation);
         }
         CutToolSpawn();
     }
     public void CutToolSpawn()
     {
-        Instantiate(Knife.ToolPrefab, Knife.ToolTransform.position, Knife.ToolPrefab.transform.rotation);
+        InstantiateAndAddToQueue(Knife.ToolPrefab, Knife.ToolTransform.position, Knife.ToolPrefab.transform.rotation);
     }
     public void BoilToolSpawn()
     {
-        Instantiate(Pot.ToolPrefab, Pot.ToolTransform.position, Pot.ToolPrefab.transform.rotation);
+        InstantiateAndAddToQueue(Pot.ToolPrefab, Pot.ToolTransform.position, Pot.ToolPrefab.transform.rotation);
     }
     private GameObject CompareNameCheck(string name)
     {
