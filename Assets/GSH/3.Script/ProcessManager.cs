@@ -118,12 +118,10 @@ public class ProcessManager : MonoBehaviour
     public void SelectRecipe(RecipeSO recipe)
     {
         currentRecipe = recipe;
-        progressIngrediant.Clear();
         progressIngrediant = recipe.ingredientList;
     }
     public void SliceProcess()
     {
-        
         for (int i = 0; i<progressIngrediant.Count; i++)
         {
             if(progressIngrediant[i].sliceCount > 0)
