@@ -5,7 +5,7 @@ using UnityEngine;
 using UnityEngine.XR.Interaction.Toolkit;
 using Cooking;
 
-public class ObjectSpawner : XRGrabInteractable
+public class ObjectSpawner : XRBaseInteractable
 {
 	[Space(20)]
 	public Transform objectPool;

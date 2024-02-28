@@ -6,19 +6,27 @@ using Cooking;
 
 public class ScoreManager : MonoBehaviour
 {
+    [Header("레시피 정보")]
     [SerializeField] public RecipeSO currentRecipe;
+    [Tooltip("익힘범위의 오차 ±")]
     [SerializeField] int Error_Range = 5;
     [SerializeField] ObjectSpawner[] Ingredient_Spawner_Arr;
-    [SerializeField] List<string> Ingredients_Name = new List<string>();
-    [SerializeField] List<float> Cut_Scores = new List<float>();
-    [SerializeField] List<bool> Cut_pieces = new List<bool>();
-    [SerializeField] float Total_Cut_Score;
-    [SerializeField] List<float> Ripe_Scores = new List<float>();
-    [SerializeField] List<float> Ripe_Boil = new List<float>();//���
-    [SerializeField] List<float> Ripe_Broil = new List<float>();//Ƣ���
-    [SerializeField] List<float> Ripe_Grill = new List<float>();//����
-    [SerializeField] float Total_Ripe_Score;
-    [SerializeField] float Total_Score = 0f;
+    public List<string> Ingredients_Name = new List<string>(); //레시피 재료의 이름들
+
+    [Header("자르기 판정")]
+    public float Total_Cut_Score; //해당 레시피의 자르기 점수
+    public List<float> Cut_Scores = new List<float>(); // 재료별 자르기 점수
+    public List<bool> Cut_pieces = new List<bool>(); //재료별 조각개수
+
+    [Header("익히기 판정")]
+    public float Total_Ripe_Score; //해당 레시피의 익히기 점수
+    public List<float> Ripe_Scores = new List<float>(); // 재료별 익히기 점수
+    public List<float> Ripe_Boil = new List<float>(); // 재료별 끓이기 정도
+    public List<float> Ripe_Broil = new List<float>(); // 재료별 볶기(후라이팬조리) 정도
+    public List<float> Ripe_Grill = new List<float>(); // 재료별 굽기(직화구이) 정도
+
+    [Header("총점")]
+    public float Total_Score = 0f;
 
     //싱글톤
     public static ScoreManager Instance;
@@ -50,7 +58,16 @@ public class ScoreManager : MonoBehaviour
 
     public void Select_Recipe(RecipeSO select_Recipe)
     {
+        StartCoroutine(Find_Recipe_Ingredients_Co(select_Recipe));
+    }
+
+    private IEnumerator Find_Recipe_Ingredients_Co(RecipeSO select_Recipe)
+    {
         currentRecipe = select_Recipe;
+        yield return null;
+
+        Ingredient_Spawner_Arr = FindObjectsOfType<ObjectSpawner>();
+        yield break;
     }
 
     public void Cut_Judge()
@@ -99,7 +116,7 @@ public class ScoreManager : MonoBehaviour
         int? Name_Num = null;
         for (int i = 0; i < currentRecipe.ingredientList.Count; i++)
         {
-            var Ingredient_name = spawner.prefab.GetComponent<IngredientDataManager>().data.name;
+            var Ingredient_name = spawner.prefab.GetComponent<XRIngredientObjectManager>().virtualObject.GetComponent<IngredientDataManager>().data.name;
             if (Ingredient_name.Equals($"{currentRecipe.ingredientList[i].name}"))
             {
                 Name_Num = i;
@@ -229,7 +246,6 @@ public class ScoreManager : MonoBehaviour
             return;
         }
 
-        Ingredient_Spawner_Arr = FindObjectsOfType<ObjectSpawner>();
         Save_Ingredients_Name();
         Cut_Judge();
         Ripe_Judge();

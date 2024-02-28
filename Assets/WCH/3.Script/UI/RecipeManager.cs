@@ -343,6 +343,8 @@ public class RecipeManager : MonoBehaviour
         ProcessChange(RecipeProcess.SelectRecipe);
         CookingProcessTopSpace.transform.position = targetVector_CP;
         cookingImgObj = null;
+        ProcessManager.instance.DestroyInstantiatedPrefabs();
+
         SoundManager.instance.PlayCookingSFX(1);
     }
 
