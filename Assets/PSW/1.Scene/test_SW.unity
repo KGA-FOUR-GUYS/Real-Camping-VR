@@ -3112,6 +3112,24 @@ MonoBehaviour:
     mipBias: 0
     varianceClampScale: 0.9
     contrastAdaptiveSharpening: 0
+--- !u!1 &1354297237 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4345602422027696267, guid: 5f83e2a8dd073f74994d8c49bd02a349, type: 3}
+  m_PrefabInstance: {fileID: 4579813630485892298}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1354297239
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1354297237}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7f56af26044d276448d6b2cf1ec23ad8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  FirePS: []
 --- !u!1 &1368463500
 GameObject:
   m_ObjectHideFlags: 0
@@ -3560,14 +3578,14 @@ MonoBehaviour:
   Error_Range: 5
   Ingredient_Spawner_Arr: []
   Ingredients_Name: []
+  Total_Cut_Score: 0
   Cut_Scores: []
   Cut_pieces: 
-  Total_Cut_Score: 0
+  Total_Ripe_Score: 0
   Ripe_Scores: []
   Ripe_Boil: []
   Ripe_Broil: []
   Ripe_Grill: []
-  Total_Ripe_Score: 0
   Total_Score: 0
 --- !u!1 &2010298753
 GameObject:
@@ -5062,6 +5080,22 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 3614904687923370360, guid: 5f83e2a8dd073f74994d8c49bd02a349, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3614904687923370360, guid: 5f83e2a8dd073f74994d8c49bd02a349, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3614904687923370360, guid: 5f83e2a8dd073f74994d8c49bd02a349, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3614904687923370360, guid: 5f83e2a8dd073f74994d8c49bd02a349, type: 3}
+      propertyPath: m_ConstrainProportionsScale
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 3886347187078111878, guid: 5f83e2a8dd073f74994d8c49bd02a349, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -5105,6 +5139,14 @@ PrefabInstance:
     - target: {fileID: 4345602422027696267, guid: 5f83e2a8dd073f74994d8c49bd02a349, type: 3}
       propertyPath: m_Name
       value: Fire PS
+      objectReference: {fileID: 0}
+    - target: {fileID: 6857318703279173650, guid: 5f83e2a8dd073f74994d8c49bd02a349, type: 3}
+      propertyPath: looping
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6857318703279173650, guid: 5f83e2a8dd073f74994d8c49bd02a349, type: 3}
+      propertyPath: prewarm
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6857318703279173650, guid: 5f83e2a8dd073f74994d8c49bd02a349, type: 3}
       propertyPath: UVModule.cycles
@@ -5190,10 +5232,25 @@ PrefabInstance:
       propertyPath: NoiseModule.strength.maxCurve.m_Curve.Array.data[1].tangentMode
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7746244337621637503, guid: 5f83e2a8dd073f74994d8c49bd02a349, type: 3}
+      propertyPath: looping
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8499369337140317401, guid: 5f83e2a8dd073f74994d8c49bd02a349, type: 3}
+      propertyPath: looping
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8499369337140317401, guid: 5f83e2a8dd073f74994d8c49bd02a349, type: 3}
+      propertyPath: prewarm
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 4345602422027696267, guid: 5f83e2a8dd073f74994d8c49bd02a349, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1354297239}
   m_SourcePrefab: {fileID: 100100000, guid: 5f83e2a8dd073f74994d8c49bd02a349, type: 3}
 --- !u!114 &4630521495103022300
 MonoBehaviour:
