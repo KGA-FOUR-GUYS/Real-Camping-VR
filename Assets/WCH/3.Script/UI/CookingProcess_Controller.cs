@@ -72,6 +72,8 @@ public class CookingProcess_Controller : MonoBehaviour
         {
             RecipeManager.instance.ProcessChange(RecipeProcess.Result);
             SoundManager.instance.PlayCookingSFX(0);
+
+            Temp_ScoreUI.instance.UpdateScore(); //Delete This
         }
     }
     public void MinusBtn()
