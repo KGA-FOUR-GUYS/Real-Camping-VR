@@ -63,6 +63,15 @@ public class ControlSky : MonoBehaviour
     { get { return days; } set { days = value; } }
 
     [SerializeField]private float tempSecond;
+
+    private void Start()
+    {
+        Time.timeScale = 50f;
+        RenderSettings.skybox.SetTexture("_Texture1", skyboxNight);
+        RenderSettings.skybox.SetTexture("_Texture2", skyboxNight);
+        RenderSettings.skybox.SetFloat("_Blend", 0);
+        RenderSettings.fogColor = gradientNightToSunrise.Evaluate(0);
+    }
     private void Update()
     {
         tempSecond += Time.deltaTime;
@@ -116,7 +125,7 @@ public class ControlSky : MonoBehaviour
         RenderSettings.skybox.SetTexture("_Texture1", a);
         RenderSettings.skybox.SetTexture("_Texture2", b);
         RenderSettings.skybox.SetFloat("_Blend", 0);
-        for(float i = 0; i < time; i += Time.deltaTime)
+        for(float i = 0; i < (time/2); i += Time.deltaTime)
         {
             RenderSettings.skybox.SetFloat("_Blend", i / time);
             yield return null;
