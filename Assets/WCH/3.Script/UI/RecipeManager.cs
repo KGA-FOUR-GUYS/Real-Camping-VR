@@ -147,6 +147,8 @@ public class RecipeManager : MonoBehaviour
     public void StopCookBtn()
     {
         ProcessChange(RecipeProcess.DetailRecipe);
+        ProcessManager.instance.DestroyInstantiatedPrefabs();
+
         SoundManager.instance.PlayCookingSFX(2);
     }
 
