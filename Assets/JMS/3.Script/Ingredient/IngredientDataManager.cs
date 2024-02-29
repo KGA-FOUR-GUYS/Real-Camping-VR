@@ -168,7 +168,7 @@ namespace Cooking
         /// return base weight * volume weight
         /// </summary>
         /// <returns>total weight</returns>
-        private float GetWeight() => data.baseWeight * _volumeWeight;
+        private float GetWeight() => data.baseWeight/* * _volumeWeight*/;
 
         private bool IsCookable(GameObject obj, out CookerManager manager) {
             manager = null;
