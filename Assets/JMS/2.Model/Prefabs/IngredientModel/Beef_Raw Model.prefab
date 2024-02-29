@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2618841438753131396}
   - component: {fileID: 7331500152366708826}
-  m_Layer: 0
+  m_Layer: 27
   m_Name: Grab Collider
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -66,8 +66,6 @@ GameObject:
   - component: {fileID: 4621380437182402097}
   - component: {fileID: 156339237939967867}
   - component: {fileID: 3901252645032528815}
-  - component: {fileID: 4550891931928119976}
-  - component: {fileID: 2572351865173989710}
   m_Layer: 0
   m_Name: Beef_Raw Virtual
   m_TagString: Untagged
@@ -274,43 +272,6 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
---- !u!114 &4550891931928119976
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 560946780939553664}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9e87311a1e97c5949a2c1edaec63f013, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  <Ripe>k__BackingField: 0
-  data: {fileID: 11400000, guid: e4f6c20082d64fb41a471d2b1b8a76d5, type: 2}
-  isWhole: 1
-  <CookType>k__BackingField: 0
-  <RipeState>k__BackingField: 1
-  _ripeByBoil: 0
-  _ripeByBroil: 0
-  _ripeByGrill: 0
-  _renderer: {fileID: 3412355530167630206}
-  _rigidbody: {fileID: 3901252645032528815}
---- !u!114 &2572351865173989710
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 560946780939553664}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e82445d646235a04f913c833c5f743b4, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  <Volume>k__BackingField: -1
-  isUpdating: 0
-  meshFilter: {fileID: 7763676514110140879}
 --- !u!1 &1772929115763551884
 GameObject:
   m_ObjectHideFlags: 0
@@ -598,6 +559,8 @@ GameObject:
   - component: {fileID: 7176854494209551079}
   - component: {fileID: 8884198113299924604}
   - component: {fileID: 4087495113705617220}
+  - component: {fileID: 6302258844498784872}
+  - component: {fileID: 8986689478920993937}
   m_Layer: 0
   m_Name: Beef_Raw Physical
   m_TagString: Untagged
@@ -663,6 +626,43 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!114 &6302258844498784872
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7866480270106416067}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e82445d646235a04f913c833c5f743b4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  <Volume>k__BackingField: -1
+  isUpdating: 0
+  meshFilter: {fileID: 8144243121695397274}
+--- !u!114 &8986689478920993937
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7866480270106416067}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9e87311a1e97c5949a2c1edaec63f013, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  <Ripe>k__BackingField: 0
+  data: {fileID: 11400000, guid: e4f6c20082d64fb41a471d2b1b8a76d5, type: 2}
+  isWhole: 1
+  <CookType>k__BackingField: 0
+  <RipeState>k__BackingField: 1
+  _ripeByBoil: 0
+  _ripeByBroil: 0
+  _ripeByGrill: 0
+  _renderer: {fileID: 9212006995695051633}
+  _rigidbody: {fileID: 4087495113705617220}
 --- !u!1 &8589814831550474845
 GameObject:
   m_ObjectHideFlags: 0

@@ -71,26 +71,25 @@ namespace Cooking
             if (RipeState == RipeState.Burn) return;
 
             if (RipeState == RipeState.Raw
-                && data.ripeForWelldone < 200f && Ripe >= data.ripeForUndercook)
+                && data.ripeForUndercook <= Ripe)
             {
                 RipeState = RipeState.Undercook;
                 _renderer.material = data.undercookMaterial;
             }
             else if (RipeState == RipeState.Undercook
-                     && Ripe < data.ripeForOvercook && Ripe >= data.ripeForWelldone)
+                      && data.ripeForWelldone <= Ripe && Ripe < data.ripeForOvercook)
             {
                 RipeState = RipeState.Welldone;
                 _renderer.material = data.welldoneMaterial;
             }
             else if (RipeState == RipeState.Welldone
-                     && Ripe < data.ripeForBurn && Ripe >= data.ripeForOvercook)
+                      && data.ripeForOvercook <= Ripe && Ripe < data.ripeForBurn)
             {
                 RipeState = RipeState.Overcook;
                 _renderer.material = data.overcookMaterial;
             }
-
             else if (RipeState == RipeState.Overcook
-                     && Ripe >= data.ripeForBurn)
+                     && data.ripeForBurn <= Ripe)
             {
                 RipeState = RipeState.Burn;
                 _renderer.material = data.burnMaterial;

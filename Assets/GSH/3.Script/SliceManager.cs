@@ -110,7 +110,7 @@ public class SliceManager : MonoBehaviour
             upperModel.transform.SetParent(objectPool);
             lowerModel.transform.SetParent(objectPool);
 
-            IngredientDataManager ingredientDataManager = _ingredientObjectManager.virtualObject.GetComponent<IngredientDataManager>();
+            IngredientDataManager ingredientDataManager = _ingredientObjectManager.physicalObject.GetComponent<IngredientDataManager>();
 			// New object?
 			if (ingredientDataManager.isWhole)
 			{
@@ -141,9 +141,6 @@ public class SliceManager : MonoBehaviour
         GameObject virtualRendererObj = ingredientManager.virtualObjectRenderer.gameObject;
         CopyMeshFilter(slicedHull.GetComponent<MeshFilter>(), virtualRendererObj.GetComponent<MeshFilter>());
         CopyMeshRenderer(slicedHull.GetComponent<MeshRenderer>(), virtualRendererObj.GetComponent<MeshRenderer>());
-        // Set Ingredient data
-        virtualObj.GetComponent<MeshCalculator>().CheckVolume();
-        virtualObj.GetComponent<IngredientDataManager>().isWhole = false;
         // Remove Trigger Collider
         Destroy(ingredientManager.grabCollider);
 
@@ -152,6 +149,9 @@ public class SliceManager : MonoBehaviour
         GameObject physicalRendererObj = ingredientManager.physicalObjectRenderer.gameObject;
         CopyMeshFilter(slicedHull.GetComponent<MeshFilter>(), physicalRendererObj.GetComponent<MeshFilter>());
         CopyMeshRenderer(slicedHull.GetComponent<MeshRenderer>(), physicalRendererObj.GetComponent<MeshRenderer>());
+        // Set Ingredient data
+        physicalObj.GetComponent<MeshCalculator>().CheckVolume();
+        physicalObj.GetComponent<IngredientDataManager>().isWhole = false;
         // Remove centor of mass
         Destroy(physicalObj.GetComponent<CenterOfMass>());
         physicalObj.GetComponent<Rigidbody>().automaticCenterOfMass = true;

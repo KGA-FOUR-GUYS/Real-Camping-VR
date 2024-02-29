@@ -18,10 +18,10 @@ public class XRIngredientObjectManager : XRObjectManagerBase
 	{
 		base.Awake();
 
-		virtualObject.TryGetComponent(out meshCalculator);
+		physicalObject.TryGetComponent(out meshCalculator);
 		virtualObject.TryGetComponent(out spawnObject);
 
-		Assert.IsNotNull(meshCalculator, $"[{gameObject.name}] Can not find MeshCalculator component in virtual object");
+		Assert.IsNotNull(meshCalculator, $"[{gameObject.name}] Can not find MeshCalculator component in physical object");
 		Assert.IsNotNull(spawnObject, $"[{gameObject.name}] Can not find SpawnObject component in virtual object");
 	}
 

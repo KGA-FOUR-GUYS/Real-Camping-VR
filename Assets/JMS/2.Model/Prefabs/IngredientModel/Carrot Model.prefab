@@ -1065,8 +1065,6 @@ GameObject:
   - component: {fileID: 9065715449585018421}
   - component: {fileID: 2138493293968030714}
   - component: {fileID: 1686787026413051787}
-  - component: {fileID: 7489404953183050291}
-  - component: {fileID: 568215639775987821}
   m_Layer: 0
   m_Name: Carrot Virtual
   m_TagString: Untagged
@@ -1273,43 +1271,6 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
---- !u!114 &7489404953183050291
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1844635143579909408}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9e87311a1e97c5949a2c1edaec63f013, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  <Ripe>k__BackingField: 0
-  data: {fileID: 11400000, guid: b34cfc9f72b6ba84dbbbc69e574ce889, type: 2}
-  isWhole: 1
-  <CookType>k__BackingField: 0
-  <RipeState>k__BackingField: 1
-  _ripeByBoil: 0
-  _ripeByBroil: 0
-  _ripeByGrill: 0
-  _renderer: {fileID: 2836951666993983967}
-  _rigidbody: {fileID: 1686787026413051787}
---- !u!114 &568215639775987821
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1844635143579909408}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e82445d646235a04f913c833c5f743b4, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  <Volume>k__BackingField: -1
-  isUpdating: 0
-  meshFilter: {fileID: 4887994863836475549}
 --- !u!1 &3438208075476332856
 GameObject:
   m_ObjectHideFlags: 0
@@ -1490,6 +1451,8 @@ GameObject:
   - component: {fileID: 668171810307077190}
   - component: {fileID: 7405017441902878577}
   - component: {fileID: 7189598084136253223}
+  - component: {fileID: 3948518571933642422}
+  - component: {fileID: 6012397000009748886}
   m_Layer: 0
   m_Name: Carrot Physical
   m_TagString: Untagged
@@ -1555,6 +1518,43 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!114 &3948518571933642422
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5346000220655154147}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9e87311a1e97c5949a2c1edaec63f013, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  <Ripe>k__BackingField: 0
+  data: {fileID: 11400000, guid: b34cfc9f72b6ba84dbbbc69e574ce889, type: 2}
+  isWhole: 1
+  <CookType>k__BackingField: 0
+  <RipeState>k__BackingField: 1
+  _ripeByBoil: 0
+  _ripeByBroil: 0
+  _ripeByGrill: 0
+  _renderer: {fileID: 5644150342022654970}
+  _rigidbody: {fileID: 7189598084136253223}
+--- !u!114 &6012397000009748886
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5346000220655154147}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e82445d646235a04f913c833c5f743b4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  <Volume>k__BackingField: -1
+  isUpdating: 0
+  meshFilter: {fileID: 4828691702108109814}
 --- !u!1 &6592739393836379957
 GameObject:
   m_ObjectHideFlags: 0

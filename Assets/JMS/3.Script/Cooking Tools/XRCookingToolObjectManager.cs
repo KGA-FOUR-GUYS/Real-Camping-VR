@@ -19,10 +19,11 @@ public class XRCookingToolObjectManager : MonoBehaviour
     {
 		None = 0,
 		Multiple = 1,
-		SliceOnly = 2,
-		BroilOnly = 3,
-		BoilOnly = 4,
-		GrillOnly = 5,
+		Slice = 2,
+		Broil = 3,
+		Boil = 4,
+		Grill = 5,
+		Seasoning = 6,
     }
 
 	public bool isPrimaryGrabbed = false;
@@ -32,6 +33,7 @@ public class XRCookingToolObjectManager : MonoBehaviour
 	public GrabType grabType = GrabType.OneHand;
 	public CookType cookType = CookType.None;
 	public List<CookerManager> cookerManagers = new List<CookerManager>();
+	public List<ShakerParticleManager> shakerManagers = new List<ShakerParticleManager>();
 
 	[Header("Primary Grabbed Option")]
 	public LayerMask grabbedLayer;
@@ -82,11 +84,11 @@ public class XRCookingToolObjectManager : MonoBehaviour
 
 		if (cookType.Equals(CookType.Multiple))
 			Assert.IsFalse(cookerManagers.Count <= 1, $"[{gameObject.name}] Can't find enough CookerManager components for cook. (2 or more CookerManager needed for Multiple cook type)");
-		else if (cookType.Equals(CookType.BroilOnly))
+		else if (cookType.Equals(CookType.Broil))
 			Assert.IsFalse(cookerManagers.Count == 0, $"[{gameObject.name}] Can't find BroilManager component for broil");
-		else if (cookType.Equals(CookType.BoilOnly))
+		else if (cookType.Equals(CookType.Boil))
 			Assert.IsFalse(cookerManagers.Count == 0, $"[{gameObject.name}] Can't find BoilManager component for boil");
-		else if (cookType.Equals(CookType.GrillOnly))
+		else if (cookType.Equals(CookType.Grill))
 			Assert.IsFalse(cookerManagers.Count == 0, $"[{gameObject.name}] Can't find GrillManager component for grill");
 	}
 
@@ -191,6 +193,14 @@ public class XRCookingToolObjectManager : MonoBehaviour
 			isPrimaryGrabbed = true;
 			TogglePhysicalToolLayer();
 			AttachPrimaryPointToHand(e);
+
+			if (cookType.Equals(CookType.Seasoning))
+            {
+                foreach (var shakerManager in shakerManagers)
+                {
+					shakerManager.gameObject.SetActive(true);
+				}
+            }
 		}
 		// Secondary Grab Entered
 		else if (!isSecondaryGrabbed)
@@ -213,6 +223,14 @@ public class XRCookingToolObjectManager : MonoBehaviour
 			isPrimaryGrabbed = false;
 			Invoke(nameof(TogglePhysicalToolLayer), delayToggleLayerAfterExit);
 			DetachPrimaryPointFromHand(e);
+
+			if (cookType.Equals(CookType.Seasoning))
+			{
+				foreach (var shakerManager in shakerManagers)
+				{
+					shakerManager.gameObject.SetActive(false);
+				}
+			}
 		}
 		// Secondary Grab Exited
 		else if (isPrimaryGrabbed && isSecondaryGrabbed)
