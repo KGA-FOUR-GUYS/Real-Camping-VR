@@ -17,7 +17,7 @@ namespace Cooking
         Burn = 5,
     }
 
-    public enum CookType
+    public enum RipeType
     {
         None = 0,
         Boil = 1,
@@ -66,33 +66,33 @@ namespace Cooking
             return null;
         }
         #endregion
-        #region CookType
-        public static CookType ToCookType(this string word)
+        #region RipeType
+        public static RipeType ToRipeType(this string word)
         {
             switch (word)
             {
                 case "BOIL":
-                    return CookType.Boil;
+                    return RipeType.Boil;
                 case "BROIL":
-                    return CookType.Broil;
+                    return RipeType.Broil;
                 case "GRILL":
-                    return CookType.Grill;
+                    return RipeType.Grill;
             }
 
-            return CookType.None;
+            return RipeType.None;
         }
 
-        public static string ToString(this CookType cookType)
+        public static string ToString(this RipeType cookType)
         {
             switch (cookType)
             {
-                case CookType.None:
+                case RipeType.None:
                     return "NONE";
-                case CookType.Boil:
+                case RipeType.Boil:
                     return "BOIL";
-                case CookType.Broil:
+                case RipeType.Broil:
                     return "BROIL";
-                case CookType.Grill:
+                case RipeType.Grill:
                     return "GRILL";
             }
 

@@ -142,7 +142,7 @@ public class GrabGuidanceInteractable : XRSimpleInteractable
 
             var startPos = transform.position;
             var endPos = handTransform.position;
-            var midPos = new Vector3((startPos.x + endPos.x) / 2, startPos.y + maxOffsetY, (startPos.z + endPos.z) / 2);
+            var midPos = new Vector3((startPos.x + endPos.x) / 2, Mathf.Max(startPos.y, endPos.y) + maxOffsetY, (startPos.z + endPos.z) / 2);
             DrawBezierCurve3(startPos, midPos, endPos);
         }
     }
@@ -256,7 +256,7 @@ public class GrabGuidanceInteractable : XRSimpleInteractable
         Vector3 endPos = _currentInteractor.transform.position;
         Vector3 midPos = new Vector3(
             (startPos.x + endPos.x) / 2,
-            startPos.y + maxOffsetY,
+            Mathf.Max(startPos.y, endPos.y) + maxOffsetY,
             (startPos.z + endPos.z) / 2);
 
         // isKinematic = true, 경로를 이동하며 발생하는 문제를 해결

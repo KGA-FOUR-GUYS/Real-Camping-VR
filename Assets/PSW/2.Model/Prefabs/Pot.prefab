@@ -178,7 +178,6 @@ GameObject:
   m_Component:
   - component: {fileID: 3301159719025577855}
   - component: {fileID: 7613000063451988909}
-  - component: {fileID: 4932136389429410540}
   m_Layer: 0
   m_Name: Pot
   m_TagString: Untagged
@@ -217,12 +216,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   isPrimaryGrabbed: 0
   isSecondaryGrabbed: 0
-  xrObjectType: 1
+  grabType: 0
+  cookType: 0
+  cookerManagers: []
+  shakerManagers: []
   grabbedLayer:
     serializedVersion: 2
     m_Bits: 536870912
   delayToggleLayerAfterExit: 1
-  leftHandRotationOffset: {x: 0, y: 0, z: 0}
+  leftHandRotationOffset: {x: 0, y: 180, z: 0}
   rightHandRotationOffset: {x: 0, y: 0, z: 0}
   isVirtualHandVisible: 0
   virtualTool: {fileID: 8986773273937056509}
@@ -233,33 +235,6 @@ MonoBehaviour:
   primaryAttachPoint: {fileID: 1083845653232940516}
   maxSpeed: 30
   connectedBodyMassScale: 0.5
---- !u!54 &4932136389429410540
-Rigidbody:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2151449930766842563}
-  serializedVersion: 4
-  m_Mass: 1
-  m_Drag: 0
-  m_AngularDrag: 0.05
-  m_CenterOfMass: {x: 0, y: 0, z: 0}
-  m_InertiaTensor: {x: 1, y: 1, z: 1}
-  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ImplicitCom: 1
-  m_ImplicitTensor: 1
-  m_UseGravity: 1
-  m_IsKinematic: 0
-  m_Interpolate: 0
-  m_Constraints: 0
-  m_CollisionDetection: 0
 --- !u!1 &2718417820553222036
 GameObject:
   m_ObjectHideFlags: 0
