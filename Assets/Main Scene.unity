@@ -909,7 +909,7 @@ MonoBehaviour:
   isPrimaryGrabbed: 0
   isSecondaryGrabbed: 0
   grabType: 0
-  cookType: 0
+  useType: 0
   cookerManagers: []
   shakerManagers: []
   grabbedLayer:
@@ -1832,7 +1832,7 @@ MonoBehaviour:
   isPrimaryGrabbed: 0
   isSecondaryGrabbed: 0
   grabType: 0
-  cookType: 2
+  useType: 0
   cookerManagers: []
   shakerManagers: []
   grabbedLayer:
@@ -8109,63 +8109,6 @@ CapsuleCollider:
   m_Height: 2
   m_Direction: 1
   m_Center: {x: 0, y: 0, z: 0}
---- !u!1001 &635304868
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    serializedVersion: 3
-    m_TransformParent: {fileID: 0}
-    m_Modifications:
-    - target: {fileID: 2151449930766842563, guid: f36392441aa645b459eb1f15fae25ce7, type: 3}
-      propertyPath: m_Name
-      value: Pot (1)
-      objectReference: {fileID: 0}
-    - target: {fileID: 3301159719025577855, guid: f36392441aa645b459eb1f15fae25ce7, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: -26.926126
-      objectReference: {fileID: 0}
-    - target: {fileID: 3301159719025577855, guid: f36392441aa645b459eb1f15fae25ce7, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 3.3581269
-      objectReference: {fileID: 0}
-    - target: {fileID: 3301159719025577855, guid: f36392441aa645b459eb1f15fae25ce7, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: -14.877076
-      objectReference: {fileID: 0}
-    - target: {fileID: 3301159719025577855, guid: f36392441aa645b459eb1f15fae25ce7, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 0.79335415
-      objectReference: {fileID: 0}
-    - target: {fileID: 3301159719025577855, guid: f36392441aa645b459eb1f15fae25ce7, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3301159719025577855, guid: f36392441aa645b459eb1f15fae25ce7, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: 0.6087605
-      objectReference: {fileID: 0}
-    - target: {fileID: 3301159719025577855, guid: f36392441aa645b459eb1f15fae25ce7, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3301159719025577855, guid: f36392441aa645b459eb1f15fae25ce7, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3301159719025577855, guid: f36392441aa645b459eb1f15fae25ce7, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 75
-      objectReference: {fileID: 0}
-    - target: {fileID: 3301159719025577855, guid: f36392441aa645b459eb1f15fae25ce7, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-    m_RemovedGameObjects: []
-    m_AddedGameObjects: []
-    m_AddedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: f36392441aa645b459eb1f15fae25ce7, type: 3}
 --- !u!1 &637740692
 GameObject:
   m_ObjectHideFlags: 0
@@ -20558,7 +20501,7 @@ MonoBehaviour:
   isPrimaryGrabbed: 0
   isSecondaryGrabbed: 0
   grabType: 0
-  cookType: 0
+  useType: 0
   cookerManagers: []
   shakerManagers: []
   grabbedLayer:
@@ -21861,7 +21804,7 @@ MonoBehaviour:
   isPrimaryGrabbed: 0
   isSecondaryGrabbed: 0
   grabType: 0
-  cookType: 0
+  useType: 0
   cookerManagers: []
   shakerManagers: []
   grabbedLayer:
@@ -30238,7 +30181,7 @@ MonoBehaviour:
   isPrimaryGrabbed: 0
   isSecondaryGrabbed: 0
   grabType: 0
-  cookType: 0
+  useType: 0
   cookerManagers: []
   shakerManagers: []
   grabbedLayer:
@@ -44762,7 +44705,7 @@ MonoBehaviour:
   isPrimaryGrabbed: 0
   isSecondaryGrabbed: 0
   grabType: 0
-  cookType: 0
+  useType: 0
   cookerManagers: []
   shakerManagers: []
   grabbedLayer:
@@ -47759,7 +47702,7 @@ MonoBehaviour:
   isPrimaryGrabbed: 0
   isSecondaryGrabbed: 0
   grabType: 0
-  cookType: 0
+  useType: 0
   cookerManagers: []
   shakerManagers: []
   grabbedLayer:
@@ -49763,7 +49706,7 @@ MonoBehaviour:
   isPrimaryGrabbed: 0
   isSecondaryGrabbed: 0
   grabType: 0
-  cookType: 0
+  useType: 0
   cookerManagers: []
   shakerManagers: []
   grabbedLayer:
@@ -58247,7 +58190,7 @@ MonoBehaviour:
   isPrimaryGrabbed: 0
   isSecondaryGrabbed: 0
   grabType: 0
-  cookType: 6
+  useType: 0
   cookerManagers: []
   shakerManagers:
   - {fileID: 4100635426013390847}
@@ -77105,7 +77048,7 @@ MonoBehaviour:
   isPrimaryGrabbed: 0
   isSecondaryGrabbed: 0
   grabType: 0
-  cookType: 1
+  useType: 0
   cookerManagers:
   - {fileID: 3133953863870309510}
   - {fileID: 118043403176897305}
@@ -80144,7 +80087,7 @@ MonoBehaviour:
   isPrimaryGrabbed: 0
   isSecondaryGrabbed: 0
   grabType: 0
-  cookType: 6
+  useType: 0
   cookerManagers: []
   shakerManagers:
   - {fileID: 7954582933499893704}
@@ -92522,4 +92465,3 @@ SceneRoots:
   - {fileID: 549039035}
   - {fileID: 1911705256}
   - {fileID: 2115419553}
-  - {fileID: 635304868}
