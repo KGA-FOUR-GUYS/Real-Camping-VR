@@ -15,7 +15,7 @@ public class XRCookingToolObjectManager : MonoBehaviour
 		TwoHand = 1,
 	}
 
-	public enum CookType
+	public enum UseType
     {
 		None = 0,
 		Multiple = 1,
@@ -31,7 +31,7 @@ public class XRCookingToolObjectManager : MonoBehaviour
 
 	[Header("Tool Charateristic")]
 	public GrabType grabType = GrabType.OneHand;
-	public CookType cookType = CookType.None;
+	public UseType useType = UseType.None;
 	public List<CookerManager> cookerManagers = new List<CookerManager>();
 	public List<ShakerParticleManager> shakerManagers = new List<ShakerParticleManager>();
 
@@ -82,13 +82,13 @@ public class XRCookingToolObjectManager : MonoBehaviour
 			Assert.IsNotNull(grabInteractable, $"[{gameObject.name}] Can't find XRGrabInteractable component in virtualTool");
 		}
 
-		if (cookType.Equals(CookType.Multiple))
+		if (useType.Equals(UseType.Multiple))
 			Assert.IsFalse(cookerManagers.Count <= 1, $"[{gameObject.name}] Can't find enough CookerManager components for cook. (2 or more CookerManager needed for Multiple cook type)");
-		else if (cookType.Equals(CookType.Broil))
+		else if (useType.Equals(UseType.Broil))
 			Assert.IsFalse(cookerManagers.Count == 0, $"[{gameObject.name}] Can't find BroilManager component for broil");
-		else if (cookType.Equals(CookType.Boil))
+		else if (useType.Equals(UseType.Boil))
 			Assert.IsFalse(cookerManagers.Count == 0, $"[{gameObject.name}] Can't find BoilManager component for boil");
-		else if (cookType.Equals(CookType.Grill))
+		else if (useType.Equals(UseType.Grill))
 			Assert.IsFalse(cookerManagers.Count == 0, $"[{gameObject.name}] Can't find GrillManager component for grill");
 	}
 
@@ -194,7 +194,7 @@ public class XRCookingToolObjectManager : MonoBehaviour
 			TogglePhysicalToolLayer();
 			AttachPrimaryPointToHand(e);
 
-			if (cookType.Equals(CookType.Seasoning))
+			if (useType.Equals(UseType.Seasoning))
             {
                 foreach (var shakerManager in shakerManagers)
                 {
@@ -224,7 +224,7 @@ public class XRCookingToolObjectManager : MonoBehaviour
 			Invoke(nameof(TogglePhysicalToolLayer), delayToggleLayerAfterExit);
 			DetachPrimaryPointFromHand(e);
 
-			if (cookType.Equals(CookType.Seasoning))
+			if (useType.Equals(UseType.Seasoning))
 			{
 				foreach (var shakerManager in shakerManagers)
 				{

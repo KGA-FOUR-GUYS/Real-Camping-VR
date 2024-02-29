@@ -18,7 +18,7 @@ namespace Cooking
         [Tooltip("잘린 조각이면 false, 안잘렸으면 true")]
         public bool isWhole = true;
         [field: Tooltip("현재 조리방식")]
-        [field: SerializeField] public CookType CookType { get; set; } = CookType.None;
+        [field: SerializeField] public RipeType CookType { get; set; } = RipeType.None;
         [field: Tooltip("현재 익음상태")]
         [field: SerializeField] public RipeState RipeState { get; private set; } = RipeState.Raw;
 
@@ -110,17 +110,17 @@ namespace Cooking
             if (!IsCookable(otherObj, out CookerManager manager)) return;
             if (manager is BoilManager)
             {
-                CookType = CookType.Boil;
+                CookType = RipeType.Boil;
                 return;
             }
             else if (manager is BroilManager)
             {
-                CookType = CookType.Broil;
+                CookType = RipeType.Broil;
                 return;
             }
             else if (manager is GrillManager)
             {
-                CookType = CookType.Grill;
+                CookType = RipeType.Grill;
                 return;
             }
         }
@@ -161,7 +161,7 @@ namespace Cooking
 
             // 요리 중단된 경우
             if (!IsCookable(otherObj, out _)) return;
-            CookType = CookType.None;
+            CookType = RipeType.None;
         }
 
         /// <summary>
