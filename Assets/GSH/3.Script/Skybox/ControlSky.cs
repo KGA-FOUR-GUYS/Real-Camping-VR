@@ -70,7 +70,10 @@ public class ControlSky : MonoBehaviour
         RenderSettings.skybox.SetTexture("_Texture1", skyboxNight);
         RenderSettings.skybox.SetTexture("_Texture2", skyboxNight);
         RenderSettings.skybox.SetFloat("_Blend", 0);
-        RenderSettings.fogColor = gradientNightToSunrise.Evaluate(0);
+        globalLight.color = gradientNightToSunrise.Evaluate(0);
+        RenderSettings.fogColor = globalLight.color;
+        RenderSettings.skybox.SetFloat("_Exposure2", 0);
+        RenderSettings.skybox.SetFloat("_Exposure1", 0);
     }
     private void Update()
     {
@@ -99,22 +102,22 @@ public class ControlSky : MonoBehaviour
     }
     private void OnHoursChange(int value)
     {
-        if(value == 6)
+        if(value == 6)//¾ÆÄ§
         {
             StartCoroutine(LerpSkybox(skyboxNight, skyboxSunrise, 100f));
             StartCoroutine(LerpLight(gradientNightToSunrise,100f));
         }
-        else if(value == 8)
+        else if(value == 8)//³·
         {
             StartCoroutine(LerpSkybox(skyboxSunrise, skyboxDay, 100f));
             StartCoroutine(LerpLight(gradientSunriseToDay,100f));
         }
-        else if(value == 18)
+        else if(value == 18)//Àú³á
         {
             StartCoroutine(LerpSkybox(skyboxDay, skyboxSunset, 100f));
             StartCoroutine(LerpLight(gradientDayToSunset, 100f));
         }
-        else if(value == 22)
+        else if(value == 20)//¹ã
         {
             StartCoroutine(LerpSkybox(skyboxSunset, skyboxNight, 100f));
             StartCoroutine(LerpLight(gradientSunsetToNight, 100f));
@@ -125,7 +128,7 @@ public class ControlSky : MonoBehaviour
         RenderSettings.skybox.SetTexture("_Texture1", a);
         RenderSettings.skybox.SetTexture("_Texture2", b);
         RenderSettings.skybox.SetFloat("_Blend", 0);
-        for(float i = 0; i < (time/2); i += Time.deltaTime)
+        for(float i = 0; i < time; i += Time.deltaTime)
         {
             RenderSettings.skybox.SetFloat("_Blend", i / time);
             yield return null;
@@ -141,4 +144,11 @@ public class ControlSky : MonoBehaviour
             yield return null;
         }
     }
+    //private IEnumerator LerpExposure(float time)
+    //{
+    //    for(float i = 0; i < time; i += Time.deltaTime)
+    //    {
+    //        RenderSettings.skybox.SetFloat("Exposure1", i / time);
+    //    }
+    //}
 }

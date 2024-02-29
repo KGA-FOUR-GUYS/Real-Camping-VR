@@ -37,8 +37,8 @@ RenderSettings:
   m_ReflectionBounces: 1
   m_ReflectionIntensity: 0.2
   m_CustomReflection: {fileID: 0}
-  m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.026651734, g: 0.012724738, b: 0.017987996, a: 0.2}
+  m_Sun: {fileID: 466199940}
+  m_IndirectSpecularColor: {r: 0.011776829, g: 0.028383492, b: 0.044652842, a: 0.2}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -1320,7 +1320,7 @@ MonoBehaviour:
   gradientSunriseToDay:
     serializedVersion: 2
     key0: {r: 0.9058824, g: 0.4666667, b: 0.078431375, a: 1}
-    key1: {r: 1, g: 1, b: 1, a: 1}
+    key1: {r: 0.9686275, g: 0.8235295, b: 0.69411767, a: 1}
     key2: {r: 0, g: 0, b: 0, a: 0}
     key3: {r: 0, g: 0, b: 0, a: 0}
     key4: {r: 0, g: 0, b: 0, a: 0}
@@ -1349,7 +1349,7 @@ MonoBehaviour:
     m_NumAlphaKeys: 2
   gradientDayToSunset:
     serializedVersion: 2
-    key0: {r: 1, g: 1, b: 1, a: 1}
+    key0: {r: 0.9686275, g: 0.8235295, b: 0.69803923, a: 1}
     key1: {r: 0.9058824, g: 0.4666667, b: 0.078431375, a: 1}
     key2: {r: 0, g: 0, b: 0, a: 0}
     key3: {r: 0, g: 0, b: 0, a: 0}
@@ -1463,7 +1463,7 @@ Terrain:
   m_PreserveTreePrototypeLayers: 0
   m_DeringLightProbesForTrees: 1
   m_ReceiveGI: 1
-  m_ScaleInLightmap: 0.0256
+  m_ScaleInLightmap: 0
   m_LightmapParameters: {fileID: 15203, guid: 0000000000000000f000000000000000, type: 0}
   m_GroupingID: 0
   m_RenderingLayerMask: 1
