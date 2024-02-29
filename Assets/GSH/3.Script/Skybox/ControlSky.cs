@@ -5,6 +5,13 @@ using UnityEngine;
 
 public class ControlSky : MonoBehaviour
 {
+    public enum dayTime
+    {
+        Morning = 6,
+        Noon = 8,
+        Evening = 18,
+        Night = 20,
+    }
     //public Material dayMat;
     //public Material nightMat;
     //public GameObject dayLight;
@@ -35,6 +42,7 @@ public class ControlSky : MonoBehaviour
     //}
     [Header("Time")]
     public float TimeScale = 0;
+    [SerializeField]private dayTime _dayTime;
 
     [Header("Texture")]
     [SerializeField] private Texture2D skyboxNight;
@@ -63,28 +71,30 @@ public class ControlSky : MonoBehaviour
     { get { return days; } set { days = value; } }
 
     [SerializeField]private float tempSecond;
-
+    [Range(1f, 60f)] public float MinutePerSecond = 1f;
+    
     private void Start()
     {
-        Time.timeScale = 50f;
-        RenderSettings.skybox.SetTexture("_Texture1", skyboxNight);
-        RenderSettings.skybox.SetTexture("_Texture2", skyboxNight);
-        RenderSettings.skybox.SetFloat("_Blend", 0);
-        globalLight.color = gradientNightToSunrise.Evaluate(0);
-        RenderSettings.fogColor = globalLight.color;
-        RenderSettings.skybox.SetFloat("_Exposure2", 0);
-        RenderSettings.skybox.SetFloat("_Exposure1", 0);
+        Hours = (int)_dayTime;
+        //Time.timeScale = 50f;
+        //RenderSettings.skybox.SetTexture("_Texture1", skyboxNight);
+        //RenderSettings.skybox.SetTexture("_Texture2", skyboxNight);
+        //RenderSettings.skybox.SetFloat("_Blend", 0);
+        //globalLight.color = gradientNightToSunrise.Evaluate(0);
+        //RenderSettings.fogColor = globalLight.color;
+        //RenderSettings.skybox.SetFloat("_Exposure2", 0);
+        //RenderSettings.skybox.SetFloat("_Exposure1", 0);
     }
     private void Update()
     {
         tempSecond += Time.deltaTime;
-        if(tempSecond >= 1)
+        if(tempSecond >= MinutePerSecond)
         {
             Minutes += 1;
             tempSecond = 0;
         }
-        RenderSettings.skybox.SetFloat("_Rotation1", Time.time * 0.5f);
-        RenderSettings.skybox.SetFloat("_Rotation2", Time.time * 0.5f);
+        RenderSettings.skybox.SetFloat("_Rotation1", Time.time * 0.3f);
+        RenderSettings.skybox.SetFloat("_Rotation2", Time.time * 0.3f);
     }
     private void OnMinutesChange(int value)
     {
