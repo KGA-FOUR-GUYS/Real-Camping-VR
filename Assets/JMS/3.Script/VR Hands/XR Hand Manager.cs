@@ -38,9 +38,19 @@ public class XRHandManager : MonoBehaviour
 
     private void Update()
     {
+        UpdatePhysicalHandRotation();
+        UpdatePhysicalHandPosition();
+
         ToggleVirtualHandRenderer();
     }
-    private void UpdatePhysicalHandRotation()
+
+	private void LateUpdate()
+	{
+        UpdatePhysicalHandRotation();
+        UpdatePhysicalHandPosition();
+    }
+
+	private void UpdatePhysicalHandRotation()
     {
         if (!isTrackingRotation) return;
 

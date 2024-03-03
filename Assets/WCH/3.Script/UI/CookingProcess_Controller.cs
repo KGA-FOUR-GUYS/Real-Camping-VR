@@ -120,7 +120,8 @@ public class CookingProcess_Controller : MonoBehaviour
         if (RecipeManager.instance.currentSO.name == "BeefStew")
         {
             InstantiateProcess_UI(CookingProcess.Slice);
-            InstantiateProcess_UI(CookingProcess.Boil);
+            //InstantiateProcess_UI(CookingProcess.Boil);
+            InstantiateProcess_UI(CookingProcess.Broil);
             return true;
         }
         else

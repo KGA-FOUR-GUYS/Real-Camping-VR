@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -48,6 +49,7 @@ public class ProcessManager : MonoBehaviour
     [Header("Tools")]
     [SerializeField] public ToolsData Knife;
     [SerializeField] public ToolsData Pot;
+    [SerializeField] public ToolsData FryPan;
     [SerializeField] public ToolsData Grill;
 
     [Header("SpawnerTransform")]
@@ -86,16 +88,20 @@ public class ProcessManager : MonoBehaviour
     //    ////    ChangeRecipe(1);
     //    ////}
     //}
-    public void Process(CookingProcess processIndex)
+
+    public void Process(CookingProcess process)
     {
         SpawnerList.Clear();
-        switch (processIndex)
+        switch (process)
         {
             case CookingProcess.Slice:
-                SliceProcess();
-                return;            
+                SpawnSliceTool();
+                return;
+            case CookingProcess.Broil:
+                SpawnBroilTool();
+                return;
             case CookingProcess.Boil:
-                BoilToolSpawn();
+                SpawnBoilTool();
                 return;
         }
     }
@@ -120,38 +126,45 @@ public class ProcessManager : MonoBehaviour
         currentRecipe = recipe;
         progressIngrediant = recipe.ingredientList;
     }
-    public void SliceProcess()
+    public void SpawnSliceTool()
+	{
+		ArrangeIngredients();
+		InstantiateAndAddToQueue(Knife.ToolPrefab, Knife.ToolTransform.position, Knife.ToolPrefab.transform.rotation);
+	}
+	private void ArrangeIngredients()
+	{
+		for (int i = 0; i < progressIngrediant.Count; i++)
+		{
+			if (progressIngrediant[i].sliceCount > 0)
+			{
+                var ingredient = GetValidIngredient(progressIngrediant[i].name);
+                if (ingredient != null)
+                    SpawnerList.Add(ingredient);
+			}
+		}
+		for (int i = 0; i < SpawnerList.Count && i < spawnerTransform.Length; i++)
+		{
+			InstantiateAndAddToQueue(SpawnerList[i], spawnerTransform[i].transform.position, spawnerTransform[i].rotation);
+		}
+	}
+    private GameObject GetValidIngredient(string name)
     {
-        for (int i = 0; i<progressIngrediant.Count; i++)
+        for (int i = 0; i < spawnerData.Length; i++)
         {
-            if(progressIngrediant[i].sliceCount > 0)
-            {
-                SpawnerList.Add(CompareNameCheck(progressIngrediant[i].name));
-            }
-        }
-        for(int i = 0;i<SpawnerList.Count && i < spawnerTransform.Length; i++)
-        {
-            InstantiateAndAddToQueue(SpawnerList[i], spawnerTransform[i].transform.position, spawnerTransform[i].rotation);
-        }
-        CutToolSpawn();
-    }
-    public void CutToolSpawn()
-    {
-        InstantiateAndAddToQueue(Knife.ToolPrefab, Knife.ToolTransform.position, Knife.ToolPrefab.transform.rotation);
-    }
-    public void BoilToolSpawn()
-    {
-        InstantiateAndAddToQueue(Pot.ToolPrefab, Pot.ToolTransform.position, Pot.ToolPrefab.transform.rotation);
-    }
-    private GameObject CompareNameCheck(string name)
-    {
-        for(int i=0; i < spawnerData.Length;i++)
-        {
-            if(spawnerData[i].name == name)
+            if (spawnerData[i].name == name)
             {
                 return spawnerData[i].Spawnerprefabs;
             }
         }
         return null;
     }
+
+    public void SpawnBoilTool()
+    {
+        InstantiateAndAddToQueue(Pot.ToolPrefab, Pot.ToolTransform.position, Pot.ToolPrefab.transform.rotation);
+    }
+    public void SpawnBroilTool()
+	{
+        InstantiateAndAddToQueue(FryPan.ToolPrefab, FryPan.ToolTransform.position, FryPan.ToolPrefab.transform.rotation);
+	}
 }

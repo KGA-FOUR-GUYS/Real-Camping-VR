@@ -6,8 +6,9 @@ using Cooking;
 [RequireComponent(typeof(SphereCollider))]
 public class DishManager : MonoBehaviour
 {
+    public List<IngredientSO> targetIngredients = new List<IngredientSO>();
+
     [Header("Collect ingredients")]
-    public IngredientSO target;
     public float duration = 3f;
     public float midOffsetY = 10f;
     public float endOffsetY = 2f;
@@ -24,7 +25,7 @@ public class DishManager : MonoBehaviour
     {
         TryGetComponent(out dishAreaCollider);
 
-        StartCoroutine(CollectIngredients(target));
+        StartCoroutine(CollectIngredients(targetIngredients));
     }
 
     private void Update()
@@ -58,7 +59,7 @@ public class DishManager : MonoBehaviour
         dishAreaCollider.enabled = false;
     }
 
-    private IEnumerator CollectIngredients(IngredientSO targetSO)
+    private IEnumerator CollectIngredients(List<IngredientSO> targetList)
     {
         yield return new WaitForSeconds(1f);
 
@@ -66,9 +67,12 @@ public class DishManager : MonoBehaviour
         var targets = new List<IngredientDataManager>();
         foreach (var ingredient in ingredients)
         {
-            if (ingredient.data != null && ingredient.data.Equals(targetSO))
-            {
-                targets.Add(ingredient);
+			foreach (var target in targetList)
+			{
+                if (ingredient.data != null && ingredient.data.Equals(target))
+                {
+                    targets.Add(ingredient);
+                }
             }
         }
 
