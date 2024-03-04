@@ -64,6 +64,7 @@ MonoBehaviour:
   targetVector_CP: {x: 0, y: 50, z: 0}
   ResultCanvas: {fileID: 6273639322875258909}
   ResultImgParent: {fileID: 8477812597873246640}
+  PopUp_UI: {fileID: 0}
 --- !u!1 &62839697861071132
 GameObject:
   m_ObjectHideFlags: 0
@@ -1668,7 +1669,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1081894520213830344}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
   m_Name: 
@@ -2215,9 +2216,9 @@ RectTransform:
   - {fileID: 914948643142810990}
   m_Father: {fileID: 2798299297433045501}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 285, y: -220}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 160, y: 30}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &3465376427099997825
@@ -2301,7 +2302,31 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 7891124837244685301}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 609005929869489134}
+        m_TargetAssemblyTypeName: RecipeManager, Assembly-CSharp
+        m_MethodName: OffPop_ExitBtn
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 609005929869489134}
+        m_TargetAssemblyTypeName: RecipeManager, Assembly-CSharp
+        m_MethodName: StopCookBtn
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &1369794140132278890
 GameObject:
   m_ObjectHideFlags: 0
@@ -3759,13 +3784,15 @@ GameObject:
   - component: {fileID: 1695156941946569737}
   - component: {fileID: 3962121521851177235}
   - component: {fileID: 1062348587727603387}
+  - component: {fileID: 8252205411643140351}
+  - component: {fileID: 8241427037211011949}
   m_Layer: 5
   m_Name: PopUpCanvas
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &6961143910320584503
 RectTransform:
   m_ObjectHideFlags: 0
@@ -3869,6 +3896,31 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 4294967295
   m_RaycastTriggerInteraction: 1
+--- !u!114 &8252205411643140351
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2167826364997582969}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 856a05fe37894c949b4123ddc0d6b5be, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ExitPopUp: {fileID: 7506193680309682683}
+--- !u!225 &8241427037211011949
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2167826364997582969}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
 --- !u!1 &2204371714877132917
 GameObject:
   m_ObjectHideFlags: 0
@@ -4276,7 +4328,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 609005929869489134}
         m_TargetAssemblyTypeName: RecipeManager, Assembly-CSharp
-        m_MethodName: StopCookBtn
+        m_MethodName: OnPopUp_ExitBtn
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -5047,7 +5099,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2755368660203401366}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
   m_Name: 
@@ -7155,9 +7207,9 @@ RectTransform:
   - {fileID: 8801936392200024960}
   m_Father: {fileID: 2798299297433045501}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 115, y: -220}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 160, y: 30}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &9058638458339022591
@@ -7241,7 +7293,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 5804545677978243383}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 609005929869489134}
+        m_TargetAssemblyTypeName: RecipeManager, Assembly-CSharp
+        m_MethodName: OffPop_ExitBtn
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &4111529402534415239
 GameObject:
   m_ObjectHideFlags: 0
@@ -9771,6 +9835,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   targetScale: {x: 0.95, y: 0.95, z: 0.95}
+  viewportRect: {fileID: 0}
+  contentRect: {fileID: 0}
   ProcessUI_Prefab: {fileID: 347491974597151342, guid: ec5d53505e588af4cbb90235c371daba, type: 3}
   currentIndex: 0
 --- !u!1 &7145293413266284699
