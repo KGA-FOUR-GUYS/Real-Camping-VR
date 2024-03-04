@@ -116,7 +116,7 @@ public class ScoreManager : MonoBehaviour
         int? Name_Num = null;
         for (int i = 0; i < currentRecipe.ingredientList.Count; i++)
         {
-            var Ingredient_name = spawner.prefab.GetComponent<XRIngredientObjectManager>().virtualObject.GetComponent<IngredientDataManager>().data.name;
+            var Ingredient_name = spawner.prefab.GetComponent<XRIngredientObjectManager>().physicalObject.GetComponent<IngredientDataManager>().data.name;
             if (Ingredient_name.Equals($"{currentRecipe.ingredientList[i].name}"))
             {
                 Name_Num = i;

@@ -1251,13 +1251,24 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4b687884ce7380e49b4d4b097561a886, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isGrabbed: 0
+  isPrimaryGrabbed: 0
+  isSecondaryGrabbed: 0
+  grabType: 0
+  useType: 0
+  cookerManagers: []
+  shakerManagers: []
   grabbedLayer:
     serializedVersion: 2
     m_Bits: 536870912
   delayToggleLayerAfterExit: 1
+  leftHandRotationOffset: {x: 0, y: 0, z: 0}
+  rightHandRotationOffset: {x: 0, y: 0, z: 0}
+  isVirtualHandVisible: 0
   virtualTool: {fileID: 4623560798963472656}
-  isVirtualToolVisible: 0
+  grabCollider: {fileID: 0}
+  virtualToolRenderer: {fileID: 0}
   distanceThreshold: 0.1
   physicalTool: {fileID: 7881246235218846543}
-  maxSpeed: 30
+  primaryAttachPoint: {fileID: 0}
+  maxSpeed: 60
+  connectedBodyMassScale: 0.5

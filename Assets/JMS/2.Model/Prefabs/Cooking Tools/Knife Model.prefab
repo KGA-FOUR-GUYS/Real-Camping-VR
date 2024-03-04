@@ -1168,7 +1168,7 @@ MonoBehaviour:
   physicalTool: {fileID: 771514349581539590}
   primaryAttachPoint: {fileID: 2265369273164986146}
   maxSpeed: 60
-  connectedBodyMassScale: 1
+  connectedBodyMassScale: 0.5
 --- !u!1 &6147688511310262398
 GameObject:
   m_ObjectHideFlags: 0
@@ -1366,7 +1366,7 @@ MonoBehaviour:
   - {fileID: 1433944337502775803}
   - {fileID: 3222739063390227079}
   IsSliceable: 1
-  SliceCoolTime: 0.1
+  SliceCoolTime: 0.5
   CutForce: 5
   RaycastCount: 10
   EdgeSide: {x: 0, y: 0, z: 0}
