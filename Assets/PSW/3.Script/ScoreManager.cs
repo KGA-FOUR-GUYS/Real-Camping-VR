@@ -247,8 +247,14 @@ public class ScoreManager : MonoBehaviour
         }
 
         Save_Ingredients_Name();
-        Cut_Judge();
-        Ripe_Judge();
+        if (Cut_Scores == null)
+        {
+            Cut_Judge();
+        }
+        if (Ripe_Scores == null)
+        {
+            Ripe_Judge();
+        }
         Total_Score = Mathf.Round((Total_Cut_Score + Total_Ripe_Score) * 0.5f);
 
         //디버그용
