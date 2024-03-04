@@ -176,7 +176,8 @@ public class SliceManager : MonoBehaviour
 
         // Destory meshObj
         Destroy(slicedHull);
-        physicalObj.GetComponent<Rigidbody>().AddExplosionForce(CutForce, physicalObj.transform.position, 1);
+        physicalObj.GetComponent<Rigidbody>().AddForce(Vector3.right, ForceMode.Impulse);
+        //physicalObj.GetComponent<Rigidbody>().AddExplosionForce(CutForce, physicalObj.transform.position, 1);
     }
 
     //public bool CheckAngle()
