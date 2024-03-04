@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 0.2
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 466199940}
-  m_IndirectSpecularColor: {r: 0.008867102, g: 0.023403501, b: 0.040798526, a: 0.2}
+  m_IndirectSpecularColor: {r: 0.040290054, g: 0.08101686, b: 0.105123185, a: 0.2}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -28958,7 +28958,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4949178584014541848}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
   m_Name: 
@@ -29179,7 +29179,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7895271754552827462}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
   m_Name: 
@@ -35033,7 +35033,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 4890686322560933182}
         m_TargetAssemblyTypeName: RecipeManager, Assembly-CSharp
-        m_MethodName: StopCookBtn
+        m_MethodName: OnPopUp_ExitBtn
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -37477,7 +37477,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 100, y: 100}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!224 &3115236376262855055
 RectTransform:
@@ -49902,7 +49902,69 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 2751209942644581669}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 4890686322560933182}
+        m_TargetAssemblyTypeName: RecipeManager, Assembly-CSharp
+        m_MethodName: OffPopUp_ExitBtn
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 4890686322560933182}
+        m_TargetAssemblyTypeName: RecipeManager, Assembly-CSharp
+        m_MethodName: StopCookBtn
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+--- !u!114 &4824701335260587473
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5174913970976676239}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 845ffa358c43240dda6ed5379b4f0c8e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _hideColliders: 1
+  _quality: 2
+  _combineMeshesBeforeCompute: 1
+  _parameters:
+    m_concavity: 0.001
+    m_alpha: 0.05
+    m_beta: 0.05
+    m_minVolumePerCH: 0.0001
+    m_resolution: 1000000
+    m_maxNumVerticesPerCH: 64
+    m_planeDownsampling: 4
+    m_convexhullDownsampling: 4
+    m_pca: 0
+    m_mode: 0
+    m_convexhullApproximation: 1
+    m_oclAcceleration: 0
+    m_maxConvexHulls: 128
+    m_projectHullVertices: 1
+  _colliderData: {fileID: 11400000, guid: e2e827347393fa54e977b644fecac76b, type: 2}
+  _colliders:
+  - {fileID: 7251511413681135455}
+  - {fileID: 9011844832692011122}
+  - {fileID: 7485775478914000171}
+  - {fileID: 682902427449943074}
+  _isTrigger: 0
+  _material: {fileID: 0}
 --- !u!33 &4828027732600736637
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -50300,6 +50362,7 @@ MonoBehaviour:
   instantiateParent: {fileID: 5210752805660573082}
   standardSize: {fileID: 2025085811998548525}
   titleText: {fileID: 7540567610160812349}
+  MainCanvasGroup: {fileID: 9125218511840005408}
   RecipeSelectCanvas: {fileID: 2698113679828580029}
   RecipeDetailCanvas: {fileID: 8032723731680082549}
   detailTextParent: {fileID: 7317341385337307106}
@@ -50309,6 +50372,29 @@ MonoBehaviour:
   targetVector_CP: {x: 0, y: 50, z: 0}
   ResultCanvas: {fileID: 2070771131346306765}
   ResultImgParent: {fileID: 4470833378633985888}
+  PopUp_UI: {fileID: 0}
+--- !u!64 &4903215267148308657
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 578734673808975129}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 0
+  serializedVersion: 5
+  m_Convex: 1
+  m_CookingOptions: 30
+  m_Mesh: {fileID: -3180415902644282587, guid: 94b70fd610e16904d9de9cf8e22d9dba, type: 2}
 --- !u!64 &4905492823055481227
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -59304,7 +59390,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1954924443969863655}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 4890686322560933182}
+        m_TargetAssemblyTypeName: RecipeManager, Assembly-CSharp
+        m_MethodName: OffPopUp_ExitBtn
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!4 &5894342882606982608
 Transform:
   m_ObjectHideFlags: 0
@@ -60461,13 +60559,14 @@ GameObject:
   - component: {fileID: 6641334623641168601}
   - component: {fileID: 9029966218932500419}
   - component: {fileID: 4977201684041525355}
+  - component: {fileID: 9029966218932500420}
   m_Layer: 5
   m_Name: PopUpCanvas
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &6184663275394750554
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -64402,9 +64501,9 @@ RectTransform:
   - {fileID: 3569780439244299600}
   m_Father: {fileID: 7888376372901046061}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 115, y: -220}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 160, y: 30}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &6713986804398908953
@@ -67841,9 +67940,9 @@ RectTransform:
   - {fileID: 5124575309334680510}
   m_Father: {fileID: 7888376372901046061}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 285, y: -220}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 160, y: 30}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &7120657195313061186
@@ -80228,6 +80327,19 @@ MonoBehaviour:
   m_BlockingMask:
     serializedVersion: 2
     m_Bits: 4294967295
+--- !u!114 &9029966218932500420
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6176968849842859689}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 856a05fe37894c949b4123ddc0d6b5be, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ExitPopUp: {fileID: 2560280476342628139}
 --- !u!222 &9046355500212099169
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -80500,6 +80612,7 @@ GameObject:
   - component: {fileID: 4414547250751599672}
   - component: {fileID: 8786208832760589668}
   - component: {fileID: 5519239767634364145}
+  - component: {fileID: 9125218511840005408}
   m_Layer: 5
   m_Name: RecipeCanvas
   m_TagString: Untagged
@@ -80507,6 +80620,18 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
+--- !u!225 &9125218511840005408
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9125218511840005407}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
 --- !u!64 &9131589462922406735
 MeshCollider:
   m_ObjectHideFlags: 2
