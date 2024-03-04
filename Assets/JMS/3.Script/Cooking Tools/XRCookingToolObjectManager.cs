@@ -321,8 +321,8 @@ public class XRCookingToolObjectManager : MonoBehaviour
 		_primaryJointToHand.connectedBody = bodyToConnect;
 		_primaryJointToHand.connectedMassScale = connectedBodyMassScale;
 
-		string context = isLeftHand ? "Left Hand" : "Right Hand";
-		Debug.Log($"[{transform.gameObject.name}] Primary hand grabbed {context}");
+		//string context = isLeftHand ? "Left Hand" : "Right Hand";
+		//Debug.Log($"[{transform.gameObject.name}] Primary hand grabbed {context}");
 	}
 	private Vector3 ConvertLocalPosition(Quaternion rotation)
 	{
@@ -391,22 +391,22 @@ public class XRCookingToolObjectManager : MonoBehaviour
 		grabCollider.transform.localPosition = _primaryColliderLocalPosition;
 		grabCollider.transform.localRotation = _primaryColliderLocalRotation;
 
-		bool isLeftHand = e.interactorObject.transform.gameObject.CompareTag("LeftHandInteractor");
-		string context = isLeftHand ? "Left Hand" : "Right Hand";
-		Debug.Log($"[{transform.gameObject.name}] Primary hand released {context}");
+		//bool isLeftHand = e.interactorObject.transform.gameObject.CompareTag("LeftHandInteractor");
+		//string context = isLeftHand ? "Left Hand" : "Right Hand";
+		//Debug.Log($"[{transform.gameObject.name}] Primary hand released {context}");
 	}
 
 	private void AttachSecondaryPointToHand(SelectEnterEventArgs e)
 	{
-		bool isLeftHand = e.interactorObject.transform.gameObject.CompareTag("LeftHandInteractor");
-		string context = isLeftHand ? "Left Hand" : "Right Hand";
-		Debug.Log($"[{transform.gameObject.name}] Secondary hand grabbed {context}");
+		//bool isLeftHand = e.interactorObject.transform.gameObject.CompareTag("LeftHandInteractor");
+		//string context = isLeftHand ? "Left Hand" : "Right Hand";
+		//Debug.Log($"[{transform.gameObject.name}] Secondary hand grabbed {context}");
 	}
 
 	private void DetachSecondaryPointFromHand(SelectExitEventArgs e)
 	{
-		bool isLeftHand = e.interactorObject.transform.gameObject.CompareTag("LeftHandInteractor");
-		string context = isLeftHand ? "Left Hand" : "Right Hand";
-		Debug.Log($"[{transform.gameObject.name}] Secondary hand released {context}");
+		//bool isLeftHand = e.interactorObject.transform.gameObject.CompareTag("LeftHandInteractor");
+		//string context = isLeftHand ? "Left Hand" : "Right Hand";
+		//Debug.Log($"[{transform.gameObject.name}] Secondary hand released {context}");
 	}
 }
