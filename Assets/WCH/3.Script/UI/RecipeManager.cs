@@ -20,7 +20,6 @@ public class RecipeManager : MonoBehaviour
     public float expandSpeed = 0.2f;
 
     public RecipeSO currentSO;
-
     //----inspector----
 
     public Recipe_UI recipe_UI = null;
@@ -37,6 +36,9 @@ public class RecipeManager : MonoBehaviour
     [SerializeField] private TextMeshProUGUI titleText;
     private Vector3 textOriginPos;
 
+
+    [SerializeField] private CanvasGroup MainCanvasGroup;
+
     [SerializeField] private GameObject RecipeSelectCanvas;
 
     [SerializeField] private GameObject RecipeDetailCanvas;
@@ -49,6 +51,8 @@ public class RecipeManager : MonoBehaviour
 
     [SerializeField] private GameObject ResultCanvas;
     [SerializeField] private Transform ResultImgParent;
+
+    [SerializeField] private PopUpUI_Manager PopUp_UI;
     private void Awake()
     {
         if (instance == null)
@@ -58,6 +62,8 @@ public class RecipeManager : MonoBehaviour
             currentProcess = RecipeProcess.SelectRecipe;
             currentCanvas = RecipeSelectCanvas;
             textOriginPos = titleText.rectTransform.localPosition;
+            PopUp_UI = transform.Find("PopUpCanvas").GetComponent<PopUpUI_Manager>();
+            PopUp_UI.gameObject.SetActive(false);
         }
         else Destroy(gameObject);
     }
@@ -149,7 +155,7 @@ public class RecipeManager : MonoBehaviour
         ProcessChange(RecipeProcess.DetailRecipe);
         ProcessManager.instance.DestroyInstantiatedPrefabs();
 
-        SoundManager.instance.PlayCookingSFX(2);
+        //SoundManager.instance.PlayCookingSFX(2);
     }
 
     public void BackBtn()
@@ -353,5 +359,26 @@ public class RecipeManager : MonoBehaviour
     //-----------------------------Result---------------------------------
 
 
+    //----PopUp----
+    public void OnPopUp_ExitBtn()
+    {
+        MainCanvasGroup.interactable = false;
+        MainCanvasGroup.blocksRaycasts = false;
+        PopUp_UI.gameObject.SetActive(true);
+        PopUp_UI.OnExitPopUp();
+        SoundManager.instance.PlayCookingSFX(2);
 
+    }
+
+    public void OffPopUp_ExitBtn()
+    {
+        MainCanvasGroup.interactable = true;
+        MainCanvasGroup.blocksRaycasts = true;
+        PopUp_UI.gameObject.SetActive(false);
+        PopUp_UI.OffExitPopUp();
+        SoundManager.instance.PlayCookingSFX(2);
+
+    }
+
+    //----PopUp----
 }
