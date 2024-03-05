@@ -6,10 +6,10 @@ using NaughtyWaterBuoyancy;
 [RequireComponent(typeof(FloatingObject))]
 public class DensityControl : MonoBehaviour
 {
-    private FloatingObject _floatingObj;
-    [SerializeField] float deeping_time;
-    [SerializeField] float density_max;
-    [SerializeField] float Crescendo_con;
+    [SerializeField] FloatingObject _floatingObj;
+    [SerializeField] float deeping_time = 3f;
+    [SerializeField] float density_max = 5f;
+    [SerializeField] float Crescendo_con = 0.2f;
     [SerializeField] bool triggerOn = false;
     IEnumerator current_co;
     float original_density;

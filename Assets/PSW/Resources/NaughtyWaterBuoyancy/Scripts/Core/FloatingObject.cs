@@ -3,9 +3,6 @@ using UnityEngine;
 
 namespace NaughtyWaterBuoyancy
 {
-    [RequireComponent(typeof(Collider))]
-    [RequireComponent(typeof(Rigidbody))]
-    [RequireComponent(typeof(MeshFilter))]
     public class FloatingObject : MonoBehaviour
     {
         [SerializeField]
@@ -24,8 +21,9 @@ namespace NaughtyWaterBuoyancy
         private float angularDragInWater = 1f;
 
         private WaterVolume water;
-        private new Collider collider;
-        private new Rigidbody rigidbody;
+        public MeshFilter meshFilter;
+        public new Collider collider;
+        public new Rigidbody rigidbody;
         private float initialDrag;
         private float initialAngularDrag;
         private Vector3 voxelSize;
@@ -33,15 +31,15 @@ namespace NaughtyWaterBuoyancy
 
         protected virtual void Awake()
         {
-            this.collider = this.GetComponent<Collider>();
-            this.rigidbody = this.GetComponent<Rigidbody>();
+            //this.collider = this.GetComponent<Collider>();
+            //this.rigidbody = this.GetComponent<Rigidbody>();
 
             this.initialDrag = this.rigidbody.drag;
             this.initialAngularDrag = this.rigidbody.angularDrag;
 
             if (this.calculateDensity)
             {
-                float objectVolume = MathfUtils.CalculateVolume_Mesh(this.GetComponent<MeshFilter>().mesh, this.transform);
+                float objectVolume = MathfUtils.CalculateVolume_Mesh(meshFilter.mesh, this.transform);
                 this.density = this.rigidbody.mass / objectVolume;
             }
         }
