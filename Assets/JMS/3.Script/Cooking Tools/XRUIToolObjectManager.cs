@@ -5,10 +5,40 @@ using UnityEngine.XR.Interaction.Toolkit;
 
 public class XRUIToolObjectManager : XRCookingToolObjectManager
 {
+	public bool isInSocket = false;
 	public GameObject leftUIPen;
 	public GameObject rightUIPen;
 
-	protected override void Awake()
+	public void SetRigidbodyFixed()
+    {
+        StartCoroutine(SetRigidbodyFixedCo());
+    }
+
+    private IEnumerator SetRigidbodyFixedCo()
+    {
+		yield return new WaitForFixedUpdate();
+
+		physicalTool.transform.forward = virtualTool.transform.forward;
+		physicalTool.transform.position = virtualTool.transform.position;
+
+		physicalToolRigidbody.useGravity = false;
+		physicalToolRigidbody.constraints = RigidbodyConstraints.FreezeAll;
+    }
+
+    public void SetRigidbodyDynamic()
+    {
+        StartCoroutine(SetRigidbodyDynamicCo());
+    }
+
+    private IEnumerator SetRigidbodyDynamicCo()
+    {
+		yield return new WaitForFixedUpdate();
+
+		physicalToolRigidbody.useGravity = true;
+        physicalToolRigidbody.constraints = RigidbodyConstraints.None;
+    }
+
+    protected override void Awake()
 	{
 		base.Awake();
 	}
@@ -23,16 +53,40 @@ public class XRUIToolObjectManager : XRCookingToolObjectManager
 
 	protected override void FixedUpdate()
 	{
+		if (isInSocket)
+        {
+			MatchPhysicalToolToVirtualTool();
+			return;
+		}
+
 		base.FixedUpdate();
 	}
 
 	protected override void Update()
-	{
+    {
+        if (isInSocket)
+        {
+			MatchPhysicalToolToVirtualTool();
+			ToggleVirtualToolRenderer();
+			return;
+		}
+
 		base.Update();
 	}
 
-	// XR Grab Interactable Events
-	public override void OnGrabEntered(SelectEnterEventArgs e)
+    protected override void LateUpdate()
+    {
+		if (isInSocket)
+        {
+			MatchPhysicalToolToVirtualTool();
+			return;
+		}
+		
+		base.LateUpdate();
+    }
+
+    // XR Grab Interactable Events
+    public override void OnGrabEntered(SelectEnterEventArgs e)
 	{
 		base.OnGrabEntered(e);
 

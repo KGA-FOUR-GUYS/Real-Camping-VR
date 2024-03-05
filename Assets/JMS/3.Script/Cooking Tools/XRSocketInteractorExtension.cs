@@ -5,31 +5,21 @@ using UnityEngine.XR.Interaction.Toolkit;
 
 public class XRSocketInteractorExtension : XRSocketInteractor
 {
-    protected override void Awake()
-    {
-        base.Awake();
-    }
-
-	#region Start 주기에 실행 (Before Start)
+	// OnEnable에 실행
 	protected override void OnRegistered(InteractorRegisteredEventArgs args)
     {
         base.OnRegistered(args);
     }
-	#endregion
-	protected override void Start()
-	{
-		base.Start();
+    // OnDisable에 실행
+    protected override void OnUnregistered(InteractorUnregisteredEventArgs args)
+    {
+        base.OnUnregistered(args);
     }
 
     // 여러 주기에 실행 (Before FixedUpdate / Before Update / Before LateUpdate / Before OnBeforeRender)
     public override void ProcessInteractor(XRInteractionUpdateOrder.UpdatePhase updatePhase)
     {
         base.ProcessInteractor(updatePhase);
-    }
-
-    private void FixedUpdate()
-	{
-
     }
 
     #region Update 주기에 실행 (Before Update)
@@ -45,135 +35,113 @@ public class XRSocketInteractorExtension : XRSocketInteractor
     {
         base.ProcessInteractionStrength(updatePhase);
     }
-	#endregion
-	private void Update()
-	{
-		
-	}
+    #endregion
 
-	private void LateUpdate()
-	{
-        
-    }
-
-
-    // Select Validation
-    public override bool CanSelect(IXRSelectInteractable interactable)
+    public override bool CanHover(IXRHoverInteractable interactable) // Hover entry point
     {
-        Debug.Log("CanSelect");
-        return base.CanSelect(interactable);
-    }
-
-    // Hover Validation
-    public override bool CanHover(IXRHoverInteractable interactable)
-    {
-        Debug.Log("CanHover");
+        // true면 HoverEnter 자동처리
         return base.CanHover(interactable);
     }
-
-    protected override void OnHoverEntering(HoverEnterEventArgs args)
+    #region Hover Enter
+    protected override void OnHoverEntering(HoverEnterEventArgs args) // First Pass
     {
         base.OnHoverEntering(args);
-        Debug.Log("OnHoverEntering");
-    }
-    // HoverSnap Validation
-    protected override bool CanHoverSnap(IXRInteractable interactable)
-    {
-        Debug.Log("CanHoverSnap");
-        return base.CanHoverSnap(interactable);
-    }
-    protected override void OnHoverEntered(HoverEnterEventArgs args)
-    {
-        base.OnHoverEntered(args);
-        Debug.Log("OnHoverEntered");
     }
 
-    protected override bool EndSocketSnapping(XRGrabInteractable grabInteractable)
+    [SerializeField] private XRUIToolObjectManager tabletUIManager;
+    protected override void OnHoverEntered(HoverEnterEventArgs args) // Second Pass
+    {
+        base.OnHoverEntered(args);
+
+        var grabCollider = args.interactableObject.colliders[0];
+        grabCollider.transform.root.TryGetComponent(out tabletUIManager);
+    }
+    #endregion
+    #region HoverExit
+    protected override void OnHoverExiting(HoverExitEventArgs args) // First Pass
+    {
+        base.OnHoverExiting(args);
+    }
+    protected override void OnHoverExited(HoverExitEventArgs args) // Second Pass
+    {
+        base.OnHoverExited(args);
+    }
+    #endregion
+    
+    public override bool CanSelect(IXRSelectInteractable interactable) // Select entry point
+    {
+        // true면 SelectEnter 자동처리
+        return base.CanSelect(interactable) && tabletUIManager != null;
+    }
+    #region SelectEnter
+    protected override void OnSelectEntering(SelectEnterEventArgs args) // First Pass
+    {
+        base.OnSelectEntering(args);
+    }
+    protected override void OnSelectEntered(SelectEnterEventArgs args) // Second Pass
+    {
+        base.OnSelectEntered(args);
+
+        tabletUIManager.CancelPrimaryGrab();
+        tabletUIManager.isInSocket = true;
+        tabletUIManager.SetRigidbodyFixed();
+    }
+    #endregion
+    #region SelectExit
+    protected override void OnSelectExiting(SelectExitEventArgs args) // First Pass
+    {
+        base.OnSelectExiting(args);
+    }
+    // EndSocketSnapping
+    protected override void OnSelectExited(SelectExitEventArgs args) // Second Pass
+    {
+		base.OnSelectExited(args);
+
+        tabletUIManager.isInSocket = false;
+        tabletUIManager.SetRigidbodyDynamic();
+
+        tabletUIManager = null;
+    }
+    #endregion
+
+    // 1. HoverEnter
+    //      OnHoverEntering > CanHoverSnap
+    protected override bool CanHoverSnap(IXRInteractable interactable) // Optional
+    {
+        return true;
+        //return base.CanHoverSnap(interactable);
+    }
+
+    // 1. SelectEnter
+    //      SelectEntering > StartSocketSnapping
+    protected override bool StartSocketSnapping(XRGrabInteractable grabInteractable)
+    {
+        Debug.Log("StartSocketSnapping");
+        return base.StartSocketSnapping(grabInteractable);
+    }
+
+    // 1. HoverExit
+    //      'EndSocketSnapping' > OnHoverExiting > OnHoverExited
+    // 2. SelectEnter
+    //      OnSelectEntered > 'EndSocketSnapping' > OnHoverExiting > OnHoverExited
+    // 3. SelectExit
+    //      OnSelectExiting > 'EndSocketSnapping' > OnSelectExited
+    protected override bool EndSocketSnapping(XRGrabInteractable grabInteractable) // Pre-process
     {
         Debug.Log("EndSocketSnapping");
         return base.EndSocketSnapping(grabInteractable);
     }
 
-    protected override void OnHoverExiting(HoverExitEventArgs args)
+    #region Manual Interaction - Force Select Enter/Exit
+    public override void StartManualInteraction(IXRSelectInteractable interactable) // Force SelectEnter
     {
-        base.OnHoverExiting(args);
-        Debug.Log("OnHoverExiting");
-    }
-
-    protected override void OnHoverExited(HoverExitEventArgs args)
-    {
-        base.OnHoverExited(args);
-        Debug.Log("OnHoverExited");
-    }
-
-    protected override void OnUnregistered(InteractorUnregisteredEventArgs args)
-    {
-        base.OnUnregistered(args);
-        Debug.Log("OnUnregistered");
-    }
-
-    #region Manual Interaction
-    public override void StartManualInteraction(IXRSelectInteractable interactable)
-	{
-		base.StartManualInteraction(interactable);
+        base.StartManualInteraction(interactable);
         Debug.Log("StartManualInteraction");
     }
-    public override void EndManualInteraction()
+    public override void EndManualInteraction() // Force SelectExit
     {
         base.EndManualInteraction();
         Debug.Log("EndManualInteraction");
     }
-	#endregion
-    
-    #region Socket Hover Snapping
-    
-    protected override bool StartSocketSnapping(XRGrabInteractable grabInteractable)
-	{
-        Debug.Log("StartSocketSnapping");
-        return base.StartSocketSnapping(grabInteractable);
-	}
-    
-	#endregion
-	#region Registry
-	
-    
-	#endregion
-	#region Hover
-	
-
-    // Hover Enter
-    
-    
-
-    // Hover Exit
-    
-	
     #endregion
-    #region Select
-    
-
-    // Select Enter
-    protected override void OnSelectEntering(SelectEnterEventArgs args)
-    {
-        base.OnSelectEntering(args);
-        Debug.Log("OnSelectEntering");
-    }
-    protected override void OnSelectEntered(SelectEnterEventArgs args)
-	{
-		base.OnSelectEntered(args);
-        Debug.Log("OnSelectEntered");
-    }
-
-    // Select Exit
-    protected override void OnSelectExiting(SelectExitEventArgs args)
-    {
-        base.OnSelectExiting(args);
-        Debug.Log("OnSelectExiting");
-    }
-    protected override void OnSelectExited(SelectExitEventArgs args)
-	{
-		base.OnSelectExited(args);
-        Debug.Log("OnSelectExited");
-    }
-	#endregion
 }

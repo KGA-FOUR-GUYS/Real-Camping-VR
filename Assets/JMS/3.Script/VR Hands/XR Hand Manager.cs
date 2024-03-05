@@ -32,25 +32,26 @@ public class XRHandManager : MonoBehaviour
 
     private void FixedUpdate()
     {
-        UpdatePhysicalHandRotation();
-        UpdatePhysicalHandPosition();
+        MatchPhysicalHandRotation();
+        MatchPhysicalHandPosition();
     }
 
     private void Update()
     {
-        UpdatePhysicalHandRotation();
-        UpdatePhysicalHandPosition();
+        if (Time.timeScale == 0)
+        {
+            physicalHand.transform.rotation = virtualHand.transform.rotation;
+            physicalHand.transform.position = virtualHand.transform.position;
+            return;
+        }
+
+        MatchPhysicalHandRotation();
+        MatchPhysicalHandPosition();
 
         ToggleVirtualHandRenderer();
     }
 
-	private void LateUpdate()
-	{
-        UpdatePhysicalHandRotation();
-        UpdatePhysicalHandPosition();
-    }
-
-	private void UpdatePhysicalHandRotation()
+	private void MatchPhysicalHandRotation()
     {
         if (!isTrackingRotation) return;
 
@@ -63,7 +64,7 @@ public class XRHandManager : MonoBehaviour
         m_physicalHandRigidbody.angularVelocity = (rotationDiffInDegree * Mathf.Deg2Rad) / Time.fixedDeltaTime;
     }
 
-    private void UpdatePhysicalHandPosition()
+    private void MatchPhysicalHandPosition()
     {
         if (!isTrackingPosition) return;
 

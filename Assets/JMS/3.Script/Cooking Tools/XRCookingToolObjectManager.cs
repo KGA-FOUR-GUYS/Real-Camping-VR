@@ -59,7 +59,7 @@ public class XRCookingToolObjectManager : MonoBehaviour
 	private Transform _virtualToolTransform;
 
 	private Transform _physicalToolTransform;
-	private Rigidbody _physicalToolRigidbody;
+	protected Rigidbody physicalToolRigidbody;
 
 	private LayerMask _initialLayer;
 
@@ -97,7 +97,7 @@ public class XRCookingToolObjectManager : MonoBehaviour
 		_virtualToolTransform = virtualTool.transform;
 
 		_physicalToolTransform = physicalTool.transform;
-		_physicalToolRigidbody = physicalTool.GetComponent<Rigidbody>();
+		physicalToolRigidbody = physicalTool.GetComponent<Rigidbody>();
 
 		_initialLayer = _physicalToolTransform.gameObject.layer;
 
@@ -117,11 +117,10 @@ public class XRCookingToolObjectManager : MonoBehaviour
     protected virtual void Update()
 	{
 		MatchToolPosition();
-
 		ToggleVirtualToolRenderer();
 	}
 
-    private void LateUpdate()
+	protected virtual void LateUpdate()
     {
 		MatchToolPosition();
 	}
@@ -137,19 +136,19 @@ public class XRCookingToolObjectManager : MonoBehaviour
 			MatchPhysicalToolToVirtualTool();
 		}
 	}
-	private void ToggleVirtualToolRenderer()
+	protected void ToggleVirtualToolRenderer()
 	{
 		float distance = Vector3.Distance(_virtualToolTransform.position, _physicalToolTransform.position);
 		bool isFar = distance >= distanceThreshold;
 
 		virtualToolRenderer.enabled = isVirtualHandVisible && isFar;
 	}
-	private void MatchVirtualToolToPhysicalTool()
+	protected void MatchVirtualToolToPhysicalTool()
 	{
 		_virtualToolTransform.rotation = _physicalToolTransform.rotation;
 		_virtualToolTransform.position = _physicalToolTransform.position;
 	}
-	private void MatchPhysicalToolToVirtualTool()
+	protected void MatchPhysicalToolToVirtualTool()
 	{
 		UpdatePhysicalToolRotation();
 		UpdatePhysicalToolPosition();
@@ -162,7 +161,7 @@ public class XRCookingToolObjectManager : MonoBehaviour
 
 		Vector3 rotationDiffInDegree = angleInDegree * rotationAxis;
 
-		_physicalToolRigidbody.angularVelocity = (rotationDiffInDegree * Mathf.Deg2Rad) / Time.fixedDeltaTime;
+		physicalToolRigidbody.angularVelocity = (rotationDiffInDegree * Mathf.Deg2Rad) / Time.fixedDeltaTime;
 	}
 	private void UpdatePhysicalToolPosition()
 	{
@@ -174,7 +173,7 @@ public class XRCookingToolObjectManager : MonoBehaviour
 			desiredVelocity = new Vector3(desiredVelocity.x * ratio, desiredVelocity.y * ratio, desiredVelocity.z * ratio);
 		}
 
-		_physicalToolRigidbody.velocity = desiredVelocity;
+		physicalToolRigidbody.velocity = desiredVelocity;
 	}
 
 	private IXRInteractor _primaryInteractor = null;
@@ -217,32 +216,40 @@ public class XRCookingToolObjectManager : MonoBehaviour
 	public virtual void OnGrabExited(SelectExitEventArgs e)
 	{
 		// Primary Grab Exited
-		if (isPrimaryGrabbed && !isSecondaryGrabbed)
+        CancelPrimaryGrab();
+		if (useType.Equals(UseType.Seasoning))
 		{
-			_primaryInteractor = null;
-			isPrimaryGrabbed = false;
-			Invoke(nameof(TogglePhysicalToolLayer), delayToggleLayerAfterExit);
-			DetachPrimaryPointFromHand(e);
-
-			if (useType.Equals(UseType.Seasoning))
+			foreach (var shakerManager in shakerManagers)
 			{
-				foreach (var shakerManager in shakerManagers)
-				{
-					shakerManager.gameObject.SetActive(false);
-				}
+				shakerManager.gameObject.SetActive(false);
 			}
 		}
-		// Secondary Grab Exited
-		else if (isPrimaryGrabbed && isSecondaryGrabbed)
-		{
-			if (!grabType.Equals(GrabType.TwoHand)) return;
 
-			_secondaryInteractor = null;
-			isSecondaryGrabbed = false;
-			DetachSecondaryPointFromHand(e);
-		}
+		// Secondary Grab Exited
+		CancelSecondaryGrab();
+    }
+
+	public void CancelPrimaryGrab()
+	{
+		if (!isPrimaryGrabbed || isSecondaryGrabbed) return;
+
+		_primaryInteractor = null;
+		isPrimaryGrabbed = false;
+		Invoke(nameof(TogglePhysicalToolLayer), delayToggleLayerAfterExit);
+		DetachPrimaryPointFromHand();
 	}
-	private void TogglePhysicalToolLayer()
+
+	public void CancelSecondaryGrab()
+    {
+		if (!isPrimaryGrabbed || !isSecondaryGrabbed) return;
+		if (!grabType.Equals(GrabType.TwoHand)) return;
+
+		_secondaryInteractor = null;
+        isSecondaryGrabbed = false;
+        DetachSecondaryPointFromHand();
+    }
+
+    private void TogglePhysicalToolLayer()
 	{
 		int currentLayerValue = _physicalToolTransform.gameObject.layer;
 
@@ -317,7 +324,7 @@ public class XRCookingToolObjectManager : MonoBehaviour
 
 		// Hand를 기준으로 Physical Tool을 FixedJoint로 연결
 		Rigidbody bodyToConnect = isLeftHand ? _leftHandPhysicalRigidbody : _rightHandPhysicalRigidbody;
-		_primaryJointToHand = _physicalToolRigidbody.gameObject.AddComponent<FixedJoint>();
+		_primaryJointToHand = physicalToolRigidbody.gameObject.AddComponent<FixedJoint>();
 		_primaryJointToHand.connectedBody = bodyToConnect;
 		_primaryJointToHand.connectedMassScale = connectedBodyMassScale;
 
@@ -382,7 +389,7 @@ public class XRCookingToolObjectManager : MonoBehaviour
 		return new Vector3(x, y, z);
 	}
 
-	private void DetachPrimaryPointFromHand(SelectExitEventArgs e)
+	private void DetachPrimaryPointFromHand()
 	{
 		Destroy(_primaryJointToHand);
 
@@ -403,7 +410,7 @@ public class XRCookingToolObjectManager : MonoBehaviour
 		//Debug.Log($"[{transform.gameObject.name}] Secondary hand grabbed {context}");
 	}
 
-	private void DetachSecondaryPointFromHand(SelectExitEventArgs e)
+	private void DetachSecondaryPointFromHand()
 	{
 		//bool isLeftHand = e.interactorObject.transform.gameObject.CompareTag("LeftHandInteractor");
 		//string context = isLeftHand ? "Left Hand" : "Right Hand";
