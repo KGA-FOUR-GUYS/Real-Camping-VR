@@ -1453,6 +1453,8 @@ GameObject:
   - component: {fileID: 7189598084136253223}
   - component: {fileID: 3948518571933642422}
   - component: {fileID: 6012397000009748886}
+  - component: {fileID: 3729907406588013715}
+  - component: {fileID: 8238838414073814432}
   m_Layer: 0
   m_Name: Carrot Physical
   m_TagString: Untagged
@@ -1555,6 +1557,43 @@ MonoBehaviour:
   <Volume>k__BackingField: -1
   isUpdating: 0
   meshFilter: {fileID: 4828691702108109814}
+--- !u!114 &3729907406588013715
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5346000220655154147}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 59c8a2974cd709d479a3f4742beb14f0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  calculateDensity: 0
+  density: 0.65
+  normalizedVoxelSize: 0.5
+  dragInWater: 1
+  angularDragInWater: 1
+  meshFilter: {fileID: 4828691702108109814}
+  collider: {fileID: 498169716584122027}
+  rigidbody: {fileID: 7189598084136253223}
+--- !u!114 &8238838414073814432
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5346000220655154147}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f376a2cf0da8381448fbdb975fb7733a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _floatingObj: {fileID: 0}
+  deeping_time: 3
+  density_max: 5
+  Crescendo_con: 0.2
+  triggerOn: 0
 --- !u!1 &6592739393836379957
 GameObject:
   m_ObjectHideFlags: 0

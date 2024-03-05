@@ -561,6 +561,8 @@ GameObject:
   - component: {fileID: 4087495113705617220}
   - component: {fileID: 6302258844498784872}
   - component: {fileID: 8986689478920993937}
+  - component: {fileID: 4304893092089465593}
+  - component: {fileID: 32452484618770427}
   m_Layer: 0
   m_Name: Beef_Raw Physical
   m_TagString: Untagged
@@ -663,6 +665,43 @@ MonoBehaviour:
   _ripeByGrill: 0
   _renderer: {fileID: 9212006995695051633}
   _rigidbody: {fileID: 4087495113705617220}
+--- !u!114 &4304893092089465593
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7866480270106416067}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 59c8a2974cd709d479a3f4742beb14f0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  calculateDensity: 0
+  density: 0.75
+  normalizedVoxelSize: 0.5
+  dragInWater: 1
+  angularDragInWater: 1
+  meshFilter: {fileID: 8144243121695397274}
+  collider: {fileID: 2919363496848579944}
+  rigidbody: {fileID: 4087495113705617220}
+--- !u!114 &32452484618770427
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7866480270106416067}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f376a2cf0da8381448fbdb975fb7733a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _floatingObj: {fileID: 0}
+  deeping_time: 3
+  density_max: 5
+  Crescendo_con: 0.2
+  triggerOn: 0
 --- !u!1 &8589814831550474845
 GameObject:
   m_ObjectHideFlags: 0
