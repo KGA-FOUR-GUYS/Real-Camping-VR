@@ -148,6 +148,7 @@ public class RecipeManager : MonoBehaviour
         }
         ProcessChange(RecipeProcess.CookingProcess);
         CookingProcess_Controller.instance.StartGSH_Process();
+        ScoreManager.Instance.Reset_ScoreM();
         SoundManager.instance.PlayCookingSFX(0);
     }
     public void StopCookBtn()
