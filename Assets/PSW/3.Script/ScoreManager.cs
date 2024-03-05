@@ -12,20 +12,21 @@ public class ScoreManager : MonoBehaviour
     [SerializeField] int Error_Range = 5;
     [SerializeField] List<IngredientDataManager> Ingredients_list = new List<IngredientDataManager>();
 
+    [Header("총점")]
+    public float Total_Score = 0f;
+
     [Header("자르기 판정")]
-    public float Total_Cut_Score; //해당 레시피의 자르기 점수
+    public float Total_Cut_Score = 0f; //해당 레시피의 자르기 점수
     public List<float> Cut_Scores = new List<float>(); // 재료별 자르기 점수
     public List<bool> Cut_pieces = new List<bool>(); //재료별 조각개수
 
     [Header("익히기 판정")]
-    public float Total_Ripe_Score; //해당 레시피의 익히기 점수
+    public float Total_Ripe_Score = 0f; //해당 레시피의 익히기 점수
     public List<float> Ripe_Scores = new List<float>(); // 재료별 익히기 점수
     public List<float> Ripe_Boil = new List<float>(); // 재료별 끓이기 정도
     public List<float> Ripe_Broil = new List<float>(); // 재료별 볶기(후라이팬조리) 정도
     public List<float> Ripe_Grill = new List<float>(); // 재료별 굽기(직화구이) 정도
 
-    [Header("총점")]
-    public float Total_Score = 0f;
 
     //싱글톤
     public static ScoreManager Instance;
@@ -47,6 +48,10 @@ public class ScoreManager : MonoBehaviour
         {
             Total_Score_Judge();
         }
+        if (Input.GetKeyDown(KeyCode.Alpha2))
+        {
+            Reset_ScoreM();
+        }
     }
 
     public void Select_Recipe(RecipeSO select_Recipe)
@@ -65,6 +70,23 @@ public class ScoreManager : MonoBehaviour
         {
             Ingredients_list.Add(_Ingredient);
         }
+    }
+
+    public void Reset_ScoreM()
+    {
+        currentRecipe = null;
+        Ingredients_list = null;
+        Total_Score = 0f;
+
+        Total_Cut_Score = 0f;
+        Cut_Scores = null;
+        Cut_pieces = null;
+
+        Total_Ripe_Score = 0f;
+        Ripe_Scores = null;
+        Ripe_Boil = null;
+        Ripe_Broil = null;
+        Ripe_Grill = null;
     }
 
     public void Cut_Judge()
