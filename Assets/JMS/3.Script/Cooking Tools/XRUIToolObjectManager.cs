@@ -11,32 +11,70 @@ public class XRUIToolObjectManager : XRCookingToolObjectManager
 
 	public void SetRigidbodyFixed()
     {
-        StartCoroutine(SetRigidbodyFixedCo());
-    }
+		if (_setRigidbodyFixedCo != null)
+        {
+			StopCoroutine(_setRigidbodyFixedCo);
+			_setRigidbodyFixedCo = null;
+		}
 
-    private IEnumerator SetRigidbodyFixedCo()
+		_setRigidbodyFixedCo = SetRigidbodyFixedCo();
+		StartCoroutine(_setRigidbodyFixedCo);
+    }
+	private IEnumerator _setRigidbodyFixedCo = null;
+	private IEnumerator SetRigidbodyFixedCo()
     {
-		yield return new WaitForFixedUpdate();
+        yield return null;
+        isMatchToolEnabled = false;
+        physicalToolRigidbody.useGravity = false;
 
-		physicalTool.transform.forward = virtualTool.transform.forward;
-		physicalTool.transform.position = virtualTool.transform.position;
-
-		physicalToolRigidbody.useGravity = false;
+        yield return null;
+        physicalTool.transform.rotation = virtualTool.transform.rotation;
+        physicalTool.transform.position = virtualTool.transform.position;
+		var positionOffset = primaryAttachPoint.position - physicalTool.transform.position;
+		physicalTool.transform.position += positionOffset;
 		physicalToolRigidbody.constraints = RigidbodyConstraints.FreezeAll;
+		
+		ToggleFullScreenUI(true);
     }
+
+    private void ToggleFullScreenUI(bool isOn)
+    {
+		if (isOn)
+        {
+			// Disable poke interaction
+			leftUIPen.SetActive(false);
+			rightUIPen.SetActive(false);
+		}
+
+		// Disable primary collider renderer
+		grabCollider.GetComponent<Renderer>().enabled = !isOn;
+
+		// Do Something...
+	}
 
     public void SetRigidbodyDynamic()
     {
-        StartCoroutine(SetRigidbodyDynamicCo());
-    }
+		if (_setRigidbodyDynamicCo != null)
+        {
+			StopCoroutine(_setRigidbodyDynamicCo);
+			_setRigidbodyDynamicCo = null;
+		}
 
-    private IEnumerator SetRigidbodyDynamicCo()
+		_setRigidbodyDynamicCo = SetRigidbodyDynamicCo();
+		StartCoroutine(_setRigidbodyDynamicCo);
+    }
+	private IEnumerator _setRigidbodyDynamicCo = null;
+	private IEnumerator SetRigidbodyDynamicCo()
     {
-		yield return new WaitForFixedUpdate();
+		yield return null;
 
 		physicalToolRigidbody.useGravity = true;
         physicalToolRigidbody.constraints = RigidbodyConstraints.None;
-    }
+
+		isMatchToolEnabled = true;
+
+		ToggleFullScreenUI(false);
+	}
 
     protected override void Awake()
 	{

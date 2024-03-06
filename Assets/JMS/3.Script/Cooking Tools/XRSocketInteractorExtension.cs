@@ -108,15 +108,13 @@ public class XRSocketInteractorExtension : XRSocketInteractor
     //      OnHoverEntering > CanHoverSnap
     protected override bool CanHoverSnap(IXRInteractable interactable) // Optional
     {
-        return true;
-        //return base.CanHoverSnap(interactable);
+        return base.CanHoverSnap(interactable);
     }
 
     // 1. SelectEnter
     //      SelectEntering > StartSocketSnapping
     protected override bool StartSocketSnapping(XRGrabInteractable grabInteractable)
     {
-        Debug.Log("StartSocketSnapping");
         return base.StartSocketSnapping(grabInteractable);
     }
 
@@ -128,7 +126,6 @@ public class XRSocketInteractorExtension : XRSocketInteractor
     //      OnSelectExiting > 'EndSocketSnapping' > OnSelectExited
     protected override bool EndSocketSnapping(XRGrabInteractable grabInteractable) // Pre-process
     {
-        Debug.Log("EndSocketSnapping");
         return base.EndSocketSnapping(grabInteractable);
     }
 

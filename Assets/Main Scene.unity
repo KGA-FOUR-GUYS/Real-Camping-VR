@@ -2236,13 +2236,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 247716248}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: 0.0000000074505797, w: 1}
+  m_LocalRotation: {x: -0.5000004, y: -0.49999964, z: 0.49999994, w: 0.49999994}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1157923451}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: -90, z: 90}
 --- !u!1 &264961818
 GameObject:
   m_ObjectHideFlags: 0
@@ -9820,8 +9820,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   currentRecipe: {fileID: 0}
   Error_Range: 5
-  Ingredient_Spawner_Arr: []
-  Ingredients_Name: []
+  Ingredients_list: []
+  Total_Score: 0
   Total_Cut_Score: 0
   Cut_Scores: []
   Cut_pieces: 
@@ -9830,7 +9830,6 @@ MonoBehaviour:
   Ripe_Boil: []
   Ripe_Broil: []
   Ripe_Grill: []
-  Total_Score: 0
 --- !u!1 &1348070233
 GameObject:
   m_ObjectHideFlags: 0

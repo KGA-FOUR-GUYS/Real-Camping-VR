@@ -26,6 +26,7 @@ public class XRCookingToolObjectManager : MonoBehaviour
 		Seasoning = 6,
     }
 
+	public bool isMatchToolEnabled = true;
 	public bool isPrimaryGrabbed = false;
 	public bool isSecondaryGrabbed = false;
 
@@ -109,24 +110,26 @@ public class XRCookingToolObjectManager : MonoBehaviour
 
 	protected virtual void FixedUpdate()
     {
-        MatchToolPosition();
+        MatchTool();
 
         // 손과 거리가 너무 멀어지면 놓치기
     }
 
     protected virtual void Update()
 	{
-		MatchToolPosition();
+		MatchTool();
 		ToggleVirtualToolRenderer();
 	}
 
 	protected virtual void LateUpdate()
     {
-		MatchToolPosition();
+		MatchTool();
 	}
 
-    private void MatchToolPosition()
+    private void MatchTool()
 	{
+		if (!isMatchToolEnabled) return;
+
 		if (!isPrimaryGrabbed)
 		{
 			MatchVirtualToolToPhysicalTool();
@@ -331,7 +334,7 @@ public class XRCookingToolObjectManager : MonoBehaviour
 		//string context = isLeftHand ? "Left Hand" : "Right Hand";
 		//Debug.Log($"[{transform.gameObject.name}] Primary hand grabbed {context}");
 	}
-	private Vector3 ConvertLocalPosition(Quaternion rotation)
+	protected Vector3 ConvertLocalPosition(Quaternion rotation)
 	{
 		if (rotation.Equals(Quaternion.identity)) return Vector3.zero;
 
