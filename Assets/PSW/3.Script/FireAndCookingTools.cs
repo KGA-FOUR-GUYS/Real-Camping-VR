@@ -6,59 +6,29 @@ using Cooking;
 
 public class FireAndCookingTools : MonoBehaviour
 {
-    [SerializeField] ParticleSystem FirePS;
-    [SerializeField] BoxCollider FireBox;
-    [SerializeField] WaterFX water;
-    [SerializeField] MeshCollider BroilArea;
-    [SerializeField] MeshCollider BoilArea;
-
-    private void Awake()
-    {
-        FirePS = GetComponentInChildren<ParticleSystem>();
-        FireBox = this.GetComponent<BoxCollider>();
-    }
-
-    private void Start()
-    {
-        StartCoroutine(ColliderTrigger_Co());
-    }
-
-    IEnumerator ColliderTrigger_Co()
-    {
-        if (!FireBox.enabled)
-        {
-            while (this.gameObject.activeInHierarchy)
-            {                
-                FireBox.enabled = FirePS.isPlaying;
-                yield return null;
-            }
-            yield return null;
-        }
-    }
-
+    [SerializeField] GameObject Water;
+    [SerializeField] GameObject Boil_Area;
+    [SerializeField] GameObject Broil_Area;
+    
     private void OnTriggerStay(Collider other)
     {
-        if (other.CompareTag("Dish"))
+        if (other.CompareTag("Fire"))
         {
-            //물이 자식에 없거나 꺼져있으면 Broil활성화 & Boil끄기
-            water = other.transform.GetComponentInChildren<WaterFX>();
-            BroilArea = other.transform.GetComponentInChildren<BroilManager>().GetComponent<MeshCollider>();
-            BoilArea = other.transform.GetComponentInChildren<BoilManager>().GetComponent<MeshCollider>();
-            if (water == null || !water.gameObject.activeInHierarchy)
+            if (Water == null)
             {
-                BroilArea.enabled = true;
-                if (water != null)
-                {
-                    BoilArea.enabled = false;
-                }
+                Broil_Area.SetActive(true);
             }
-            //물이 자식에 있고 켜져있으면 Boil활성화 & Broil끄기
-            if (water != null && water.gameObject.activeInHierarchy)
+            else
             {
-                BoilArea.enabled = true;
-                if (BroilArea != null)
+                if (Water.activeInHierarchy)
                 {
-                    BroilArea.enabled = false;
+                    Boil_Area.SetActive(true);
+                    Broil_Area.SetActive(false);
+                }
+                else
+                {
+                    Boil_Area.SetActive(false);
+                    Broil_Area.SetActive(true);
                 }
             }
         }        
@@ -66,18 +36,13 @@ public class FireAndCookingTools : MonoBehaviour
 
     private void OnTriggerExit(Collider other)
     {
-        if (other.CompareTag("Dish"))
+        if (other.CompareTag("Fire"))
         {
-            BroilArea = other.transform.GetComponentInChildren<BroilManager>().GetComponent<MeshCollider>();
-            BoilArea = other.transform.GetComponentInChildren<BoilManager>().GetComponent<MeshCollider>();
-            if (BroilArea != null)
+            if (Water != null)
             {
-                BroilArea.enabled = false;
-            }
-            if (BoilArea != null)
-            {
-                BoilArea.enabled = false;
-            }
+                Boil_Area.SetActive(false);
+            }            
+            Broil_Area.SetActive(false);
         }
     }
 }
