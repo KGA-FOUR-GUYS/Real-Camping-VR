@@ -47,10 +47,11 @@ public class ProcessManager : MonoBehaviour
     [SerializeField]private SpawnerData[] spawnerData;
 
     [Header("Tools")]
-    [SerializeField] public ToolsData Knife;
-    [SerializeField] public ToolsData Pot;
-    [SerializeField] public ToolsData FryPan;
-    [SerializeField] public ToolsData Grill;
+
+    public List<ToolsData> sliceTools = new List<ToolsData>();
+    public List<ToolsData> broilTools = new List<ToolsData>();
+    public List<ToolsData> boilTools = new List<ToolsData>();
+    public List<ToolsData> grillTools = new List<ToolsData>();
 
     [Header("SpawnerTransform")]
     [SerializeField] private Transform[] spawnerTransform;
@@ -95,13 +96,13 @@ public class ProcessManager : MonoBehaviour
         switch (process)
         {
             case CookingProcess.Slice:
-                SpawnSliceTool();
+                SpawnTool(sliceTools);
                 return;
             case CookingProcess.Broil:
-                SpawnBroilTool();
+                SpawnTool(broilTools);
                 return;
             case CookingProcess.Boil:
-                SpawnBoilTool();
+                SpawnTool(boilTools);
                 return;
         }
     }
@@ -126,11 +127,6 @@ public class ProcessManager : MonoBehaviour
         currentRecipe = recipe;
         progressIngrediant = recipe.ingredientList;
     }
-    public void SpawnSliceTool()
-	{
-		ArrangeIngredients();
-		InstantiateAndAddToQueue(Knife.ToolPrefab, Knife.ToolTransform.position, Knife.ToolPrefab.transform.rotation);
-	}
 	private void ArrangeIngredients()
 	{
 		for (int i = 0; i < progressIngrediant.Count; i++)
@@ -158,13 +154,12 @@ public class ProcessManager : MonoBehaviour
         }
         return null;
     }
-
-    public void SpawnBoilTool()
+    public void SpawnTool(List<ToolsData> toolsData)
     {
-        InstantiateAndAddToQueue(Pot.ToolPrefab, Pot.ToolTransform.position, Pot.ToolPrefab.transform.rotation);
+        ArrangeIngredients();
+        for (int i = 0; i < toolsData.Count; i++)
+        {
+            InstantiateAndAddToQueue(toolsData[i].ToolPrefab, toolsData[i].ToolTransform.position, toolsData[i].ToolTransform.rotation);
+        }
     }
-    public void SpawnBroilTool()
-	{
-        InstantiateAndAddToQueue(FryPan.ToolPrefab, FryPan.ToolTransform.position, FryPan.ToolPrefab.transform.rotation);
-	}
 }
