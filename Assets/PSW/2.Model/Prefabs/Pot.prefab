@@ -314,7 +314,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &6075859291972669253
 Transform:
   m_ObjectHideFlags: 0
@@ -414,6 +414,7 @@ GameObject:
   - component: {fileID: 3006387964215468868}
   - component: {fileID: 6532416436183690799}
   - component: {fileID: 2044143860468931150}
+  - component: {fileID: 8742329163729800809}
   m_Layer: 0
   m_Name: Pot Physical (Grab Guidance)
   m_TagString: Dish
@@ -1877,6 +1878,21 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!114 &8742329163729800809
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4337469434983490808}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f28d5b00f8a68f446ba3a141b78702e8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Water: {fileID: 8473396413413679191}
+  Boil_Area: {fileID: 3969808321030999456}
+  Broil_Area: {fileID: 8922659859337837159}
 --- !u!1 &5454779280169799493
 GameObject:
   m_ObjectHideFlags: 0
