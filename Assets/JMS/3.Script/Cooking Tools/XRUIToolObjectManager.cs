@@ -49,6 +49,12 @@ public class XRUIToolObjectManager : XRCookingToolObjectManager
 		// Disable primary collider renderer
 		grabCollider.GetComponent<Renderer>().enabled = !isOn;
 
+        // Disable GrabGuidance
+        foreach (var collider in physicalTool.GetComponent<GrabGuidanceInteractable>().colliders)
+        {
+			collider.enabled = !isOn;
+        }
+
 		// Do Something...
 	}
 
