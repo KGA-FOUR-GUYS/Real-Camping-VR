@@ -21,7 +21,7 @@ Shader "Obi/URP/Fluid/FluidShading"
 
 	SubShader
 	{
-        Tags{"RenderPipeline" = "UniversalRenderPipeline"}
+        Tags{"RenderPipeline" = "UniversalPipeline"}
 
 		Pass
 		{
