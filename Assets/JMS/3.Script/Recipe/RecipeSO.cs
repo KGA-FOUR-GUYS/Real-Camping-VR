@@ -22,6 +22,39 @@ public class RecipeSO : ScriptableObject
 
     [Header("Ingredients")]
     public List<RecipeIngredient> ingredientList = new List<RecipeIngredient>();
+
+    public List<CookingProcess> GetProcessList()
+    {
+        var processKVP = new Dictionary<CookingProcess, int>();
+        foreach (var ingredient in ingredientList)
+        {
+            if (!processKVP.ContainsKey(CookingProcess.Boil)
+                && ingredient.ripeByBoil > 0)
+            {
+                processKVP.Add(CookingProcess.Boil, (int)CookingProcess.Boil);
+            }
+
+            if (!processKVP.ContainsKey(CookingProcess.Broil)
+                && ingredient.ripeByBroil > 0)
+            {
+                processKVP.Add(CookingProcess.Broil, (int)CookingProcess.Broil);
+            }
+
+            if (!processKVP.ContainsKey(CookingProcess.Grill)
+                && ingredient.ripeByGrill > 0)
+            {
+                processKVP.Add(CookingProcess.Grill, (int)CookingProcess.Grill);
+            }
+        }
+
+        var processList = new List<CookingProcess>();
+        foreach (var key in processKVP.Keys)
+        {
+            processList.Add(key);
+        }
+
+        return processList;
+    }
 }
 
 namespace Cooking
@@ -38,7 +71,7 @@ namespace Cooking
         public float sliceVolume;
         public float sliceCount;
 
-        public RecipeIngredient(string name, int quantity, float ripeByBroil, float ripeByBoil, float ripeByGrill, RipeState ripeState, float targetVolume, int targetCount)
+        public RecipeIngredient(string name, int quantity, float ripeByBroil, float ripeByBoil, float ripeByGrill, RipeState ripeState, float sliceVolume, int sliceCount)
         {
             this.name = name;
             this.quantity = quantity;
@@ -46,8 +79,8 @@ namespace Cooking
             this.ripeByBoil = ripeByBoil;
             this.ripeByGrill = ripeByGrill;
             this.ripeState = ripeState;
-            this.sliceVolume = targetVolume;
-            this.sliceCount = targetCount;
+            this.sliceVolume = sliceVolume;
+            this.sliceCount = sliceCount;
         }
     }
 }
