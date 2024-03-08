@@ -5,8 +5,18 @@ using UnityEngine.XR.Interaction.Toolkit;
 
 public class XRSocketInteractorExtension : XRSocketInteractor
 {
-	// OnEnable에 실행
-	protected override void OnRegistered(InteractorRegisteredEventArgs args)
+    public enum SocketType
+    {
+        None = 0,
+        UI = 1,
+        Fire = 2,
+    }
+
+    [Header("Extension")]
+    public SocketType type = SocketType.None;
+
+    // OnEnable에 실행
+    protected override void OnRegistered(InteractorRegisteredEventArgs args)
     {
         base.OnRegistered(args);
     }
@@ -49,12 +59,24 @@ public class XRSocketInteractorExtension : XRSocketInteractor
     }
 
     [SerializeField] private XRUIToolObjectManager tabletUIManager;
+    [SerializeField] private XRCookingToolObjectManager fireWoodManager;
     protected override void OnHoverEntered(HoverEnterEventArgs args) // Second Pass
     {
         base.OnHoverEntered(args);
 
         var grabCollider = args.interactableObject.colliders[0];
-        grabCollider.transform.root.TryGetComponent(out tabletUIManager);
+
+        // Tablet UI
+        if (type.Equals(SocketType.UI))
+        {
+            grabCollider.transform.root.TryGetComponent(out tabletUIManager);
+        }
+
+        // Fire wood
+        if (type.Equals(SocketType.Fire))
+        {
+            grabCollider.transform.root.TryGetComponent(out fireWoodManager);
+        }
     }
     #endregion
     #region HoverExit
@@ -71,7 +93,17 @@ public class XRSocketInteractorExtension : XRSocketInteractor
     public override bool CanSelect(IXRSelectInteractable interactable) // Select entry point
     {
         // true면 SelectEnter 자동처리
-        return base.CanSelect(interactable) && tabletUIManager != null;
+        if (type.Equals(SocketType.UI))
+        {
+            return base.CanSelect(interactable) && tabletUIManager != null;
+        }
+
+        if (type.Equals(SocketType.Fire))
+        {
+            return base.CanSelect(interactable) && fireWoodManager != null;
+        }
+
+        return base.CanSelect(interactable);
     }
     #region SelectEnter
     protected override void OnSelectEntering(SelectEnterEventArgs args) // First Pass
@@ -82,9 +114,23 @@ public class XRSocketInteractorExtension : XRSocketInteractor
     {
         base.OnSelectEntered(args);
 
-        tabletUIManager.CancelPrimaryGrab();
-        tabletUIManager.isInSocket = true;
-        tabletUIManager.SetRigidbodyFixed();
+        if (type.Equals(SocketType.UI))
+        {
+            tabletUIManager.CancelPrimaryGrab();
+            tabletUIManager.isInSocket = true;
+            tabletUIManager.SetRigidbodyFixed();
+            tabletUIManager.ToggleFullScreenUI(true);
+
+            return;
+        }
+
+        if (type.Equals(SocketType.Fire))
+        {
+            fireWoodManager.CancelPrimaryGrab();
+            fireWoodManager.SetRigidbodyFixed();
+
+            return;
+        }
     }
     #endregion
     #region SelectExit
@@ -97,10 +143,23 @@ public class XRSocketInteractorExtension : XRSocketInteractor
     {
 		base.OnSelectExited(args);
 
-        tabletUIManager.isInSocket = false;
-        tabletUIManager.SetRigidbodyDynamic();
+        if (type.Equals(SocketType.UI))
+        {
+            tabletUIManager.isInSocket = false;
+            tabletUIManager.SetRigidbodyDynamic();
+            tabletUIManager.ToggleFullScreenUI(false);
+            tabletUIManager = null;
 
-        tabletUIManager = null;
+            return;
+        }
+
+        if (type.Equals(SocketType.Fire))
+        {
+            fireWoodManager.SetRigidbodyDynamic();
+            fireWoodManager = null;
+
+            return;
+        }
     }
     #endregion
 
