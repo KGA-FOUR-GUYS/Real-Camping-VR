@@ -137,7 +137,7 @@ public class ScoreManager : MonoBehaviour
             Find_Ingredients();
         }
 
-
+        int excepted_num = 0; //익힘조리가 아닌 재료의 개수 카운트
         for (int i = 0; i < currentRecipe.ingredientList.Count; i++)
         {
             var Target_Ripe = currentRecipe.ingredientList[i].ripeState;
@@ -149,7 +149,7 @@ public class ScoreManager : MonoBehaviour
             float Broil_sum = 0;
             float Grill_sum = 0;
             int slice_Num = 0;
-            //익힘목표가 없거나 생것이면 익히기 점수 제외해
+            //익힘목표가 없거나 생것이면 익히기 점수 제외하고 점수리스트에 0점 할당
             if (Target_Ripe != RipeState.None && Target_Ripe != RipeState.Raw)
             {
                 for (int j = 0; j < Ingredients_list.Count; j++)
@@ -176,9 +176,18 @@ public class ScoreManager : MonoBehaviour
                                 break;
                         }
                         //익힘 비율 계산해서 총합에 넣어줌
-                        Boil_sum += Mathf.Round(Ingredients_list[j]._ripeByBoil / Ingredients_list[j].Ripe * 100f);
-                        Broil_sum += Mathf.Round(Ingredients_list[j]._ripeByBroil / Ingredients_list[j].Ripe * 100f);
-                        Grill_sum += Mathf.Round(Ingredients_list[j]._ripeByGrill / Ingredients_list[j].Ripe * 100f);
+                        if (Ingredients_list[j].Ripe == 0)
+                        {
+                            Boil_sum += 0;
+                            Broil_sum += 0;
+                            Grill_sum += 0;
+                        }
+                        else
+                        {
+                            Boil_sum += Mathf.Round(Ingredients_list[j]._ripeByBoil / Ingredients_list[j].Ripe * 100f);
+                            Broil_sum += Mathf.Round(Ingredients_list[j]._ripeByBroil / Ingredients_list[j].Ripe * 100f);
+                            Grill_sum += Mathf.Round(Ingredients_list[j]._ripeByGrill / Ingredients_list[j].Ripe * 100f);
+                        }
                     }
                 }
                 float i_Ripe_score = Mathf.Floor(Ripe_sum * 20f / slice_Num);
@@ -210,12 +219,20 @@ public class ScoreManager : MonoBehaviour
                 Ripe_Broil.Add(i_Broil_score);
                 Ripe_Grill.Add(i_Grill_score);
             }
+            else
+            {
+                Ripe_Scores.Add(0);
+                Ripe_Boil.Add(0);
+                Ripe_Broil.Add(0);
+                Ripe_Grill.Add(0);
+                excepted_num++;
+            }
         }
         foreach (var scores in Ripe_Scores)
         {
             Total_Ripe_Score += scores;
         }
-        Total_Ripe_Score = Mathf.Floor(Total_Ripe_Score / Ripe_Scores.Count);
+        Total_Ripe_Score = Mathf.Floor(Total_Ripe_Score / (Ripe_Scores.Count - excepted_num));
     }
 
     public void Total_Score_Judge()
