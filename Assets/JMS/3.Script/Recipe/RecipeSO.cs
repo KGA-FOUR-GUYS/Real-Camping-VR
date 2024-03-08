@@ -48,6 +48,8 @@ public class RecipeSO : ScriptableObject
         }
 
         var processList = new List<CookingProcess>();
+        // Slice는 항상 있는 기본 공정으로 간주
+        processList.Add(CookingProcess.Slice);
         foreach (var key in processKVP.Keys)
         {
             processList.Add(key);
