@@ -26,24 +26,28 @@ public class RecipeSO : ScriptableObject
     public List<CookingProcess> GetProcessList()
     {
         var processKVP = new Dictionary<CookingProcess, int>();
+        // 우선순위는 Broil > Grill > Boil 순서로 간주
         foreach (var ingredient in ingredientList)
         {
-            if (!processKVP.ContainsKey(CookingProcess.Boil)
-                && ingredient.ripeByBoil > 0)
-            {
-                processKVP.Add(CookingProcess.Boil, (int)CookingProcess.Boil);
-            }
-
+            // 1. Broil
             if (!processKVP.ContainsKey(CookingProcess.Broil)
                 && ingredient.ripeByBroil > 0)
             {
                 processKVP.Add(CookingProcess.Broil, (int)CookingProcess.Broil);
             }
 
+            // 2. Grill
             if (!processKVP.ContainsKey(CookingProcess.Grill)
                 && ingredient.ripeByGrill > 0)
             {
                 processKVP.Add(CookingProcess.Grill, (int)CookingProcess.Grill);
+            }
+
+            // 3. Boil
+            if (!processKVP.ContainsKey(CookingProcess.Boil)
+                && ingredient.ripeByBoil > 0)
+            {
+                processKVP.Add(CookingProcess.Boil, (int)CookingProcess.Boil);
             }
         }
 

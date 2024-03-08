@@ -61,11 +61,10 @@ public class ScoreManager : MonoBehaviour
 
     private void Find_Ingredients()
     {
-        if (Ingredients_list != null)
-        {
-            Ingredients_list = null;
-        }
-        var _Ingredients = GetComponents<IngredientDataManager>();
+        Ingredients_list.Clear();
+
+        //var _Ingredients = GetComponents<IngredientDataManager>();
+        var _Ingredients = FindObjectsOfType<IngredientDataManager>();
         foreach (var _Ingredient in _Ingredients)
         {
             Ingredients_list.Add(_Ingredient);
@@ -74,19 +73,18 @@ public class ScoreManager : MonoBehaviour
 
     public void Reset_ScoreM()
     {
-        currentRecipe = null;
-        Ingredients_list = null;
+        Ingredients_list.Clear();
         Total_Score = 0f;
 
         Total_Cut_Score = 0f;
-        Cut_Scores = null;
-        Cut_pieces = null;
+        Cut_Scores.Clear();
+        Cut_pieces.Clear();
 
         Total_Ripe_Score = 0f;
-        Ripe_Scores = null;
-        Ripe_Boil = null;
-        Ripe_Broil = null;
-        Ripe_Grill = null;
+        Ripe_Scores.Clear();
+        Ripe_Boil.Clear();
+        Ripe_Broil.Clear();
+        Ripe_Grill.Clear();
     }
 
     public void Cut_Judge()
@@ -134,7 +132,7 @@ public class ScoreManager : MonoBehaviour
 
     public void Ripe_Judge()
     {
-        if (Ingredients_list == null)
+        if (Ingredients_list.Count == 0)
         {
             Find_Ingredients();
         }
@@ -227,11 +225,11 @@ public class ScoreManager : MonoBehaviour
             Debug.Log("선택된 레시피가 없으요");
             return;
         }
-        if (Cut_Scores == null)
+        if (Cut_Scores.Count == 0)
         {
             Cut_Judge();
         }
-        if (Ripe_Scores == null)
+        if (Ripe_Scores.Count == 0)
         {
             Ripe_Judge();
         }

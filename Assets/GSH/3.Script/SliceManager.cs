@@ -8,6 +8,7 @@ using UnityEngine.InputSystem;
 using Cooking;
 using UnityEngine.Assertions;
 using VHACD.Unity;
+using NaughtyWaterBuoyancy;
 
 public class SliceManager : MonoBehaviour
 {
@@ -171,13 +172,20 @@ public class SliceManager : MonoBehaviour
         }
 
         // Add new convex MeshCollider
-        var meshCollider = physicalRendererObj.AddComponent<MeshCollider>();
-        meshCollider.convex = true;
+        var collider = physicalRendererObj.AddComponent<MeshCollider>();
+        collider.convex = true;
+
+        // Set Floating Object 
+        if (physicalObj.TryGetComponent(out FloatingObject floatingObject))
+        {
+            floatingObject.meshFilter = physicalRendererObj.GetComponent<MeshFilter>();
+            floatingObject.collider = collider;
+            floatingObject.rigidbody = physicalObj.GetComponent<Rigidbody>();
+        }
 
         // Destory meshObj
         Destroy(slicedHull);
-        physicalObj.GetComponent<Rigidbody>().AddForce(Vector3.right, ForceMode.Impulse);
-        //physicalObj.GetComponent<Rigidbody>().AddExplosionForce(CutForce, physicalObj.transform.position, 1);
+        physicalObj.GetComponent<Rigidbody>().AddForce(Vector3.right, ForceMode.VelocityChange);
     }
 
     //public bool CheckAngle()
