@@ -26,6 +26,7 @@ public class XRCookingToolObjectManager : MonoBehaviour
 		Seasoning = 6,
     }
 
+	public bool isInSocket = false;
 	public bool isMatchToolEnabled = true;
 	public bool isPrimaryGrabbed = false;
 	public bool isSecondaryGrabbed = false;
@@ -110,19 +111,36 @@ public class XRCookingToolObjectManager : MonoBehaviour
 
 	protected virtual void FixedUpdate()
     {
-        MatchTool();
+		if (isInSocket)
+		{
+			MatchPhysicalToolToVirtualTool();
+			return;
+		}
 
-        // 손과 거리가 너무 멀어지면 놓치기
+		MatchTool();
     }
 
     protected virtual void Update()
 	{
-		MatchTool();
 		ToggleVirtualToolRenderer();
+
+		if (isInSocket)
+		{
+			MatchPhysicalToolToVirtualTool();
+			return;
+		}
+
+		MatchTool();
 	}
 
 	protected virtual void LateUpdate()
     {
+		if (isInSocket)
+		{
+			MatchPhysicalToolToVirtualTool();
+			return;
+		}
+
 		MatchTool();
 	}
 
@@ -419,4 +437,55 @@ public class XRCookingToolObjectManager : MonoBehaviour
 		//string context = isLeftHand ? "Left Hand" : "Right Hand";
 		//Debug.Log($"[{transform.gameObject.name}] Secondary hand released {context}");
 	}
+
+    #region Socket Interaction
+    public void SetRigidbodyFixed()
+	{
+		if (_setRigidbodyFixedCo != null)
+		{
+			StopCoroutine(_setRigidbodyFixedCo);
+			_setRigidbodyFixedCo = null;
+		}
+
+		_setRigidbodyFixedCo = SetRigidbodyFixedCo();
+		StartCoroutine(_setRigidbodyFixedCo);
+	}
+	private IEnumerator _setRigidbodyFixedCo = null;
+	private IEnumerator SetRigidbodyFixedCo()
+	{
+		yield return null;
+		isMatchToolEnabled = false;
+		physicalToolRigidbody.useGravity = false;
+
+		yield return null;
+		physicalTool.transform.rotation = virtualTool.transform.rotation;
+		physicalTool.transform.position = virtualTool.transform.position;
+		var positionOffset = primaryAttachPoint.position - physicalTool.transform.position;
+		
+		physicalTool.transform.position += positionOffset;
+		physicalToolRigidbody.constraints = RigidbodyConstraints.FreezeAll;
+	}
+
+	public void SetRigidbodyDynamic()
+	{
+		if (_setRigidbodyDynamicCo != null)
+		{
+			StopCoroutine(_setRigidbodyDynamicCo);
+			_setRigidbodyDynamicCo = null;
+		}
+
+		_setRigidbodyDynamicCo = SetRigidbodyDynamicCo();
+		StartCoroutine(_setRigidbodyDynamicCo);
+	}
+	private IEnumerator _setRigidbodyDynamicCo = null;
+	private IEnumerator SetRigidbodyDynamicCo()
+	{
+		yield return null;
+
+		physicalToolRigidbody.useGravity = true;
+		physicalToolRigidbody.constraints = RigidbodyConstraints.None;
+
+		isMatchToolEnabled = true;
+	}
+    #endregion
 }
