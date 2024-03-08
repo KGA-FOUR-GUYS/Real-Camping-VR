@@ -117,17 +117,17 @@ public class CookingProcess_Controller : MonoBehaviour
             Destroy(contentRect.GetChild(i).gameObject);
         }
 
-        if (RecipeManager.instance.currentSO.name == "BeefStew")
-        {
-            InstantiateProcess_UI(CookingProcess.Slice);
-            //InstantiateProcess_UI(CookingProcess.Boil);
-            InstantiateProcess_UI(CookingProcess.Broil);
-            return true;
-        }
-        else
+        var processList = RecipeManager.instance.currentSO.GetProcessList();
+        if (processList.Count == 0)
         {
             return false;
         }
+
+        foreach (var process in processList)
+        {
+            InstantiateProcess_UI(process);
+        }
+        return true;
     }
 
     private void InstantiateProcess_UI(CookingProcess cookingProcess) //GSH Enum
