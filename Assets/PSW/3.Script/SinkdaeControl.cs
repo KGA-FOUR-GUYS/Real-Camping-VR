@@ -5,15 +5,15 @@ using UnityEngine;
 public class SinkdaeControl : MonoBehaviour
 {
     [SerializeField] ParticleSystem water_ps;
-    [SerializeField] Material Target_Mat;
     [SerializeField] int targer_layer_num = 0;
-    Color cur_color;
+    MeshRenderer meshRenderer;    
     private void Awake()
     {
-        Target_Mat.color = Color.grey;        
+        meshRenderer = GetComponent<MeshRenderer>();
+        meshRenderer.material.color = Color.grey;
     }
 
-    private void OnTriggerStay(Collider other)
+    private void OnTriggerEnter(Collider other)
     {
         if (other.gameObject.layer == targer_layer_num)
         {
@@ -23,13 +23,13 @@ public class SinkdaeControl : MonoBehaviour
 
     public void StateChange()
     {
-        if (Target_Mat.color == cur_color)
+        if (meshRenderer.material.color == Color.grey)
         {
-            Target_Mat.color = Color.cyan;
+            meshRenderer.material.color = Color.cyan;
         }
         else
         {
-            Target_Mat.color = Color.grey;
+            meshRenderer.material.color = Color.grey;
         }        
         if (water_ps.isPlaying)
         {
