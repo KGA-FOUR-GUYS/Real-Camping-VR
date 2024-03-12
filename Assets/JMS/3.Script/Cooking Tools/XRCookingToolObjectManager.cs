@@ -42,8 +42,12 @@ public class XRCookingToolObjectManager : MonoBehaviour
 	[Range(.1f, 3f)] public float delayToggleLayerAfterExit = 1f;
 	[Tooltip("왼손으로 잡는 경우, 보정할 회전값")]
 	public Vector3 leftHandRotationOffset = Vector3.zero;
+	[Tooltip("왼손으로 잡는 경우, 보정할 위치값")]
+	public Vector3 leftHandPositionOffset = Vector3.zero;
 	[Tooltip("오른손으로 잡는 경우, 보정할 회전값")]
 	public Vector3 rightHandRotationOffset = Vector3.zero;
+	[Tooltip("오른손으로 잡는 경우, 보정할 위치값")]
+	public Vector3 rightHandPositionOffset = Vector3.zero;
 
 	[Header("Virtual Tool")]
 	public bool isVirtualHandVisible = false;
@@ -335,6 +339,7 @@ public class XRCookingToolObjectManager : MonoBehaviour
 		_physicalToolTransform.localRotation *= isLeftHand ? Quaternion.Euler(leftHandRotationOffset) : Quaternion.Euler(rightHandRotationOffset);
 		Vector3 positionOffset = _physicalToolTransform.position - primaryAttachPoint.position;
 		_physicalToolTransform.position = handAttachPoint.position + positionOffset;
+		_physicalToolTransform.localPosition += isLeftHand ? leftHandPositionOffset : rightHandPositionOffset;
 
 		// Priamry Grab collider 보정
 		_primaryColliderLocalPosition = grabCollider.transform.localPosition;
