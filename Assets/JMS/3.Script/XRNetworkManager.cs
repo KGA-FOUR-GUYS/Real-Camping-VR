@@ -9,6 +9,6 @@ public class XRNetworkManager : NetworkManager
     {
         base.Start();
 
-        StartHost();
+        //StartHost();
     }
 }
