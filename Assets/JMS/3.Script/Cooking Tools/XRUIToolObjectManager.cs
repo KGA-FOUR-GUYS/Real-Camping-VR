@@ -1,16 +1,22 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Assertions;
 using UnityEngine.XR.Interaction.Toolkit;
 
 public class XRUIToolObjectManager : XRCookingToolObjectManager
 {
-	public GameObject leftUIPen;
-	public GameObject rightUIPen;
+	private GameObject leftUIPen;
+	private GameObject rightUIPen;
 
-	protected override void Start()
+    protected override void Start()
 	{
 		base.Start();
+
+		leftUIPen = FindObjectOfType<XRLocalRigManager>().localLeftHandUIPen;
+		rightUIPen = FindObjectOfType<XRLocalRigManager>().localRightHandUIPen;
+		Assert.IsNotNull(leftUIPen);
+		Assert.IsNotNull(rightUIPen);
 
 		leftUIPen.SetActive(false);
 		rightUIPen.SetActive(false);

@@ -5,9 +5,10 @@ using UnityEngine;
 using UnityEngine.Assertions;
 using UnityEngine.XR.Interaction.Toolkit;
 using Cooking;
+using Mirror;
 
 [Serializable]
-public class XRCookingToolObjectManager : MonoBehaviour
+public class XRCookingToolObjectManager : NetworkBehaviour
 {
 	public enum GrabType
 	{

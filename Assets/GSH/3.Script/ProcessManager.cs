@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Mirror;
 
 [System.Serializable]
 public struct SpawnerData
@@ -25,7 +26,7 @@ public enum CookingProcess
     Grill
 }
 
-public class ProcessManager : MonoBehaviour
+public class ProcessManager : NetworkBehaviour
 {
     public static ProcessManager instance = null;
     public RecipeSO currentRecipe;
@@ -109,8 +110,9 @@ public class ProcessManager : MonoBehaviour
 
     private void InstantiateAndAddToQueue(GameObject prefab, Vector3 position, Quaternion rotation)
     {
-        GameObject instance = Instantiate(prefab, position, rotation);
-        instantiatedPrefabs.Add(instance);
+        GameObject gameObj = Instantiate(prefab, position, rotation);
+        NetworkServer.Spawn(gameObj);
+        instantiatedPrefabs.Add(gameObj);
     }
 
     public void DestroyInstantiatedPrefabs()

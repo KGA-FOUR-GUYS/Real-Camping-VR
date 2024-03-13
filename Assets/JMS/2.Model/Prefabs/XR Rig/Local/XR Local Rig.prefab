@@ -49,7 +49,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &9175379567666507471
 Transform:
   m_ObjectHideFlags: 0
@@ -1880,7 +1880,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &811511378208940033
 Transform:
   m_ObjectHideFlags: 0
@@ -2388,6 +2388,7 @@ GameObject:
   - component: {fileID: 3128261956589697448}
   - component: {fileID: 3148778928350748067}
   - component: {fileID: 8761079265720419663}
+  - component: {fileID: 6089844683768560444}
   m_Layer: 0
   m_Name: XR Local Rig
   m_TagString: Untagged
@@ -2537,6 +2538,23 @@ MonoBehaviour:
       m_SingletonActionBindings: []
       m_Flags: 0
     m_Reference: {fileID: -6493913391331992944, guid: c348712bda248c246b8c49b3db54643f, type: 3}
+--- !u!114 &6089844683768560444
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3042281644123898406}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bdf0c25ea00974743ae06afe6ba54ed8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  localHead: {fileID: 3496757220243463222}
+  localLeftHand: {fileID: 8492880452672112645}
+  localRightHand: {fileID: 6327516661286411958}
+  localLeftHandUIPen: {fileID: 189596183313590287}
+  localRightHandUIPen: {fileID: 2246556861624520751}
 --- !u!1 &3042798087237653633
 GameObject:
   m_ObjectHideFlags: 0
@@ -10275,7 +10293,7 @@ GameObject:
   - component: {fileID: 8101255455964567337}
   m_Layer: 0
   m_Name: Head Model
-  m_TagString: HeadPhysical
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
