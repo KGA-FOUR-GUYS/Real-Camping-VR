@@ -37,7 +37,7 @@ RenderSettings:
   m_ReflectionBounces: 1
   m_ReflectionIntensity: 0.2
   m_CustomReflection: {fileID: 0}
-  m_Sun: {fileID: 466199940}
+  m_Sun: {fileID: 0}
   m_IndirectSpecularColor: {r: 0.008867102, g: 0.023403501, b: 0.040798526, a: 0.2}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
@@ -871,6 +871,37 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1813360575}
   m_LocalEulerAnglesHint: {x: 24.972, y: -168.693, z: 0}
+--- !u!1 &455071055
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 455071056}
+  m_Layer: 0
+  m_Name: Day Light Spawn Point
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &455071056
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 455071055}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0.40821788, y: -0.23456968, z: 0.10938163, w: 0.8754261}
+  m_LocalPosition: {x: -12.79206, y: 15, z: -5}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 1
+  m_Children: []
+  m_Father: {fileID: 2055404295}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &465140562
 GameObject:
   m_ObjectHideFlags: 0
@@ -903,269 +934,6 @@ Transform:
   - {fileID: 2439952718078373148}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: -30, z: 0}
---- !u!1 &466199939
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 466199941}
-  - component: {fileID: 466199940}
-  - component: {fileID: 466199942}
-  - component: {fileID: 466199943}
-  m_Layer: 0
-  m_Name: 'Directional Light '
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 2147483647
-  m_IsActive: 1
---- !u!108 &466199940
-Light:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 466199939}
-  m_Enabled: 1
-  serializedVersion: 10
-  m_Type: 1
-  m_Shape: 0
-  m_Color: {r: 0.39215687, g: 0.19607843, b: 0.19607843, a: 1}
-  m_Intensity: 3
-  m_Range: 10
-  m_SpotAngle: 30
-  m_InnerSpotAngle: 21.80208
-  m_CookieSize: 1
-  m_Shadows:
-    m_Type: 0
-    m_Resolution: -1
-    m_CustomResolution: -1
-    m_Strength: 1
-    m_Bias: 0.05
-    m_NormalBias: 0.4
-    m_NearPlane: 0.2
-    m_CullingMatrixOverride:
-      e00: 1
-      e01: 0
-      e02: 0
-      e03: 0
-      e10: 0
-      e11: 1
-      e12: 0
-      e13: 0
-      e20: 0
-      e21: 0
-      e22: 1
-      e23: 0
-      e30: 0
-      e31: 0
-      e32: 0
-      e33: 1
-    m_UseCullingMatrixOverride: 0
-  m_Cookie: {fileID: 0}
-  m_DrawHalo: 0
-  m_Flare: {fileID: 0}
-  m_RenderMode: 0
-  m_CullingMask:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_RenderingLayerMask: 1
-  m_Lightmapping: 2
-  m_LightShadowCasterMode: 0
-  m_AreaSize: {x: 1, y: 1}
-  m_BounceIntensity: 1
-  m_ColorTemperature: 6570
-  m_UseColorTemperature: 0
-  m_BoundingSphereOverride: {x: 0, y: 0, z: 0, w: 0}
-  m_UseBoundingSphereOverride: 0
-  m_UseViewFrustumForShadowCasterCull: 1
-  m_ShadowRadius: 0
-  m_ShadowAngle: 0
---- !u!4 &466199941
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 466199939}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0.40821788, y: -0.23456968, z: 0.10938163, w: 0.8754261}
-  m_LocalPosition: {x: -12.79206, y: 15, z: -5}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 50, y: -30, z: 0}
---- !u!114 &466199942
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 466199939}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 474bcb49853aa07438625e644c072ee6, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Version: 3
-  m_UsePipelineSettings: 1
-  m_AdditionalLightsShadowResolutionTier: 2
-  m_LightLayerMask: 1
-  m_RenderingLayers: 1
-  m_CustomShadowLayers: 0
-  m_ShadowLayerMask: 1
-  m_ShadowRenderingLayers: 1
-  m_LightCookieSize: {x: 1, y: 1}
-  m_LightCookieOffset: {x: 0, y: 0}
-  m_SoftShadowQuality: 0
---- !u!114 &466199943
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 466199939}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c47267cfa6be4474cb1f49d3cc06c448, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  TimeScale: 1
-  _dayTime: 6
-  skyboxNight: {fileID: 2800000, guid: 9485e54f01cceec4eac41e1507340196, type: 3}
-  skyboxSunrise: {fileID: 2800000, guid: 86035e5b778ad3d498565ff4710e2a2c, type: 3}
-  skyboxDay: {fileID: 2800000, guid: 8a5aa3ed333b45a45b4cf904372fcab9, type: 3}
-  skyboxSunset: {fileID: 2800000, guid: 3508076040a82804e9573c79bf92f9c6, type: 3}
-  gradientNightToSunrise:
-    serializedVersion: 2
-    key0: {r: 0.03137255, g: 0.10588236, b: 0.22352943, a: 1}
-    key1: {r: 0.9058824, g: 0.4666667, b: 0.078431375, a: 1}
-    key2: {r: 0, g: 0, b: 0, a: 0}
-    key3: {r: 0, g: 0, b: 0, a: 0}
-    key4: {r: 0, g: 0, b: 0, a: 0}
-    key5: {r: 0, g: 0, b: 0, a: 0}
-    key6: {r: 0, g: 0, b: 0, a: 0}
-    key7: {r: 0, g: 0, b: 0, a: 0}
-    ctime0: 0
-    ctime1: 65535
-    ctime2: 0
-    ctime3: 0
-    ctime4: 0
-    ctime5: 0
-    ctime6: 0
-    ctime7: 0
-    atime0: 0
-    atime1: 65535
-    atime2: 0
-    atime3: 0
-    atime4: 0
-    atime5: 0
-    atime6: 0
-    atime7: 0
-    m_Mode: 0
-    m_ColorSpace: -1
-    m_NumColorKeys: 2
-    m_NumAlphaKeys: 2
-  gradientSunriseToDay:
-    serializedVersion: 2
-    key0: {r: 0.9058824, g: 0.4666667, b: 0.078431375, a: 1}
-    key1: {r: 0.9686275, g: 0.8235295, b: 0.69411767, a: 1}
-    key2: {r: 0, g: 0, b: 0, a: 0}
-    key3: {r: 0, g: 0, b: 0, a: 0}
-    key4: {r: 0, g: 0, b: 0, a: 0}
-    key5: {r: 0, g: 0, b: 0, a: 0}
-    key6: {r: 0, g: 0, b: 0, a: 0}
-    key7: {r: 0, g: 0, b: 0, a: 0}
-    ctime0: 0
-    ctime1: 65535
-    ctime2: 0
-    ctime3: 0
-    ctime4: 0
-    ctime5: 0
-    ctime6: 0
-    ctime7: 0
-    atime0: 0
-    atime1: 65535
-    atime2: 0
-    atime3: 0
-    atime4: 0
-    atime5: 0
-    atime6: 0
-    atime7: 0
-    m_Mode: 0
-    m_ColorSpace: -1
-    m_NumColorKeys: 2
-    m_NumAlphaKeys: 2
-  gradientDayToSunset:
-    serializedVersion: 2
-    key0: {r: 0.9686275, g: 0.8235295, b: 0.69803923, a: 1}
-    key1: {r: 0.9058824, g: 0.4666667, b: 0.078431375, a: 1}
-    key2: {r: 0, g: 0, b: 0, a: 0}
-    key3: {r: 0, g: 0, b: 0, a: 0}
-    key4: {r: 0, g: 0, b: 0, a: 0}
-    key5: {r: 0, g: 0, b: 0, a: 0}
-    key6: {r: 0, g: 0, b: 0, a: 0}
-    key7: {r: 0, g: 0, b: 0, a: 0}
-    ctime0: 0
-    ctime1: 65535
-    ctime2: 0
-    ctime3: 0
-    ctime4: 0
-    ctime5: 0
-    ctime6: 0
-    ctime7: 0
-    atime0: 0
-    atime1: 65535
-    atime2: 0
-    atime3: 0
-    atime4: 0
-    atime5: 0
-    atime6: 0
-    atime7: 0
-    m_Mode: 0
-    m_ColorSpace: -1
-    m_NumColorKeys: 2
-    m_NumAlphaKeys: 2
-  gradientSunsetToNight:
-    serializedVersion: 2
-    key0: {r: 0.9058824, g: 0.4666667, b: 0.078431375, a: 1}
-    key1: {r: 0.03137255, g: 0.10588236, b: 0.22352943, a: 1}
-    key2: {r: 0, g: 0, b: 0, a: 0}
-    key3: {r: 0, g: 0, b: 0, a: 0}
-    key4: {r: 0, g: 0, b: 0, a: 0}
-    key5: {r: 0, g: 0, b: 0, a: 0}
-    key6: {r: 0, g: 0, b: 0, a: 0}
-    key7: {r: 0, g: 0, b: 0, a: 0}
-    ctime0: 0
-    ctime1: 65535
-    ctime2: 0
-    ctime3: 0
-    ctime4: 0
-    ctime5: 0
-    ctime6: 0
-    ctime7: 0
-    atime0: 0
-    atime1: 65535
-    atime2: 0
-    atime3: 0
-    atime4: 0
-    atime5: 0
-    atime6: 0
-    atime7: 0
-    m_Mode: 0
-    m_ColorSpace: -1
-    m_NumColorKeys: 2
-    m_NumAlphaKeys: 2
-  globalLight: {fileID: 466199940}
-  minutes: 0
-  hours: 0
-  days: 0
-  tempSecond: 0
-  MinutePerSecond: 1
 --- !u!850595691 &502559851
 LightingSettings:
   m_ObjectHideFlags: 0
@@ -3765,7 +3533,7 @@ MonoBehaviour:
   DualMode: 0
   NoDelay: 1
   Interval: 10
-  Timeout: 10000
+  Timeout: 300000
   RecvBufferSize: 7361536
   SendBufferSize: 7361536
   FastResend: 2
@@ -3839,6 +3607,7 @@ MonoBehaviour:
   - {fileID: 1360615282374666870, guid: 5f7d7912050559e4b9237f89b90f049e, type: 3}
   - {fileID: 8486464834468304589, guid: a40937f6f0c57db40a537376070c045e, type: 3}
   - {fileID: 6001356974664518392, guid: 0269f215b693688459c5abe09f90f3dc, type: 3}
+  - {fileID: 3246258643045471063, guid: 0d09a9e131912334683508ccbfe4b9fa, type: 3}
   exceptionsDisconnect: 1
   snapshotSettings:
     bufferTimeMultiplier: 2
@@ -3854,7 +3623,7 @@ MonoBehaviour:
   evaluationMethod: 0
   evaluationInterval: 3
   timeInterpolationGui: 0
-  IPAddress: 54.180.149.200
+  IPAddress: 13.209.76.221
 --- !u!4 &1713402518
 Transform:
   m_ObjectHideFlags: 0
@@ -4589,6 +4358,7 @@ Transform:
   - {fileID: 396452139}
   - {fileID: 1115718045}
   - {fileID: 1529541790}
+  - {fileID: 455071056}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &2055404296
@@ -4639,6 +4409,10 @@ MonoBehaviour:
     prefab: {fileID: 1360615282374666870, guid: 5f7d7912050559e4b9237f89b90f049e, type: 3}
   - spawnPoint: {fileID: 396452139}
     prefab: {fileID: 2890966595526785784, guid: e62231f005aa80745955faba631ab7c8, type: 3}
+  - spawnPoint: {fileID: 396452139}
+    prefab: {fileID: 2890966595526785784, guid: e62231f005aa80745955faba631ab7c8, type: 3}
+  - spawnPoint: {fileID: 455071056}
+    prefab: {fileID: 3246258643045471063, guid: 0d09a9e131912334683508ccbfe4b9fa, type: 3}
 --- !u!1 &2084944039
 GameObject:
   m_ObjectHideFlags: 0
@@ -17971,7 +17745,6 @@ SceneRoots:
   - {fileID: 2055404295}
   - {fileID: 863425417}
   - {fileID: 350021423}
-  - {fileID: 466199941}
   - {fileID: 109861680}
   - {fileID: 1813360575}
   - {fileID: 127309030}

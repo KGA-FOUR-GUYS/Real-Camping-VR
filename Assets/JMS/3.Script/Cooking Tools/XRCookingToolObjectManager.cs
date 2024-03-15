@@ -31,7 +31,7 @@ public class XRCookingToolObjectManager : NetworkBehaviour
 	public bool isInSocket = false;
 	private void SyncIsInSocket(bool _, bool newValue)
     {
-		if (isLocalPlayer) return;
+		//if (isLocalPlayer) return;
 
 		isInSocket = newValue;
     }
@@ -40,7 +40,7 @@ public class XRCookingToolObjectManager : NetworkBehaviour
 	public bool isMatchToolEnabled = true;
 	private void SyncIsMatchToolEnabled(bool _, bool newValue)
     {
-		if (isLocalPlayer) return;
+		//if (isLocalPlayer) return;
 
 		isMatchToolEnabled = newValue;
     }
@@ -49,7 +49,7 @@ public class XRCookingToolObjectManager : NetworkBehaviour
 	public bool isPrimaryGrabbed = false;
 	private void SyncIsPrimaryGrabbed(bool _, bool newValue)
     {
-		if (isLocalPlayer) return;
+		//if (isLocalPlayer) return;
 
 		isPrimaryGrabbed = newValue;
     }
@@ -58,7 +58,7 @@ public class XRCookingToolObjectManager : NetworkBehaviour
 	public bool isSecondaryGrabbed = false;
 	private void SyncIsSecondaryGrabbed(bool _, bool newValue)
     {
-		if (isLocalPlayer) return;
+		//if (isLocalPlayer) return;
 
 		isSecondaryGrabbed = newValue;
     }
@@ -73,7 +73,7 @@ public class XRCookingToolObjectManager : NetworkBehaviour
 	[ClientRpc]
 	private void RpcChangePhysicalToolLayer(int targetLayerValue)
     {
-		if (isLocalPlayer) return;
+		//if (isLocalPlayer) return;
 
 		_physicalToolTransform.gameObject.layer = targetLayerValue;
 	}
@@ -96,7 +96,7 @@ public class XRCookingToolObjectManager : NetworkBehaviour
 	[ClientRpc]
 	private void RpcChangePhysicalToolColliderLayer(int targetLayerValue)
 	{
-		if (isLocalPlayer) return;
+		//if (isLocalPlayer) return;
 
 		// Change layer of children
 		var colliders = _physicalToolTransform.GetComponentsInChildren<Collider>();
@@ -122,7 +122,7 @@ public class XRCookingToolObjectManager : NetworkBehaviour
 	[ClientRpc]
 	private void RpcToggleShakerManager(bool isOn)
     {
-		if (isLocalPlayer) return;
+		//if (isLocalPlayer) return;
 
 		foreach (var shakerManager in shakerManagers)
 		{
@@ -141,7 +141,7 @@ public class XRCookingToolObjectManager : NetworkBehaviour
 	[ClientRpc]
 	private void RpcChangePhysicalToolTransform(Quaternion rotation, Vector3 position)
     {
-		if (isLocalPlayer) return;
+		//if (isLocalPlayer) return;
 
 		_physicalToolTransform.rotation = rotation;
 		_physicalToolTransform.position = position;
@@ -158,7 +158,7 @@ public class XRCookingToolObjectManager : NetworkBehaviour
 	[ClientRpc]
 	private void RpcChangeGrabColliderTransform(Quaternion rotation, Vector3 position)
     {
-		if (isLocalPlayer) return;
+		//if (isLocalPlayer) return;
 
 		grabCollider.transform.rotation = rotation;
 		grabCollider.transform.position = position;

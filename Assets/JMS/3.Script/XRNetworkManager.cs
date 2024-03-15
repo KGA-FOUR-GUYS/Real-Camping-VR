@@ -25,5 +25,11 @@ public class XRNetworkManager : NetworkManager
         base.OnServerConnect(conn);
         Debug.Log($"[{conn.address}] New client connected.");
     }
+
+    public override void OnServerDisconnect(NetworkConnectionToClient conn)
+    {
+        base.OnServerDisconnect(conn);
+        Debug.Log($"[{conn.address}] client disconnected.");
+    }
 #endif
 }
