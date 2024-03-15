@@ -205,13 +205,13 @@ public class ControlSky : NetworkBehaviour
         {
             var newColor = lightGradient.Evaluate(i / time);
             globalLight.color = newColor;
-            RpcSetLightColor(newColor);
+            RpcSetLightColor(newColor.r, newColor.g, newColor.b, newColor.a);
             yield return null;
         }
     }
     [ClientRpc]
-    private void RpcSetLightColor(Color newColor)
+    private void RpcSetLightColor(float r, float g, float b, float a)
     {
-        globalLight.color = newColor;
+        globalLight.color = new Color(r, g, b, a);
     }
 }

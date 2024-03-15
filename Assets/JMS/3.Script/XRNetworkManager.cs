@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -5,31 +6,37 @@ using Mirror;
 
 public class XRNetworkManager : NetworkManager
 {
-    public string IPAddress = "127.0.0.1";
+	public string IPAddress = "127.0.0.1";
 
-    public override void Start()
-    {
-        networkAddress = IPAddress;
-        base.Start();
+	public override void Start()
+	{
+		networkAddress = IPAddress;
+		base.Start();
 
 #if UNITY_SERVER
-        StartServer();
+		StartServer();
 #elif UNITY_ANDROID
         StartClient();
 #endif
-    }
+	}
 
 #if UNITY_SERVER
-    public override void OnServerConnect(NetworkConnectionToClient conn)
-    {
-        base.OnServerConnect(conn);
-        Debug.Log($"[{conn.address}] New client connected.");
-    }
+	public override void OnServerConnect(NetworkConnectionToClient conn)
+	{
+		base.OnServerConnect(conn);
 
-    public override void OnServerDisconnect(NetworkConnectionToClient conn)
-    {
-        base.OnServerDisconnect(conn);
-        Debug.Log($"[{conn.address}] client disconnected.");
-    }
+		Console.ForegroundColor = ConsoleColor.Green;
+		Debug.Log($"[{conn.address}] New client connected.");
+		Console.ResetColor();
+	}
+
+	public override void OnServerDisconnect(NetworkConnectionToClient conn)
+	{
+		base.OnServerDisconnect(conn);
+
+		Console.ForegroundColor = ConsoleColor.Red;
+		Debug.Log($"[{conn.address}] client disconnected.");
+		Console.ResetColor();
+	}
 #endif
 }
