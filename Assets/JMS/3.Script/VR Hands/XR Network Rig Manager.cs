@@ -6,6 +6,17 @@ using Mirror;
 
 public class XRNetworkRigManager : NetworkBehaviour
 {
+    public XRLocalRigManager localRigManager;
+
+    [Header("Local Rig Parts")]
+    public Transform LocalHead;
+    public Transform LocalRightHand;
+    public Transform LocalLeftHand;
+    public Animator LocalRightHandAnimator;
+    public Animator LocalLeftHandAnimator;
+    private Rigidbody LocalRightHandRigidbody;
+    private Rigidbody LocalLeftHandRigidbody;
+
     [Header("Network Rig Parts")]
     public Transform NetworkHead;
     public Transform NetworkRightHand;
@@ -30,30 +41,27 @@ public class XRNetworkRigManager : NetworkBehaviour
 
         CacheRequiredComponents();
         AssertRequiredComponents();
-    }
 
-    public Transform LocalHead;
-    public Transform LocalRightHand;
-    public Transform LocalLeftHand;
-    public Animator LocalRightHandAnimator;
-    public Animator LocalLeftHandAnimator;
-    private Rigidbody LocalRightHandRigidbody;
-    private Rigidbody LocalLeftHandRigidbody;
+        localRigManager.playerNetId = GetComponent<NetworkIdentity>().netId;
+    }
+    
     private void CacheRequiredComponents()
     {
-        LocalHead = FindObjectOfType<XRLocalRigManager>().localHead;
+        localRigManager = FindObjectOfType<XRLocalRigManager>();
 
-        var rightHand = FindObjectOfType<XRLocalRigManager>().localRightHand;
+        LocalHead = localRigManager.localHead;
+
+        var rightHand = localRigManager.localRightHand;
         LocalRightHand = rightHand.transform;
         LocalRightHandAnimator = rightHand.GetComponent<Animator>();
         LocalRightHandRigidbody = rightHand.GetComponent<Rigidbody>();
 
-        var leftHand = FindObjectOfType<XRLocalRigManager>().localLeftHand;
+        var leftHand = localRigManager.localLeftHand;
         LocalLeftHand = leftHand.transform;
         LocalLeftHandAnimator = leftHand.GetComponent<Animator>();
         LocalLeftHandRigidbody = leftHand.GetComponent<Rigidbody>();
     }
-
+    
     private void AssertRequiredComponents()
     {
         Assert.IsNotNull(NetworkHead);

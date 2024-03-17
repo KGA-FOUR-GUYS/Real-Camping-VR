@@ -27,141 +27,21 @@ public class XRCookingToolObjectManager : NetworkBehaviour
 		Seasoning = 6,
     }
 
-	[SyncVar(hook = nameof(SyncIsInSocket))]
-	public bool isInSocket = false;
-	private void SyncIsInSocket(bool _, bool newValue)
-    {
-		//if (isLocalPlayer) return;
-
-		isInSocket = newValue;
-    }
-
-	[SyncVar(hook = nameof(SyncIsMatchToolEnabled))]
 	public bool isMatchToolEnabled = true;
-	private void SyncIsMatchToolEnabled(bool _, bool newValue)
-    {
-		//if (isLocalPlayer) return;
-
-		isMatchToolEnabled = newValue;
-    }
-
+	public bool isInSocket = false;
+	
 	[SyncVar(hook = nameof(SyncIsPrimaryGrabbed))]
 	public bool isPrimaryGrabbed = false;
 	private void SyncIsPrimaryGrabbed(bool _, bool newValue)
-    {
-		//if (isLocalPlayer) return;
-
+	{
 		isPrimaryGrabbed = newValue;
-    }
+	}
 
 	[SyncVar(hook = nameof(SyncIsSecondaryGrabbed))]
 	public bool isSecondaryGrabbed = false;
 	private void SyncIsSecondaryGrabbed(bool _, bool newValue)
-    {
-		//if (isLocalPlayer) return;
-
-		isSecondaryGrabbed = newValue;
-    }
-
-	[Command(requiresAuthority = false)]
-	private void CmdChangePhysicalToolLayer(int targetLayerValue)
-    {
-		_physicalToolTransform.gameObject.layer = targetLayerValue;
-
-		RpcChangePhysicalToolLayer(targetLayerValue);
-	}
-	[ClientRpc]
-	private void RpcChangePhysicalToolLayer(int targetLayerValue)
-    {
-		//if (isLocalPlayer) return;
-
-		_physicalToolTransform.gameObject.layer = targetLayerValue;
-	}
-
-	[Command(requiresAuthority = false)]
-	private void CmdChangePhysicalToolColliderLayer(int targetLayerValue)
-    {
-		// Change layer of children
-		var colliders = _physicalToolTransform.GetComponentsInChildren<Collider>();
-		foreach (var collider in colliders)
-		{
-			// 미리 지정해준 Layer가 있다면 유지 (i.e - Grab Guidance)
-			if (collider.gameObject.layer != LayerMask.NameToLayer("Default")) continue;
-
-			collider.gameObject.layer = targetLayerValue;
-		}
-
-		RpcChangePhysicalToolColliderLayer(targetLayerValue);
-	}
-	[ClientRpc]
-	private void RpcChangePhysicalToolColliderLayer(int targetLayerValue)
 	{
-		//if (isLocalPlayer) return;
-
-		// Change layer of children
-		var colliders = _physicalToolTransform.GetComponentsInChildren<Collider>();
-		foreach (var collider in colliders)
-		{
-			// 미리 지정해준 Layer가 있다면 유지 (i.e - Grab Guidance)
-			if (collider.gameObject.layer != LayerMask.NameToLayer("Default")) continue;
-
-			collider.gameObject.layer = targetLayerValue;
-		}
-	}
-
-	[Command(requiresAuthority = false)]
-	private void CmdToggleShakerManager(bool isOn)
-    {
-		foreach (var shakerManager in shakerManagers)
-		{
-			shakerManager.gameObject.SetActive(true);
-		}
-
-		RpcToggleShakerManager(isOn);
-    }
-	[ClientRpc]
-	private void RpcToggleShakerManager(bool isOn)
-    {
-		//if (isLocalPlayer) return;
-
-		foreach (var shakerManager in shakerManagers)
-		{
-			shakerManager.gameObject.SetActive(true);
-		}
-	}
-
-	[Command(requiresAuthority = false)]
-	private void CmdChangePhysicalToolTransform(Quaternion rotation, Vector3 position)
-    {
-		_physicalToolTransform.rotation = rotation;
-		_physicalToolTransform.position = position;
-
-		RpcChangePhysicalToolTransform(rotation, position);
-	}
-	[ClientRpc]
-	private void RpcChangePhysicalToolTransform(Quaternion rotation, Vector3 position)
-    {
-		//if (isLocalPlayer) return;
-
-		_physicalToolTransform.rotation = rotation;
-		_physicalToolTransform.position = position;
-	}
-
-	[Command(requiresAuthority = false)]
-	private void CmdChangeGrabColliderTransform(Quaternion rotation, Vector3 position)
-    {
-		grabCollider.transform.rotation = rotation;
-		grabCollider.transform.position = position;
-
-		RpcChangeGrabColliderTransform(rotation, position);
-	}
-	[ClientRpc]
-	private void RpcChangeGrabColliderTransform(Quaternion rotation, Vector3 position)
-    {
-		//if (isLocalPlayer) return;
-
-		grabCollider.transform.rotation = rotation;
-		grabCollider.transform.position = position;
+		isSecondaryGrabbed = newValue;
 	}
 
 	[Header("Tool Charateristic")]
@@ -207,6 +87,17 @@ public class XRCookingToolObjectManager : NetworkBehaviour
 	private Transform _rightHandPhysicalTransform;
 	private Rigidbody _rightHandPhysicalRigidbody;
 
+	private NetworkIdentity toolNetworkIdentity;
+	private XRLocalRigManager localRigManager;
+	
+	[Command(requiresAuthority = false)]
+	private void CmdServerDebug(string context)
+	{
+		Console.ForegroundColor = ConsoleColor.Yellow;
+		Console.WriteLine($"{context}");
+		Console.ResetColor();
+	}
+
 	protected virtual void Awake()
 	{
 		if (virtualTool.transform.TryGetComponent(out XRGrabInteractable grabInteractable))
@@ -244,6 +135,9 @@ public class XRCookingToolObjectManager : NetworkBehaviour
 		_leftHandPhysicalRigidbody = _leftHandPhysicalTransform.GetComponent<Rigidbody>();
 		_rightHandPhysicalTransform = GameObject.FindGameObjectWithTag("RightHandPhysical").transform;
 		_rightHandPhysicalRigidbody = _rightHandPhysicalTransform.GetComponent<Rigidbody>();
+
+		toolNetworkIdentity = GetComponent<NetworkIdentity>();
+		localRigManager = FindObjectOfType<XRLocalRigManager>();
 	}
 
 	protected virtual void FixedUpdate()
@@ -353,72 +247,58 @@ public class XRCookingToolObjectManager : NetworkBehaviour
 
             if (useType.Equals(UseType.Seasoning))
             {
-				CmdToggleShakerManager(true);
-            }
+				foreach (var shakerManager in shakerManagers)
+				{
+					shakerManager.gameObject.SetActive(true);
+				}
+			}
 
-            StartSyncPrimaryGrab();
-        }
-        // Secondary Grab Entered
-        else if (!isSecondaryGrabbed)
+			// TODO: 잡은 Player Prefab의 NetID 가져오기
+			CmdServerDebug($"{gameObject.name}({toolNetworkIdentity.netId}) primary grabbed by player({localRigManager.playerNetId})");
+
+			// TODO: 잡은 Player Prefab 기준으로 ClientRPC를 활용해 동기화
+		}
+		// Secondary Grab Entered
+		else if (!isSecondaryGrabbed)
         {
             if (!grabType.Equals(GrabType.TwoHand)) return;
 
             _secondaryInteractor = e.interactorObject;
             isSecondaryGrabbed = true;
             AttachSecondaryPointToHand(e);
-        }
-    }
-
-	private IEnumerator _currentSyncPrimaryGrab = null;
-	private void StartSyncPrimaryGrab()
-    {
-		StopSyncPrimaryGrab();
-
-        _currentSyncPrimaryGrab = SyncPrimaryGrab();
-        StartCoroutine(_currentSyncPrimaryGrab);
-    }
-	private void StopSyncPrimaryGrab()
-    {
-		if (_currentSyncPrimaryGrab != null)
-		{
-			StopCoroutine(_currentSyncPrimaryGrab);
-			_currentSyncPrimaryGrab = null;
 		}
 	}
-	private IEnumerator SyncPrimaryGrab()
-    {
-        while (true)
-        {
-			yield return null;
-
-			CmdChangePhysicalToolTransform(_physicalToolTransform.rotation, _physicalToolTransform.position);
-			CmdChangeGrabColliderTransform(grabCollider.transform.rotation, grabCollider.transform.position);
-		}
-    }
 
 	// XR Grab Interactable Events
 	public virtual void OnGrabExited(SelectExitEventArgs e)
 	{
-		if (e.interactableObject.Equals(_secondaryInteractor))
-        {
-			// Secondary Grab Exited
-			CancelSecondaryGrab();
-		}
-		else if(e.interactableObject.Equals(_primaryInteractor))
-        {
-			// Primary Grab Exited
-			CancelPrimaryGrab();
-			if (useType.Equals(UseType.Seasoning))
+		// Primary Grab Exited
+		CancelPrimaryGrab();
+		if (useType.Equals(UseType.Seasoning))
+		{
+			foreach (var shakerManager in shakerManagers)
 			{
-				foreach (var shakerManager in shakerManagers)
-				{
-					CmdToggleShakerManager(false);
-				}
+				shakerManager.gameObject.SetActive(false);
 			}
-
-			StopSyncPrimaryGrab();
 		}
-    }
+
+		// TODO: 잡은 Player Prefab의 NetID 가져오기
+		CmdServerDebug($"{gameObject.name}({toolNetworkIdentity.netId}) released by player({localRigManager.playerNetId})");
+
+		// TODO: 잡은 Player Prefab 기준으로 ClientRPC를 활용해 동기화
+
+		// Secondary Grab Exited
+		CancelSecondaryGrab();
+
+		//if (e.interactableObject.Equals(_secondaryInteractor))
+  //      {
+			
+		//}
+		//else if(e.interactableObject.Equals(_primaryInteractor))
+  //      {
+			
+		//}
+	}
 
 	public void CancelPrimaryGrab()
 	{
@@ -452,8 +332,18 @@ public class XRCookingToolObjectManager : NetworkBehaviour
 									: (int)Mathf.Log(targetLayerMask.value, 2f);
 
 		if (currentLayerValue == targetLayerValue) return;
-		CmdChangePhysicalToolLayer(targetLayerValue);
-		CmdChangePhysicalToolColliderLayer(targetLayerValue);
+
+		_physicalToolTransform.gameObject.layer = targetLayerValue;
+
+		// Change layer of children
+		var colliders = _physicalToolTransform.GetComponentsInChildren<Collider>();
+		foreach (var collider in colliders)
+		{
+			// 미리 지정해준 Layer가 있다면 유지 (i.e - Grab Guidance)
+			if (collider.gameObject.layer != LayerMask.NameToLayer("Default")) continue;
+
+			collider.gameObject.layer = targetLayerValue;
+		}
 	}
 
 	// XR Grab Interactable Events

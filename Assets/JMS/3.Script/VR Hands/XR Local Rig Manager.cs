@@ -1,9 +1,12 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class XRLocalRigManager : MonoBehaviour
 {
+    public uint playerNetId;
+
     [Header("Local Rig")]
     public Transform localHead;
     public Transform localLeftHand;
